@@ -1,0 +1,59 @@
+.footer {
+  background: var(--color-text-primary);
+  color: rgba(255, 255, 255, 0.7);
+  padding: var(--spacing-lg) var(--spacing-md);
+  margin-top: auto;
+}
+
+.footer__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  text-align: center;
+}
+
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.footer__logo {
+  width: 32px;
+  height: 32px;
+  color: var(--color-primary-light);
+}
+
+.footer__name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: white;
+  letter-spacing: 0.15em;
+}
+
+.footer__info p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.footer__slogan {
+  font-family: var(--font-display);
+  font-style: italic;
+  opacity: 0.6;
+  margin-top: 4px !important;
+}
+
+.footer__copy {
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.footer__copy p {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin: 0;
+}

@@ -1,0 +1,31 @@
+/* 装备悬浮提示样式 - 简洁版,只提示点击查看 */
+
+.equipment-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.98));
+  border: 2px solid rgba(79, 195, 247, 0.4);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(79, 195, 247, 0.3);
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  animation: tooltip-fade-in 0.15s ease-out;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0277bd;
+  white-space: nowrap;
+}
+
+@keyframes tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

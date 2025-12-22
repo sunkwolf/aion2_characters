@@ -1,0 +1,657 @@
+{
+  "equipment": {
+    "equipmentList": [
+      {
+        "id": 110130015,
+        "name": "真龍王巨劍",
+        "enchantLevel": 15,
+        "exceedLevel": 2,
+        "grade": "Unique",
+        "slotPos": 1,
+        "slotPosName": "MainHand",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_WP_L_GS_0036_T05.png"
+      },
+      {
+        "id": 115030026,
+        "name": "守衛者十夫長臂甲",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 2,
+        "slotPosName": "SubHand",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Weapon_Guarder_R_025.png"
+      },
+      {
+        "id": 210130052,
+        "name": "巴克隆胸甲",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 5,
+        "slotPosName": "Torso",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_0028_T05_Torso.png"
+      },
+      {
+        "id": 210240044,
+        "name": "墮落審判官腿甲",
+        "enchantLevel": 0,
+        "exceedLevel": 0,
+        "grade": "Legend",
+        "slotPos": 6,
+        "slotPosName": "Pants",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_Kromede_01_Pants.png"
+      },
+      {
+        "id": 210330052,
+        "name": "巴克隆頭盔",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 3,
+        "slotPosName": "Helmet",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_0028_T05_Helmet.png"
+      },
+      {
+        "id": 210430053,
+        "name": "努亞庫肩甲",
+        "enchantLevel": 5,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 4,
+        "slotPosName": "Shoulder",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Shoulder.png"
+      },
+      {
+        "id": 210530053,
+        "name": "努亞庫手套",
+        "enchantLevel": 5,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 7,
+        "slotPosName": "Gloves",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Gloves.png"
+      },
+      {
+        "id": 210630038,
+        "name": "巴卡爾摩長靴",
+        "enchantLevel": 5,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 8,
+        "slotPosName": "Boots",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_GM_0059_T05_Boots.png"
+      },
+      {
+        "id": 210730053,
+        "name": "努亞庫披風",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 19,
+        "slotPosName": "Cape",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Cape.png"
+      },
+      {
+        "id": 215230001,
+        "name": "高潔腰帶",
+        "enchantLevel": 7,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 17,
+        "slotPosName": "Belt",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Belt_C_022.png"
+      },
+      {
+        "id": 310130050,
+        "name": "奧拉姆斯項鍊",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 10,
+        "slotPosName": "Necklace",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_NL_0072.png"
+      },
+      {
+        "id": 310230052,
+        "name": "奧拉姆斯耳環",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 11,
+        "slotPosName": "Earring1",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_ER_0072.png"
+      },
+      {
+        "id": 310230052,
+        "name": "奧拉姆斯耳環",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 12,
+        "slotPosName": "Earring2",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_ER_0072.png"
+      },
+      {
+        "id": 310330017,
+        "name": "閃耀的真龍王戒指",
+        "enchantLevel": 15,
+        "exceedLevel": 1,
+        "grade": "Unique",
+        "slotPos": 13,
+        "slotPosName": "Ring1",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Ring_0036.png"
+      },
+      {
+        "id": 310330052,
+        "name": "奧拉姆斯戒指",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 14,
+        "slotPosName": "Ring2",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Ring_0072.png"
+      },
+      {
+        "id": 310430046,
+        "name": "覺醒手鐲",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 15,
+        "slotPosName": "Bracelet1",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Bracelet_R_027.png"
+      },
+      {
+        "id": 310440017,
+        "name": "朝聖者手鐲",
+        "enchantLevel": 10,
+        "exceedLevel": 0,
+        "grade": "Legend",
+        "slotPos": 16,
+        "slotPosName": "Bracelet2",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Bracelet_0071.png"
+      },
+      {
+        "id": 310900001,
+        "name": "激戰古文石",
+        "enchantLevel": 5,
+        "exceedLevel": 0,
+        "grade": "Special",
+        "slotPos": 23,
+        "slotPosName": "Rune1",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Rune_R_002.png"
+      },
+      {
+        "id": 310900001,
+        "name": "激戰古文石",
+        "enchantLevel": 5,
+        "exceedLevel": 0,
+        "grade": "Special",
+        "slotPos": 24,
+        "slotPosName": "Rune2",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Rune_R_002.png"
+      },
+      {
+        "id": 311030001,
+        "name": "啟示護身符",
+        "enchantLevel": 7,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 22,
+        "slotPosName": "Amulet",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Craft_Conversion_Crystal_L_lv5_01.png"
+      },
+      {
+        "id": 810130001,
+        "name": "活力聖杯",
+        "enchantLevel": 2,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 41,
+        "slotPosName": "Arcana1",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Grail_u_PveSet2.png"
+      },
+      {
+        "id": 810230001,
+        "name": "活力羊皮紙",
+        "enchantLevel": 0,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 42,
+        "slotPosName": "Arcana2",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Parchment_u_PveSet2.png"
+      },
+      {
+        "id": 810340001,
+        "name": "活力指南針",
+        "enchantLevel": 1,
+        "exceedLevel": 0,
+        "grade": "Legend",
+        "slotPos": 43,
+        "slotPosName": "Arcana3",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Compass_u_PveSet2.png"
+      },
+      {
+        "id": 810430002,
+        "name": "魔力鐘",
+        "enchantLevel": 2,
+        "exceedLevel": 0,
+        "grade": "Unique",
+        "slotPos": 44,
+        "slotPosName": "Arcana4",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Bell_u_DefenceSet2.png"
+      },
+      {
+        "id": 810550001,
+        "name": "活力鏡子",
+        "enchantLevel": 3,
+        "exceedLevel": 0,
+        "grade": "Rare",
+        "slotPos": 45,
+        "slotPosName": "Arcana5",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Mirror_u_PveSet2.png"
+      }
+    ],
+    "skinList": [
+      {
+        "id": 50093101,
+        "name": "堅韌意志(耳環)",
+        "enchantLevel": 0,
+        "exceedLevel": 0,
+        "grade": "Common",
+        "slotPos": 21,
+        "slotPosName": "EarringR",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_ER_0093.png"
+      },
+      {
+        "id": 40062101,
+        "name": "毛茸茸樹古朋友(胸甲)",
+        "enchantLevel": 0,
+        "exceedLevel": 0,
+        "grade": "Special",
+        "slotPos": 3,
+        "slotPosName": "Torso",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_GM_Shugo_02_Torso.png"
+      },
+      {
+        "id": 50093101,
+        "name": "堅韌意志(耳環)",
+        "enchantLevel": 0,
+        "exceedLevel": 0,
+        "grade": "Common",
+        "slotPos": 20,
+        "slotPosName": "EarringL",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_ER_0093.png"
+      },
+      {
+        "id": 20007101,
+        "name": "冬夜霜花(巨劍)",
+        "enchantLevel": 0,
+        "exceedLevel": 0,
+        "grade": "Special",
+        "slotPos": 10,
+        "slotPosName": "Greatsword",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WP_GS_Winter_01.png"
+      }
+    ]
+  },
+  "petwing": {
+    "pet": {
+      "id": 1111,
+      "name": "靈活路奇",
+      "level": 5,
+      "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Vehicle_Portrait_ShugoBeast_01.png"
+    },
+    "wing": {
+      "id": 30101000,
+      "name": "森林精靈翅膀",
+      "enchantLevel": 0,
+      "grade": "Unique",
+      "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WingA_010.png"
+    }
+  },
+  "skill": {
+    "skillList": [
+      {
+        "id": 11020000,
+        "name": "銳利一擊",
+        "needLevel": 1,
+        "skillLevel": 14,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_002.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11010000,
+        "name": "截斷猛擊",
+        "needLevel": 1,
+        "skillLevel": 15,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_001.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11190000,
+        "name": "跳躍鑿擊",
+        "needLevel": 1,
+        "skillLevel": 13,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_019.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11290000,
+        "name": "蹂躪劍",
+        "needLevel": 3,
+        "skillLevel": 9,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_028.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11170000,
+        "name": "下鑿擊",
+        "needLevel": 4,
+        "skillLevel": 16,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_017.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11280000,
+        "name": "劍氣亂舞",
+        "needLevel": 5,
+        "skillLevel": 15,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_TE_SKILL_034.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11200000,
+        "name": "腳踝斬",
+        "needLevel": 7,
+        "skillLevel": 17,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_020.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11050000,
+        "name": "粉碎波動",
+        "needLevel": 8,
+        "skillLevel": 15,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_005.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11360000,
+        "name": "突進一擊",
+        "needLevel": 10,
+        "skillLevel": 14,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_036.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11300000,
+        "name": "空中結縛",
+        "needLevel": 12,
+        "skillLevel": 9,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_015.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11100000,
+        "name": "破滅猛擊",
+        "needLevel": 14,
+        "skillLevel": 16,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_010.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11260000,
+        "name": "衝擊解除",
+        "needLevel": 16,
+        "skillLevel": 8,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_CO_SKILL_002.png",
+        "category": "Active",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11710000,
+        "name": "生存姿態",
+        "needLevel": 1,
+        "skillLevel": 15,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_001.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11720000,
+        "name": "保護盔甲",
+        "needLevel": 6,
+        "skillLevel": 12,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_002.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11730000,
+        "name": "血之吸收",
+        "needLevel": 9,
+        "skillLevel": 16,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_003.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11740000,
+        "name": "掌握弱點",
+        "needLevel": 11,
+        "skillLevel": 16,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_004.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11750000,
+        "name": "攻擊準備",
+        "needLevel": 13,
+        "skillLevel": 17,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_005.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11760000,
+        "name": "衝擊擊中",
+        "needLevel": 15,
+        "skillLevel": 15,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_006.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11770000,
+        "name": "破壞衝動",
+        "needLevel": 17,
+        "skillLevel": 17,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_007.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11780000,
+        "name": "老練反擊",
+        "needLevel": 21,
+        "skillLevel": 16,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_008.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11790000,
+        "name": "生存意志",
+        "needLevel": 23,
+        "skillLevel": 10,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_009.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11800000,
+        "name": "殺氣破裂",
+        "needLevel": 25,
+        "skillLevel": 16,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_Passive_010.png",
+        "category": "Passive",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11240000,
+        "name": "憤怒波動",
+        "needLevel": 22,
+        "skillLevel": 1,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_007.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11400000,
+        "name": "突擊姿態",
+        "needLevel": 22,
+        "skillLevel": 11,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_040.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11250000,
+        "name": "吉凱爾祝福",
+        "needLevel": 22,
+        "skillLevel": 5,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_024.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11110000,
+        "name": "集中格擋",
+        "needLevel": 22,
+        "skillLevel": 5,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_011.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 1
+      },
+      {
+        "id": 11130000,
+        "name": "均衡盔甲",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_013.png",
+        "category": "Dp",
+        "acquired": 0,
+        "equip": 0
+      },
+      {
+        "id": 11080000,
+        "name": "飛刀",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_008.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11380000,
+        "name": "毅力",
+        "needLevel": 22,
+        "skillLevel": 1,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_038.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11340000,
+        "name": "吸血劍",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_034.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11390000,
+        "name": "激怒爆炸",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_039.png",
+        "category": "Dp",
+        "acquired": 1,
+        "equip": 0
+      },
+      {
+        "id": 11410000,
+        "name": "波動甲冑",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_041.png",
+        "category": "Dp",
+        "acquired": 0,
+        "equip": 0
+      },
+      {
+        "id": 11430000,
+        "name": "強制結縛",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_GL_SKILL_043.png",
+        "category": "Dp",
+        "acquired": 0,
+        "equip": 0
+      },
+      {
+        "id": 11700000,
+        "name": "強襲一擊",
+        "needLevel": 22,
+        "skillLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_CO_SKILL_003.png",
+        "category": "Dp",
+        "acquired": 0,
+        "equip": 0
+      }
+    ]
+  }
+}

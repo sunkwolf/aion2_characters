@@ -1,0 +1,647 @@
+.legion-page {
+  padding-top: 70px;
+  min-height: 100vh;
+}
+
+/* 顶部 Banner */
+.legion-banner {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.legion-banner__bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.legion-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.legion-banner__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: var(--spacing-md);
+}
+
+.legion-banner__emblem {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(201, 169, 98, 0.4);
+  border: 2px solid var(--color-elyos);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.legion-banner__emblem img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+}
+
+.legion-banner__title {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: var(--spacing-xs);
+}
+
+.legion-banner__subtitle {
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  opacity: 0.9;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.legion-page__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: var(--spacing-md);
+  color: var(--color-text-muted);
+}
+
+.legion-page__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 军团介绍 */
+.legion-intro {
+  background: linear-gradient(to bottom, var(--color-bg-secondary), var(--color-bg-primary));
+  padding: var(--spacing-xl) var(--spacing-md);
+  text-align: center;
+}
+
+.legion-intro__container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.legion-intro__logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--spacing-md);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 4px solid white;
+}
+
+.legion-intro__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.legion-intro__title {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  letter-spacing: 0.2em;
+  margin-bottom: var(--spacing-xs);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.legion-intro__subtitle {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.1em;
+}
+
+.legion-intro__desc {
+  max-width: 600px;
+  margin: 0 auto var(--spacing-lg);
+}
+
+.legion-intro__desc p {
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+  margin-bottom: var(--spacing-sm);
+}
+
+.legion-intro__values {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.legion-intro__value {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.legion-intro__value-icon {
+  font-size: 1.2rem;
+}
+
+/* 成员展示 */
+.legion-members {
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.legion-members__container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.legion-members__title {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: var(--spacing-xl);
+}
+
+.legion-members__section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.legion-members__section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.legion-members__section-icon {
+  font-size: 1.3rem;
+}
+
+.legion-members__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.legion-members__grid--leader {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.legion-members__grid--elite {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.legion-members__empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-muted);
+}
+
+/* 成员卡片 */
+.legion-member-card {
+  display: block;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  text-align: center;
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  color: inherit;
+}
+
+.legion-member-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-light);
+}
+
+.legion-member-card__avatar {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--spacing-sm);
+}
+
+.legion-members__grid--leader .legion-member-card__avatar {
+  width: 100px;
+  height: 100px;
+}
+
+.legion-member-card__avatar img,
+.legion-member-card__avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.legion-member-card__avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+  color: white;
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.legion-member-card__role {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.legion-member-card__role--leader {
+  background: linear-gradient(135deg, var(--color-elyos), var(--color-accent-dark));
+  color: white;
+  box-shadow: 0 2px 8px rgba(201, 169, 98, 0.4);
+}
+
+.legion-member-card__role--elite {
+  background: var(--color-primary);
+  color: white;
+}
+
+.legion-member-card__role--member {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+}
+
+.legion-member-card__info {
+  margin-top: var(--spacing-xs);
+}
+
+.legion-member-card__name {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.legion-members__grid--leader .legion-member-card__name {
+  font-size: 1.3rem;
+}
+
+.legion-member-card__details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: 4px;
+}
+
+.legion-member-card__class {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.legion-member-card__level {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.legion-member-card__join {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-xs);
+}
+
+@media (max-width: 768px) {
+  .legion-intro__values {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .legion-members__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .legion-members__grid--leader,
+  .legion-members__grid--elite {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .legion-members__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 标签切换 */
+.legion-tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.legion-tabs__btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: transparent;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.legion-tabs__btn:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.legion-tabs__btn--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.legion-tabs__icon {
+  font-size: 1.2rem;
+}
+
+/* 相册 */
+.legion-gallery {
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.legion-gallery__container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.legion-gallery__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.legion-gallery__hint {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.legion-gallery__upload-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.legion-gallery__upload-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.legion-gallery__upload-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.legion-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.legion-gallery__item {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.legion-gallery__item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.legion-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform var(--transition-normal);
+}
+
+.legion-gallery__item:hover img {
+  transform: scale(1.05);
+}
+
+.legion-gallery__item-actions {
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
+  display: flex;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.legion-gallery__item:hover .legion-gallery__item-actions {
+  opacity: 1;
+}
+
+.legion-gallery__star-btn,
+.legion-gallery__delete-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.legion-gallery__star-btn {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.legion-gallery__star-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.legion-gallery__star-btn--active {
+  color: #ffd700;
+}
+
+.legion-gallery__delete-btn svg {
+  width: 16px;
+  height: 16px;
+  color: white;
+}
+
+.legion-gallery__delete-btn:hover {
+  background: #e74c3c;
+}
+
+.legion-gallery__empty {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-muted);
+}
+
+.legion-gallery__empty p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 图片预览弹窗 */
+.legion-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  cursor: pointer;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.legion-lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.legion-lightbox__close {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.legion-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.legion-lightbox__close svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .legion-gallery__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .legion-gallery__hint {
+    text-align: center;
+  }
+
+  .legion-gallery__upload-btn {
+    justify-content: center;
+  }
+
+  .legion-gallery__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .legion-gallery__item-actions {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .legion-gallery__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .legion-tabs__btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,172 @@
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.admin-modal {
+  position: relative;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-modal__close {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.admin-modal__close:hover {
+  background: var(--color-bg-secondary);
+}
+
+.admin-modal__close svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+}
+
+.admin-modal__content {
+  text-align: center;
+}
+
+.admin-modal__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-modal__icon svg {
+  width: 32px;
+  height: 32px;
+  color: white;
+}
+
+.admin-modal__icon--success {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+}
+
+.admin-modal__content h2 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.admin-modal__content p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+.admin-modal__input-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.admin-modal__input-group input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-fast);
+}
+
+.admin-modal__input-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.admin-modal__error {
+  display: block;
+  margin-top: var(--spacing-xs);
+  color: #e74c3c;
+  font-size: 0.85rem;
+}
+
+.admin-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.admin-modal__btn {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.admin-modal__btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.admin-modal__btn--primary {
+  background: var(--color-primary);
+}
+
+.admin-modal__btn--primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.admin-modal__btn--logout {
+  background: #e74c3c;
+}
+
+.admin-modal__btn--logout:hover {
+  background: #c0392b;
+}
