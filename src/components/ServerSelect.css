@@ -27,6 +27,18 @@
   box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
 }
 
+/* 禁用状态 */
+.server-select__trigger--disabled {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+  background: var(--color-bg-secondary);
+}
+
+.server-select__trigger--disabled:hover {
+  border-color: var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
 .server-select__placeholder {
   color: var(--color-text-muted);
 }

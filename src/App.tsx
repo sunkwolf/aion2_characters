@@ -8,6 +8,7 @@ import LegionPage from './pages/LegionPage';
 import MemberDetailPage from './pages/MemberDetailPage';
 import JoinPage from './pages/JoinPage';
 import AdminPage from './pages/AdminPage';
+import CharacterBDPage from './pages/CharacterBDPage';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/legion" element={<LegionPage />} />
             <Route path="/member/:id" element={<MemberDetailPage />} />
+            <Route path="/character-bd" element={<CharacterBDPage />} />
+            <Route path="/character-detail" element={<MemberDetailPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>

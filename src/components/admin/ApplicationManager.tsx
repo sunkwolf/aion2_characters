@@ -6,11 +6,10 @@ import {
   loadApplications,
   reviewApplication,
   deleteApplication,
-  exportApplicationsToFile,
-  importJsonFile,
   addMember,
   loadMembers,
 } from '../../services/dataService';
+import ConfirmDialog from '../ConfirmDialog';
 import './ApplicationManager.css';
 
 type FilterType = 'all' | 'pending' | 'approved' | 'rejected';
@@ -22,6 +21,15 @@ const ApplicationManager: React.FC = () => {
   const [filter, setFilter] = useState<FilterType>('pending');
   const [reviewingApp, setReviewingApp] = useState<string | null>(null);
   const [reviewNote, setReviewNote] = useState('');
+  const [confirmDialog, setConfirmDialog] = useState<{
+    visible: boolean;
+    applicationId: string;
+    characterName: string;
+  }>({
+    visible: false,
+    applicationId: '',
+    characterName: '',
+  });
 
   // 加载数据
   useEffect(() => {
@@ -122,11 +130,20 @@ const ApplicationManager: React.FC = () => {
   };
 
   // 删除申请
-  const handleDelete = async (applicationId: string) => {
-    const application = applications.find(a => a.id === applicationId);
-    if (!confirm(`确定要删除 "${application?.characterName}" 的申请吗?`)) {
-      return;
-    }
+  const handleDelete = async (applicationId: string, characterName: string) => {
+    setConfirmDialog({
+      visible: true,
+      applicationId: applicationId,
+      characterName: characterName,
+    });
+  };
+
+  // 确认删除
+  const handleConfirmDelete = async () => {
+    const applicationId = confirmDialog.applicationId;
+
+    // 关闭对话框
+    setConfirmDialog({ visible: false, applicationId: '', characterName: '' });
 
     try {
       await deleteApplication(applicationId);
@@ -137,25 +154,9 @@ const ApplicationManager: React.FC = () => {
     }
   };
 
-  // 导出申请列表
-  const handleExport = () => {
-    exportApplicationsToFile(applications);
-  };
-
-  // 导入申请列表
-  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const data = await importJsonFile<JoinApplication[]>(file);
-      setApplications(data);
-      alert('导入成功');
-    } catch (error: any) {
-      alert(error.message || '导入失败');
-    }
-
-    event.target.value = '';
+  // 取消删除
+  const handleCancelDelete = () => {
+    setConfirmDialog({ visible: false, applicationId: '', characterName: '' });
   };
 
   // 筛选申请
@@ -235,21 +236,6 @@ const ApplicationManager: React.FC = () => {
           >
             全部 ({stats.total})
           </button>
-        </div>
-
-        <div className="application-manager__actions">
-          <button onClick={handleExport} className="btn btn--secondary">
-            导出 JSON
-          </button>
-          <label className="btn btn--secondary">
-            导入 JSON
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImport}
-              style={{ display: 'none' }}
-            />
-          </label>
         </div>
       </div>
 
@@ -386,7 +372,7 @@ const ApplicationManager: React.FC = () => {
                   </>
                 )}
                 <button
-                  onClick={() => handleDelete(app.id)}
+                  onClick={() => handleDelete(app.id, app.characterName)}
                   className="btn btn--sm btn--danger"
                 >
                   删除
@@ -396,6 +382,18 @@ const ApplicationManager: React.FC = () => {
           ))
         )}
       </div>
+
+      {/* 删除确认对话框 */}
+      <ConfirmDialog
+        visible={confirmDialog.visible}
+        title="删除申请"
+        message={`确定要删除 "${confirmDialog.characterName}" 的申请吗？`}
+        confirmText="删除"
+        cancelText="取消"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        danger={true}
+      />
     </div>
   );
 };

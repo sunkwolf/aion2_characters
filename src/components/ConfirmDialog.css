@@ -1,0 +1,160 @@
+/* 确认对话框 - 圆润顺滑设计 */
+
+.confirm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: dialogFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirm-dialog {
+  background: var(--color-bg-secondary);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 20px 48px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: dialogSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dialogSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============= 头部 ============= */
+
+.confirm-dialog__header {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, rgba(79, 195, 247, 0.08) 0%, rgba(79, 195, 247, 0.03) 100%);
+  border-bottom: 1px solid rgba(79, 195, 247, 0.1);
+}
+
+.confirm-dialog__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* ============= 内容 ============= */
+
+.confirm-dialog__body {
+  padding: 2rem;
+}
+
+.confirm-dialog__message {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============= 底部按钮 ============= */
+
+.confirm-dialog__footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.05) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.confirm-dialog__btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  letter-spacing: -0.01em;
+}
+
+.confirm-dialog__btn--cancel {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-secondary);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.confirm-dialog__btn--cancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.confirm-dialog__btn--confirm {
+  background: linear-gradient(135deg, var(--color-primary), #2196f3);
+  color: white;
+  box-shadow: 0 4px 16px rgba(79, 195, 247, 0.25);
+}
+
+.confirm-dialog__btn--confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.35);
+}
+
+.confirm-dialog__btn--confirm:active {
+  transform: translateY(0);
+}
+
+/* 危险操作（删除等） */
+.confirm-dialog__btn--danger {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  box-shadow: 0 4px 16px rgba(244, 67, 54, 0.25);
+}
+
+.confirm-dialog__btn--danger:hover {
+  box-shadow: 0 8px 24px rgba(244, 67, 54, 0.35);
+}
+
+/* ============= 响应式 ============= */
+
+@media (max-width: 768px) {
+  .confirm-dialog {
+    width: 95%;
+    max-width: none;
+  }
+
+  .confirm-dialog__header {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .confirm-dialog__body {
+    padding: 1.5rem;
+  }
+
+  .confirm-dialog__footer {
+    padding: 1.25rem 1.5rem;
+    flex-direction: column-reverse;
+  }
+
+  .confirm-dialog__btn {
+    width: 100%;
+  }
+}

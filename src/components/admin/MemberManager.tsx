@@ -8,11 +8,10 @@ import {
   addMember,
   updateMember,
   deleteMember,
-  exportMembersToFile,
-  importJsonFile,
 } from '../../services/dataService';
 import { getCharacterUrlFromMember, validateMemberConfig } from '../../services/apiService';
 import MemberEditModal from './MemberEditModal';
+import ConfirmDialog from '../ConfirmDialog';
 import './MemberManager.css';
 
 const MemberManager: React.FC = () => {
@@ -21,6 +20,15 @@ const MemberManager: React.FC = () => {
   const [editingMember, setEditingMember] = useState<MemberConfig | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [confirmDialog, setConfirmDialog] = useState<{
+    visible: boolean;
+    memberId: string;
+    memberName: string;
+  }>({
+    visible: false,
+    memberId: '',
+    memberName: '',
+  });
 
   // 加载成员列表
   useEffect(() => {
@@ -80,51 +88,32 @@ const MemberManager: React.FC = () => {
     const member = members.find(m => m.id === memberId);
     if (!member) return;
 
-    // 二次确认对话框
-    const confirmMessage = `⚠️ 危险操作：删除成员\n\n` +
-      `即将删除成员: ${member.name} (${member.id})\n\n` +
-      `此操作将会:\n` +
-      `• 从成员列表中移除该成员\n` +
-      `• 删除 data/${member.id}/ 文件夹及所有数据\n` +
-      `• 包括角色信息、装备数据等所有文件\n\n` +
-      `⚠️ 此操作不可恢复！\n\n` +
-      `确定要继续删除吗？`;
+    // 显示确认对话框
+    setConfirmDialog({
+      visible: true,
+      memberId: member.id,
+      memberName: member.name,
+    });
+  };
 
-    if (!confirm(confirmMessage)) {
-      return;
-    }
+  // 确认删除
+  const handleConfirmDelete = async () => {
+    const memberId = confirmDialog.memberId;
+
+    // 关闭对话框
+    setConfirmDialog({ visible: false, memberId: '', memberName: '' });
 
     try {
       const updated = await deleteMember(members, memberId);
       setMembers(updated);
-      alert(`✓ 成员 "${member.name}" 已删除`);
     } catch (error: any) {
-      alert(`✗ 删除失败: ${error.message || '未知错误'}`);
+      alert(`删除失败: ${error.message || '未知错误'}`);
     }
   };
 
-  // 导出成员列表
-  const handleExport = () => {
-    exportMembersToFile(members);
-  };
-
-  // 导入成员列表
-  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const data = await importJsonFile<MemberConfig[]>(file);
-      // 保存到后端
-      await saveMembers(data);
-      setMembers(data);
-      alert('导入成功');
-    } catch (error: any) {
-      alert(error.message || '导入失败');
-    }
-
-    // 清空 input
-    event.target.value = '';
+  // 取消删除
+  const handleCancelDelete = () => {
+    setConfirmDialog({ visible: false, memberId: '', memberName: '' });
   };
 
   // 筛选成员
@@ -167,18 +156,6 @@ const MemberManager: React.FC = () => {
           <button onClick={handleCreate} className="btn btn--primary">
             添加成员
           </button>
-          <button onClick={handleExport} className="btn btn--secondary">
-            导出 JSON
-          </button>
-          <label className="btn btn--secondary">
-            导入 JSON
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImport}
-              style={{ display: 'none' }}
-            />
-          </label>
         </div>
       </div>
 
@@ -187,9 +164,8 @@ const MemberManager: React.FC = () => {
         <table className="member-table">
           <thead>
             <tr>
-              <th>ID</th>
               <th>名称</th>
-              <th>角色</th>
+              <th>职位</th>
               <th>加入日期</th>
               <th>API配置</th>
               <th>操作</th>
@@ -198,7 +174,7 @@ const MemberManager: React.FC = () => {
           <tbody>
             {filteredMembers.length === 0 ? (
               <tr>
-                <td colSpan={6} className="member-table__empty">
+                <td colSpan={5} className="member-table__empty">
                   {searchQuery ? '没有找到匹配的成员' : '暂无成员数据'}
                 </td>
               </tr>
@@ -209,7 +185,6 @@ const MemberManager: React.FC = () => {
 
                 return (
                   <tr key={member.id}>
-                    <td className="member-table__id">{member.id}</td>
                     <td className="member-table__name">{member.name}</td>
                     <td className="member-table__role">
                       <span className={`role-badge role-badge--${member.role}`}>
@@ -282,6 +257,18 @@ const MemberManager: React.FC = () => {
           }}
         />
       )}
+
+      {/* 删除确认对话框 */}
+      <ConfirmDialog
+        visible={confirmDialog.visible}
+        title="删除成员"
+        message={`确定要删除成员 "${confirmDialog.memberName}" 吗？此操作将删除该成员的所有数据,且无法恢复。`}
+        confirmText="删除"
+        cancelText="取消"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        danger={true}
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import ConfirmDialog from '../ConfirmDialog';
 import './GalleryManager.css';
 
 interface GalleryImage {
@@ -16,6 +17,17 @@ const GalleryManager = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    visible: boolean;
+    type: 'reject' | 'delete' | null;
+    imageId: string;
+    imageName: string;
+  }>({
+    visible: false,
+    type: null,
+    imageId: '',
+    imageName: '',
+  });
 
   // 组件加载时获取图片列表
   useEffect(() => {
@@ -122,13 +134,34 @@ const GalleryManager = () => {
   };
 
   // 拒绝审核（删除图片）
-  const rejectImage = async (id: string) => {
-    if (!confirm('确定要拒绝这张图片吗？图片将被删除。')) {
-      return;
-    }
+  const rejectImage = async (id: string, imageName: string) => {
+    setConfirmDialog({
+      visible: true,
+      type: 'reject',
+      imageId: id,
+      imageName: imageName,
+    });
+  };
+
+  // 删除图片
+  const deleteImage = async (id: string, imageName: string) => {
+    setConfirmDialog({
+      visible: true,
+      type: 'delete',
+      imageId: id,
+      imageName: imageName,
+    });
+  };
+
+  // 确认操作
+  const handleConfirm = async () => {
+    const { type, imageId } = confirmDialog;
+
+    // 关闭对话框
+    setConfirmDialog({ visible: false, type: null, imageId: '', imageName: '' });
 
     try {
-      const response = await fetch(`/api/gallery/${id}`, {
+      const response = await fetch(`/api/gallery/${imageId}`, {
         method: 'DELETE'
       });
 
@@ -136,7 +169,7 @@ const GalleryManager = () => {
 
       if (data.success) {
         // 从本地状态移除
-        setGalleryImages(prev => prev.filter(img => img.id !== id));
+        setGalleryImages(prev => prev.filter(img => img.id !== imageId));
       } else {
         console.error('删除失败:', data.error);
       }
@@ -145,28 +178,9 @@ const GalleryManager = () => {
     }
   };
 
-  // 删除图片
-  const deleteImage = async (id: string) => {
-    if (!confirm('确定要删除这张图片吗？')) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/gallery/${id}`, {
-        method: 'DELETE'
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // 从本地状态移除
-        setGalleryImages(prev => prev.filter(img => img.id !== id));
-      } else {
-        console.error('删除失败:', data.error);
-      }
-    } catch (error) {
-      console.error('删除失败:', error);
-    }
+  // 取消操作
+  const handleCancel = () => {
+    setConfirmDialog({ visible: false, type: null, imageId: '', imageName: '' });
   };
 
   if (loading) {
@@ -266,7 +280,7 @@ const GalleryManager = () => {
                     </button>
                     <button
                       className="gallery-manager__reject-btn"
-                      onClick={() => rejectImage(img.id)}
+                      onClick={() => rejectImage(img.id, img.originalName)}
                       title="拒绝审核"
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -291,7 +305,7 @@ const GalleryManager = () => {
                     </button>
                     <button
                       className="gallery-manager__delete-btn"
-                      onClick={() => deleteImage(img.id)}
+                      onClick={() => deleteImage(img.id, img.originalName)}
                       title="删除图片"
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -328,6 +342,22 @@ const GalleryManager = () => {
           <img src={selectedImage} alt="预览" />
         </div>
       )}
+
+      {/* 确认对话框 */}
+      <ConfirmDialog
+        visible={confirmDialog.visible}
+        title={confirmDialog.type === 'reject' ? '拒绝审核' : '删除图片'}
+        message={
+          confirmDialog.type === 'reject'
+            ? `确定要拒绝图片 "${confirmDialog.imageName}" 吗？图片将被删除。`
+            : `确定要删除图片 "${confirmDialog.imageName}" 吗？此操作无法恢复。`
+        }
+        confirmText={confirmDialog.type === 'reject' ? '拒绝' : '删除'}
+        cancelText="取消"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        danger={true}
+      />
     </div>
   );
 };

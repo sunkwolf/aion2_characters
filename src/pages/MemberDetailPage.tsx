@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { gradeColors, classIcons } from '../data/memberTypes';
 import type { CharacterInfo, CharacterEquipment, EquipmentItem, TitleItem } from '../data/memberTypes';
 import EquipmentTooltip from '../components/EquipmentTooltip';
@@ -40,16 +40,47 @@ const getDaevanionColor = (id: number): string => {
 
 const MemberDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+
+  // 从 location.state 获取角色数据（角色BD查询时使用）
+  const characterData = location.state?.characterData;
+  const isFromCharacterBD = !!characterData;
+
   const [charInfo, setCharInfo] = useState<CharacterInfo | null>(null);
   const [charEquip, setCharEquip] = useState<CharacterEquipment | null>(null);
   const [_memberConfig, setMemberConfig] = useState<MemberConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'equipment' | 'skills'>('equipment');
 
+  // 提前准备装备列表数据
+  const equipment = charEquip?.equipment?.equipmentList || [];
+
   // 装备悬浮提示和详情模态框
-  const { tooltipState, modalState, handleMouseEnter, handleMouseMove, handleMouseLeave, handleClick, handleCloseModal } = useEquipmentTooltip(id || '');
+  // 如果是从角色BD查询来的，不传 characterId 和 serverId(因为此时还是 undefined)
+  // 而是在点击时通过函数参数传递
+  // 否则传 memberId（从成员装备缓存加载）
+  const { tooltipState, modalState, handleMouseEnter, handleMouseMove, handleMouseLeave, handleClick, handleCloseModal } = useEquipmentTooltip(
+    isFromCharacterBD
+      ? {
+          equipmentList: equipment  // 只传装备列表,不传 characterId 和 serverId
+        }
+      : { memberId: id || '' }
+  );
 
   useEffect(() => {
+    // 如果是从角色BD查询来的，直接使用传入的数据
+    if (isFromCharacterBD) {
+      if (characterData.info) {
+        setCharInfo(characterData.info);
+      }
+      if (characterData.equipment) {
+        setCharEquip(characterData.equipment);
+      }
+      setLoading(false);
+      return;
+    }
+
+    // 否则按原来的方式加载军团成员数据
     if (!id) {
       setLoading(false);
       return;
@@ -86,7 +117,7 @@ const MemberDetailPage = () => {
     };
 
     loadData();
-  }, [id]);
+  }, [id, isFromCharacterBD, characterData]);
 
   if (loading) {
     return (
@@ -103,8 +134,10 @@ const MemberDetailPage = () => {
     return (
       <div className="member-detail">
         <div className="member-detail__not-found">
-          <h2>未找到该成员</h2>
-          <Link to="/legion" className="member-detail__back-btn">返回军团页面</Link>
+          <h2>未找到该{isFromCharacterBD ? '角色' : '成员'}</h2>
+          <Link to={isFromCharacterBD ? "/character-bd" : "/legion"} className="member-detail__back-btn">
+            返回{isFromCharacterBD ? '角色BD查询' : '军团页面'}
+          </Link>
         </div>
       </div>
     );
@@ -114,8 +147,12 @@ const MemberDetailPage = () => {
   const stats = charInfo.stat.statList;
   const rankings = charInfo.ranking.rankingList.filter(r => r.rank !== null);
 
+  // 根据来源确定返回链接和文字
+  const backLink = isFromCharacterBD ? "/character-bd" : "/legion";
+  const backText = isFromCharacterBD ? "返回查询" : "返回军团";
+
   // 兼容旧数据格式(items对象)和新数据格式(equipment/skill/petwing结构)
-  const equipment = charEquip?.equipment?.equipmentList || [];
+  // equipment 已在前面定义
   const skins = charEquip?.equipment?.skinList || [];
   const skills = charEquip?.skill?.skillList?.filter(s => s.acquired === 1) || [];
   const pet = charEquip?.petwing?.pet;
@@ -150,28 +187,43 @@ const MemberDetailPage = () => {
   const passiveSkills = skills.filter(s => s.category === 'Passive');
   const brandSkills = skills.filter(s => s.category === 'Dp'); // 烙印技能（原DP技能）
 
-  const renderEquipItem = (item: EquipmentItem) => (
-    <div
-      key={`${item.slotPos}-${item.id}`}
-      className="equip-card"
-      style={{ '--grade-color': gradeColors[item.grade] || '#9d9d9d', cursor: 'pointer' } as React.CSSProperties}
-      onMouseEnter={(e) => handleMouseEnter(e, item.id)}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={() => handleClick(item.id)}
-    >
-      <img src={item.icon} alt={item.name} className="equip-card__icon" />
-      <div className="equip-card__info">
-        <span className="equip-card__name" style={{ color: gradeColors[item.grade] || '#9d9d9d' }}>
-          {item.name}
-        </span>
-        <div className="equip-card__level">
-          +{item.enchantLevel}
-          {item.exceedLevel > 0 && <ExceedLevel level={item.exceedLevel} variant="compact" />}
+  const renderEquipItem = (item: EquipmentItem) => {
+    console.log('[MemberDetailPage] renderEquipItem 渲染装备:', item.id, '当前 charInfo:', charInfo?.profile);
+
+    const handleEquipClick = () => {
+      console.log('[MemberDetailPage] 装备点击事件:', {
+        equipmentId: item.id,
+        equipmentItem: item,
+        characterId: charInfo?.profile?.characterId,
+        serverId: charInfo?.profile?.serverId,
+        charInfo: charInfo
+      });
+      handleClick(item.id, item, charInfo?.profile?.characterId, charInfo?.profile?.serverId);
+    };
+
+    return (
+      <div
+        key={`${item.slotPos}-${item.id}`}
+        className="equip-card"
+        style={{ '--grade-color': gradeColors[item.grade] || '#9d9d9d', cursor: 'pointer' } as React.CSSProperties}
+        onMouseEnter={(e) => handleMouseEnter(e, item.id)}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleEquipClick}
+      >
+        <img src={item.icon} alt={item.name} className="equip-card__icon" />
+        <div className="equip-card__info">
+          <span className="equip-card__name" style={{ color: gradeColors[item.grade] || '#9d9d9d' }}>
+            {item.name}
+          </span>
+          <div className="equip-card__level">
+            +{item.enchantLevel}
+            {item.exceedLevel > 0 && <ExceedLevel level={item.exceedLevel} variant="compact" />}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="member-detail">
@@ -179,11 +231,11 @@ const MemberDetailPage = () => {
       <div className="member-hero">
         <div className="member-hero__bg"></div>
         <div className="member-hero__content">
-          <Link to="/legion" className="member-hero__back">
+          <Link to={backLink} className="member-hero__back">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            返回军团
+            {backText}
           </Link>
 
           <div className="member-hero__profile">
@@ -547,6 +599,7 @@ const MemberDetailPage = () => {
       <EquipmentDetailModal
         equipmentDetail={modalState.equipmentDetail}
         visible={modalState.visible}
+        loading={modalState.loading}
         onClose={handleCloseModal}
       />
     </div>

@@ -13,6 +13,7 @@ interface ServerSelectProps {
   serverList: Server[];
   placeholder?: string;
   required?: boolean;
+  disabled?: boolean;
 }
 
 const ServerSelect: React.FC<ServerSelectProps> = ({
@@ -21,6 +22,7 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
   serverList,
   placeholder = '请选择服务器',
   required = false,
+  disabled = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownAbove, setDropdownAbove] = useState(false);
@@ -68,8 +70,9 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
   return (
     <div className="server-select" ref={containerRef}>
       <div
-        className={`server-select__trigger ${isOpen ? 'server-select__trigger--open' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
+        className={`server-select__trigger ${isOpen ? 'server-select__trigger--open' : ''} ${disabled ? 'server-select__trigger--disabled' : ''}`}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       >
         <span className={selectedServer ? '' : 'server-select__placeholder'}>
           {selectedServer ? getServerDisplayName(selectedServer) : placeholder}
@@ -79,7 +82,7 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
         </svg>
       </div>
 
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className={`server-select__dropdown ${dropdownAbove ? 'server-select__dropdown--above' : ''}`}>
           {/* 两列布局 */}
           <div className="server-select__grid">

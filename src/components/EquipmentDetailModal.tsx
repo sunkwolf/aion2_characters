@@ -10,15 +10,34 @@ import './EquipmentDetailModal.css';
 interface EquipmentDetailModalProps {
   equipmentDetail: EquipmentDetail | null;
   visible: boolean;
+  loading?: boolean;
   onClose: () => void;
 }
 
 const EquipmentDetailModal: React.FC<EquipmentDetailModalProps> = ({
   equipmentDetail,
   visible,
+  loading = false,
   onClose,
 }) => {
-  if (!visible || !equipmentDetail) return null;
+  if (!visible) return null;
+
+  // 如果正在加载,显示加载动画
+  if (loading) {
+    return createPortal(
+      <div className="equipment-modal-overlay" onClick={onClose}>
+        <div className="equipment-modal-content equipment-modal-content--loading" onClick={(e) => e.stopPropagation()}>
+          <div className="equipment-modal__loading">
+            <div className="equipment-modal__spinner"></div>
+            <p>载入装备详情中...</p>
+          </div>
+        </div>
+      </div>,
+      document.body
+    );
+  }
+
+  if (!equipmentDetail) return null;
 
   const gradeColor = gradeColors[equipmentDetail.grade] || '#9d9d9d';
 

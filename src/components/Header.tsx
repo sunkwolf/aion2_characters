@@ -120,6 +120,12 @@ const Header = () => {
               成员风采
             </button>
             <Link
+              to="/character-bd"
+              className={`header__nav-link ${location.pathname === '/character-bd' ? 'header__nav-link--active' : ''}`}
+            >
+              角色BD
+            </Link>
+            <Link
               to="/join"
               className={`header__nav-link ${location.pathname === '/join' ? 'header__nav-link--active' : ''}`}
             >

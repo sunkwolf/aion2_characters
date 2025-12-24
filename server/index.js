@@ -603,7 +603,8 @@ app.get('/api/character/info', (req, res) => {
     return res.status(400).json({ error: '缺少必要参数' });
   }
 
-  const url = `https://tw.ncsoft.com/aion2/api/character/info?lang=zh&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
+  // characterId 已经是编码过的,直接使用
+  const url = `https://tw.ncsoft.com/aion2/api/character/info?lang=zh&characterId=${characterId}&serverId=${serverId}`;
 
   https.get(url, (apiRes) => {
     let data = '';
@@ -627,6 +628,39 @@ app.get('/api/character/info', (req, res) => {
   });
 });
 
+// 获取角色装备信息
+app.get('/api/character/equipment', (req, res) => {
+  const { characterId, serverId } = req.query;
+
+  if (!characterId || !serverId) {
+    return res.status(400).json({ error: '缺少必要参数' });
+  }
+
+  // characterId 已经是编码过的,直接使用
+  const url = `https://tw.ncsoft.com/aion2/api/character/equipment?lang=zh&characterId=${characterId}&serverId=${serverId}`;
+
+  https.get(url, (apiRes) => {
+    let data = '';
+
+    apiRes.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    apiRes.on('end', () => {
+      try {
+        const jsonData = JSON.parse(data);
+        res.json(jsonData);
+      } catch (error) {
+        console.error('解析装备API响应失败:', error);
+        res.status(500).json({ error: '解析数据失败' });
+      }
+    });
+  }).on('error', (error) => {
+    console.error('请求装备API失败:', error);
+    res.status(500).json({ error: '请求失败: ' + error.message });
+  });
+});
+
 // 搜索角色 - 通过角色名和服务器ID
 app.get('/api/character/search', async (req, res) => {
   const { name, serverId, race } = req.query;
@@ -642,6 +676,56 @@ app.get('/api/character/search', async (req, res) => {
     console.error('搜索角色失败:', error);
     res.json({ success: false, error: error.message });
   }
+});
+
+// 获取装备详情 - 按需请求单件装备的详细信息
+app.get('/api/character/equipment-detail', (req, res) => {
+  const { itemId, enchantLevel, characterId, serverId, slotPos } = req.query;
+
+  console.log('[装备详情API] 接收到的参数:', { itemId, enchantLevel, characterId, serverId, slotPos });
+
+  if (!itemId) {
+    return res.status(400).json({ error: '缺少必要参数：itemId' });
+  }
+
+  // 检查是否提供了完整参数
+  if (!enchantLevel || !characterId || !serverId || !slotPos) {
+    console.warn('[装备详情API] 参数不完整，缺少:', {
+      enchantLevel: !enchantLevel,
+      characterId: !characterId,
+      serverId: !serverId,
+      slotPos: !slotPos
+    });
+  }
+
+  // 构建装备详情API的URL - 必须提供完整参数
+  const url = enchantLevel && characterId && serverId && slotPos
+    ? `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=zh`
+    : `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&lang=zh`;
+
+  console.log(`[装备详情API] 请求URL: ${url}`);
+
+  https.get(url, (apiRes) => {
+    let data = '';
+
+    apiRes.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    apiRes.on('end', () => {
+      try {
+        const jsonData = JSON.parse(data);
+        res.json(jsonData);
+      } catch (error) {
+        console.error('解析装备详情API响应失败:', error);
+        console.error('原始响应数据:', data);
+        res.status(500).json({ error: '解析响应失败', rawData: data });
+      }
+    });
+  }).on('error', (error) => {
+    console.error('请求装备详情失败:', error);
+    res.status(500).json({ error: '请求失败: ' + error.message });
+  });
 });
 
 // ==================== 成员数据保存 API ====================
@@ -816,10 +900,14 @@ function searchCharacter(characterName, serverId, race) {
 
           // 返回第一个匹配的角色
           const character = jsonData.list[0];
+          const cleanName = character.name.replace(/<[^>]*>/g, ''); // 移除HTML标签
+
           resolve({
             characterId: character.characterId,
             serverId: character.serverId,
-            name: character.name.replace(/<[^>]*>/g, ''), // 移除HTML标签
+            serverName: character.serverName || '', // API已经返回serverName
+            name: cleanName,
+            characterName: cleanName, // 同时提供 characterName 字段
             level: character.level,
             race: character.race,
             pcId: character.pcId
