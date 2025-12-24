@@ -627,6 +627,23 @@ app.get('/api/character/info', (req, res) => {
   });
 });
 
+// 搜索角色 - 通过角色名和服务器ID
+app.get('/api/character/search', async (req, res) => {
+  const { name, serverId, race } = req.query;
+
+  if (!name || !serverId) {
+    return res.status(400).json({ success: false, error: '缺少必要参数：角色名和服务器ID' });
+  }
+
+  try {
+    const character = await searchCharacter(name, parseInt(serverId), race ? parseInt(race) : undefined);
+    res.json({ success: true, character });
+  } catch (error) {
+    console.error('搜索角色失败:', error);
+    res.json({ success: false, error: error.message });
+  }
+});
+
 // ==================== 成员数据保存 API ====================
 
 // 保存成员角色信息
@@ -755,6 +772,60 @@ function fetchCharacterEquipment(characterId, serverId) {
           resolve(jsonData);
         } catch (error) {
           reject(new Error('解析装备API响应失败'));
+        }
+      });
+    }).on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
+/**
+ * 搜索角色 - 通过角色名和服务器ID获取characterId
+ */
+function searchCharacter(characterName, serverId, race) {
+  return new Promise((resolve, reject) => {
+    const params = new URLSearchParams({
+      keyword: characterName,
+      serverId: serverId.toString(),
+      page: '1',
+      size: '30'
+    });
+
+    if (race) {
+      params.append('race', race.toString());
+    }
+
+    const url = `https://tw.ncsoft.com/aion2/api/search/aion2tw/search/v2/character?${params}`;
+
+    https.get(url, (apiRes) => {
+      let data = '';
+
+      apiRes.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      apiRes.on('end', () => {
+        try {
+          const jsonData = JSON.parse(data);
+
+          if (!jsonData.list || jsonData.list.length === 0) {
+            reject(new Error(`未找到角色: ${characterName}`));
+            return;
+          }
+
+          // 返回第一个匹配的角色
+          const character = jsonData.list[0];
+          resolve({
+            characterId: character.characterId,
+            serverId: character.serverId,
+            name: character.name.replace(/<[^>]*>/g, ''), // 移除HTML标签
+            level: character.level,
+            race: character.race,
+            pcId: character.pcId
+          });
+        } catch (error) {
+          reject(new Error('解析搜索API响应失败'));
         }
       });
     }).on('error', (error) => {

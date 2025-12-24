@@ -1,25 +1,54 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { loadMembers, addApplication } from '../services/dataService';
+import ServerSelect from '../components/ServerSelect';
 import './JoinPage.css';
+
+// 服务器列表类型
+interface Server {
+  raceId: number;
+  serverId: number;
+  serverName: string;
+  serverShortName: string;
+}
 
 const JoinPage = () => {
   const [formData, setFormData] = useState({
-    characterUrl: ''
+    characterName: '',
+    serverId: 1001 // 默认希埃尔
   });
   const [submitted, setSubmitted] = useState(false);
   const [contacts, setContacts] = useState<{ role: string; name: string }[]>([]);
-  const [urlError, setUrlError] = useState('');
+  const [nameError, setNameError] = useState('');
 
-  // 新增: 角色信息解析状态
+  // 服务器列表
+  const [serverList, setServerList] = useState<Server[]>([]);
+
+  // 角色信息解析状态
   const [parsing, setParsing] = useState(false);
   const [parsedCharacter, setParsedCharacter] = useState<{
     characterId: string;
     characterName: string;
     serverId: number;
     serverName: string;
+    level: number;
+    race: number;
   } | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // 加载服务器列表
+  useEffect(() => {
+    const loadServers = async () => {
+      try {
+        const response = await fetch('/data/serverId.json');
+        const data = await response.json();
+        setServerList(data.serverList || []);
+      } catch (error) {
+        console.error('加载服务器列表失败:', error);
+      }
+    };
+    loadServers();
+  }, []);
 
   // 加载联系人(军团长和精英)
   useEffect(() => {
@@ -48,76 +77,52 @@ const JoinPage = () => {
     loadContacts();
   }, []);
 
-  // 简单验证角色URL格式
-  const handleCharacterUrlChange = (url: string) => {
-    setFormData(prev => ({ ...prev, characterUrl: url }));
-    setUrlError('');
+  // 角色名称输入变化
+  const handleCharacterNameChange = (name: string) => {
+    setFormData(prev => ({ ...prev, characterName: name }));
+    setNameError('');
     setParsedCharacter(null);
     setShowConfirm(false);
-
-    if (!url.trim()) {
-      return;
-    }
-
-    // 简单验证URL格式
-    const match = url.match(/\/characters\/(\d+)\/([^/\s]+)/);
-    if (!match) {
-      setUrlError('无效的角色链接格式，请确保链接格式为: https://tw.ncsoft.com/aion2/characters/{serverId}/{characterId}');
-    }
   };
 
-  // 解析角色信息
-  const handleParseCharacter = async () => {
-    if (!formData.characterUrl) {
-      alert('请填写角色链接');
+  // 服务器选择变化
+  const handleServerChange = (serverId: number, serverName: string) => {
+    setFormData(prev => ({ ...prev, serverId }));
+    setParsedCharacter(null);
+    setShowConfirm(false);
+  };
+
+  // 验证角色信息 - 使用新的搜索API
+  const handleVerifyCharacter = async () => {
+    if (!formData.characterName.trim()) {
+      alert('请填写角色名称');
       return;
     }
-
-    // 解析URL
-    const urlMatch = formData.characterUrl.match(/\/characters\/(\d+)\/([^/\s]+)/);
-    if (!urlMatch) {
-      setUrlError('无效的角色链接格式');
-      return;
-    }
-
-    const serverId = parseInt(urlMatch[1]);
-    const characterId = decodeURIComponent(urlMatch[2]);
 
     setParsing(true);
-    setUrlError('');
+    setNameError('');
 
     try {
-      // 通过后端代理获取角色信息
+      // 调用后端搜索API
       const response = await fetch(
-        `/api/character/info?characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`
+        `/api/character/search?name=${encodeURIComponent(formData.characterName)}&serverId=${formData.serverId}`
       );
-
-      if (!response.ok) {
-        setUrlError('无法获取角色信息，请检查链接是否正确');
-        setParsing(false);
-        return;
-      }
 
       const data = await response.json();
 
-      if (!data.profile || !data.profile.characterName) {
-        setUrlError('角色信息不完整，请检查链接');
+      if (!data.success) {
+        setNameError(data.error || '未找到该角色，请检查角色名和服务器是否正确');
         setParsing(false);
         return;
       }
 
       // 保存解析结果
-      setParsedCharacter({
-        characterId,
-        characterName: data.profile.characterName,
-        serverId,
-        serverName: data.profile.serverName
-      });
+      setParsedCharacter(data.character);
       setShowConfirm(true);
       setParsing(false);
     } catch (error) {
-      console.error('获取角色信息失败:', error);
-      setUrlError('获取角色信息失败，请稍后重试');
+      console.error('验证角色失败:', error);
+      setNameError('验证失败，请稍后重试');
       setParsing(false);
     }
   };
@@ -126,12 +131,12 @@ const JoinPage = () => {
     e.preventDefault();
 
     // 验证必填字段
-    if (!formData.characterUrl) {
-      alert('请填写角色链接');
+    if (!formData.characterName.trim()) {
+      alert('请填写角色名称');
       return;
     }
 
-    // 必须先解析角色信息
+    // 必须先验证角色信息
     if (!parsedCharacter) {
       alert('请先验证角色信息');
       return;
@@ -140,11 +145,12 @@ const JoinPage = () => {
     try {
       // 提交申请,包含完整的角色信息
       await addApplication({
-        characterUrl: formData.characterUrl,
-        characterId: parsedCharacter.characterId,
         characterName: parsedCharacter.characterName,
+        characterId: parsedCharacter.characterId,
         serverId: parsedCharacter.serverId,
-        serverName: parsedCharacter.serverName
+        serverName: parsedCharacter.serverName,
+        level: parsedCharacter.level,
+        race: parsedCharacter.race
       });
 
       console.log('申请已提交:', parsedCharacter);
@@ -221,105 +227,114 @@ const JoinPage = () => {
             <h2>申请表单</h2>
 
             <div className="join-page__field">
-              <label htmlFor="characterUrl">
-                角色链接 *
-                <a
-                  href="https://tw.ncsoft.com/aion2/characters/index"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    marginLeft: '8px',
-                    fontSize: '0.85rem',
-                    color: 'var(--color-primary)',
-                    textDecoration: 'none'
-                  }}
-                >
-                  [前往查询角色 →]
-                </a>
+              <label htmlFor="characterName">
+                角色名称 *
               </label>
               <input
-                type="url"
-                id="characterUrl"
-                name="characterUrl"
-                value={formData.characterUrl}
-                onChange={(e) => handleCharacterUrlChange(e.target.value)}
-                placeholder="https://tw.ncsoft.com/aion2/characters/1001/A1pIWbd0UKo..."
+                type="text"
+                id="characterName"
+                name="characterName"
+                value={formData.characterName}
+                onChange={(e) => handleCharacterNameChange(e.target.value)}
+                placeholder="请输入游戏内角色名称"
                 required
                 disabled={showConfirm}
               />
-              {urlError && (
+              {nameError && (
                 <span style={{ color: '#e74c3c', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
-                  {urlError}
+                  {nameError}
                 </span>
               )}
-              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
-                点击上方链接查询角色，然后复制完整的角色页面URL粘贴到这里
-              </span>
+            </div>
 
-              {/* 验证按钮 */}
-              {!showConfirm && (
+            <div className="join-page__field">
+              <label htmlFor="serverId">
+                服务器 *
+              </label>
+              <ServerSelect
+                value={formData.serverId.toString()}
+                onChange={handleServerChange}
+                serverList={serverList}
+                placeholder="请选择服务器"
+                required
+              />
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+                选择角色所在的服务器
+              </span>
+            </div>
+
+            {/* 验证按钮 */}
+            {!showConfirm && (
+              <button
+                type="button"
+                onClick={handleVerifyCharacter}
+                disabled={!formData.characterName.trim() || parsing}
+                style={{
+                  marginTop: '12px',
+                  padding: '12px 24px',
+                  background: 'var(--color-primary)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 'var(--radius-md)',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  width: '100%',
+                  opacity: (!formData.characterName.trim() || parsing) ? 0.5 : 1
+                }}
+              >
+                {parsing ? '验证中...' : '验证角色信息'}
+              </button>
+            )}
+
+            {/* 角色信息确认 */}
+            {showConfirm && parsedCharacter && (
+              <div style={{
+                marginTop: '16px',
+                padding: '20px',
+                background: 'var(--color-bg-secondary)',
+                borderRadius: 'var(--radius-md)',
+                border: '2px solid var(--color-primary)'
+              }}>
+                <div style={{ marginBottom: '12px', fontWeight: '600', color: 'var(--color-primary)', fontSize: '1.1rem' }}>
+                  ✓ 角色信息验证成功
+                </div>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ color: 'var(--color-text-muted)' }}>角色名称: </span>
+                  <span style={{ fontWeight: '600' }}>{parsedCharacter.characterName}</span>
+                </div>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ color: 'var(--color-text-muted)' }}>服务器: </span>
+                  <span style={{ fontWeight: '600' }}>{parsedCharacter.serverName}</span>
+                </div>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ color: 'var(--color-text-muted)' }}>等级: </span>
+                  <span style={{ fontWeight: '600' }}>Lv.{parsedCharacter.level}</span>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <span style={{ color: 'var(--color-text-muted)' }}>阵营: </span>
+                  <span style={{ fontWeight: '600' }}>{parsedCharacter.race === 1 ? '天族' : '魔族'}</span>
+                </div>
                 <button
                   type="button"
-                  onClick={handleParseCharacter}
-                  disabled={!formData.characterUrl || !!urlError || parsing}
+                  onClick={() => {
+                    setParsedCharacter(null);
+                    setShowConfirm(false);
+                  }}
                   style={{
-                    marginTop: '12px',
-                    padding: '10px 20px',
-                    background: 'var(--color-primary)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
+                    padding: '8px 16px',
+                    background: 'transparent',
+                    color: 'var(--color-text-muted)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: 'var(--radius-sm)',
                     cursor: 'pointer',
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    opacity: (!formData.characterUrl || !!urlError || parsing) ? 0.5 : 1
+                    fontSize: '0.9rem'
                   }}
                 >
-                  {parsing ? '验证中...' : '验证角色信息'}
+                  重新验证
                 </button>
-              )}
-
-              {/* 角色信息确认 */}
-              {showConfirm && parsedCharacter && (
-                <div style={{
-                  marginTop: '16px',
-                  padding: '16px',
-                  background: 'var(--color-bg-secondary)',
-                  borderRadius: 'var(--radius-md)',
-                  border: '2px solid var(--color-primary)'
-                }}>
-                  <div style={{ marginBottom: '8px', fontWeight: '600', color: 'var(--color-primary)' }}>
-                    ✓ 角色信息验证成功
-                  </div>
-                  <div style={{ marginBottom: '4px' }}>
-                    <span style={{ color: 'var(--color-text-muted)' }}>角色名称: </span>
-                    <span style={{ fontWeight: '600' }}>{parsedCharacter.characterName}</span>
-                  </div>
-                  <div style={{ marginBottom: '12px' }}>
-                    <span style={{ color: 'var(--color-text-muted)' }}>服务器: </span>
-                    <span style={{ fontWeight: '600' }}>{parsedCharacter.serverName}</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setParsedCharacter(null);
-                      setShowConfirm(false);
-                    }}
-                    style={{
-                      padding: '6px 12px',
-                      background: 'transparent',
-                      color: 'var(--color-text-muted)',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: 'var(--radius-sm)',
-                      cursor: 'pointer',
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    重新验证
-                  </button>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="join-page__field-notice">
               <p>✓ 验证角色信息后才能提交申请</p>
