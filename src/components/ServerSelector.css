@@ -1,0 +1,253 @@
+/* 服务器选择器容器 */
+.server-selector-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* 服务器选择按钮 */
+.server-selector-button {
+  padding: 0 var(--spacing-lg);
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.08), rgba(52, 152, 219, 0.12));
+  border: none;
+  border-right: 2px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  height: 100%;
+}
+
+.server-selector-button:hover {
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.12), rgba(52, 152, 219, 0.18));
+}
+
+.server-selector-button:focus {
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.15), rgba(52, 152, 219, 0.22));
+}
+
+/* 服务器选择面板遮罩 */
+.server-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* 服务器选择面板 */
+.server-selector-panel {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1001;
+  width: 1000px;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: var(--color-bg-card);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  animation: panelFadeIn 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes panelFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* 面板头部 */
+.server-selector-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.08), rgba(52, 152, 219, 0.05));
+  border-bottom: 2px solid var(--color-border);
+}
+
+.server-selector-panel__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.server-selector-panel__close {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+}
+
+.server-selector-panel__close:hover {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  transform: rotate(90deg);
+}
+
+/* 全部服务器按钮 */
+.server-selector-panel__all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - var(--spacing-lg) * 2);
+  margin: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.05), rgba(52, 152, 219, 0.08));
+  border: 2px solid rgba(41, 128, 185, 0.2);
+  border-radius: 12px;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.server-selector-panel__all:hover {
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.12), rgba(52, 152, 219, 0.15));
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(41, 128, 185, 0.2);
+}
+
+.server-selector-panel__all--active {
+  background: linear-gradient(135deg, rgba(41, 128, 185, 0.2), rgba(52, 152, 219, 0.25));
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.1);
+}
+
+/* 服务器分组容器 */
+.server-selector-panel__groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+/* 服务器组 */
+.server-selector-panel__group {
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.server-selector-panel__group--celestial {
+  border-right: 2px solid var(--color-border);
+  background: linear-gradient(180deg, rgba(135, 206, 250, 0.03), rgba(135, 206, 250, 0.01));
+}
+
+.server-selector-panel__group--asmodian {
+  background: linear-gradient(180deg, rgba(147, 112, 219, 0.03), rgba(147, 112, 219, 0.01));
+}
+
+/* 组标题 */
+.server-selector-panel__group-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.server-selector-panel__group--celestial .server-selector-panel__group-header {
+  background: linear-gradient(135deg, rgba(135, 206, 250, 0.15), rgba(135, 206, 250, 0.08));
+  color: #4a90e2;
+}
+
+.server-selector-panel__group--asmodian .server-selector-panel__group-header {
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.15), rgba(147, 112, 219, 0.08));
+  color: #9370db;
+}
+
+.server-selector-panel__group-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.server-selector-panel__group-title {
+  flex: 1;
+}
+
+.server-selector-panel__group-count {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* 服务器按钮网格 */
+.server-selector-panel__buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-xs);
+}
+
+/* 服务器按钮 */
+.server-selector-panel__btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+/* 天族按钮样式 */
+.server-selector-panel__btn--celestial:hover {
+  background: rgba(135, 206, 250, 0.15);
+  border-color: #4a90e2;
+  color: #4a90e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(135, 206, 250, 0.2);
+}
+
+.server-selector-panel__btn--celestial.server-selector-panel__btn--active {
+  background: linear-gradient(135deg, rgba(135, 206, 250, 0.25), rgba(135, 206, 250, 0.15));
+  border-color: #4a90e2;
+  color: #4a90e2;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(135, 206, 250, 0.15);
+}
+
+/* 魔族按钮样式 */
+.server-selector-panel__btn--asmodian:hover {
+  background: rgba(147, 112, 219, 0.15);
+  border-color: #9370db;
+  color: #9370db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(147, 112, 219, 0.2);
+}
+
+.server-selector-panel__btn--asmodian.server-selector-panel__btn--active {
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.25), rgba(147, 112, 219, 0.15));
+  border-color: #9370db;
+  color: #9370db;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(147, 112, 219, 0.15);
+}

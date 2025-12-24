@@ -1078,6 +1078,56 @@ async function syncMemberData(member) {
 }
 
 /**
+ * 同步服务器列表
+ */
+async function syncServerList() {
+  return new Promise((resolve, reject) => {
+    console.log('🌐 正在同步服务器列表...');
+
+    const url = 'https://tw.ncsoft.com/aion2/api/gameinfo/servers?lang=zh';
+
+    https.get(url, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        try {
+          const servers = JSON.parse(data);
+          const serverList = servers.map(server => ({
+            raceId: server.raceId || 1,
+            serverId: server.id,
+            serverName: server.label,
+            serverShortName: server.label.substring(0, 2)
+          }));
+
+          const outputPath = path.join(__dirname, '../public/data/serverId.json');
+          const outputData = { serverList };
+
+          // 确保目录存在
+          const dir = path.dirname(outputPath);
+          if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+          }
+
+          fs.writeFileSync(outputPath, JSON.stringify(outputData, null, 4), 'utf-8');
+          console.log(`✅ 服务器列表已更新: ${serverList.length}个服务器`);
+          resolve({ success: true, count: serverList.length });
+        } catch (error) {
+          console.error('❌ 服务器列表解析失败:', error);
+          resolve({ success: false, error: error.message });
+        }
+      });
+    }).on('error', (error) => {
+      console.error('❌ 服务器列表请求失败:', error);
+      resolve({ success: false, error: error.message });
+    });
+  });
+}
+
+/**
  * 同步所有成员数据
  */
 async function syncAllMembers() {
@@ -1095,13 +1145,17 @@ async function syncAllMembers() {
   console.log('========================================\n');
 
   try {
+    // 先同步服务器列表
+    const serverSyncResult = await syncServerList();
+
     const members = readMembersDB();
     const results = {
       total: members.length,
       success: 0,
       failed: 0,
       skipped: 0,
-      details: []
+      details: [],
+      serverSync: serverSyncResult
     };
 
     for (const member of members) {
