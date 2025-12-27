@@ -1,5 +1,7 @@
 {
   "voiceChannelUrl": "https://tw.ncsoft.com/aion2/characters/1001/A1pIWbd0UKoTYJ2XbL_Cw0VdSx_UlJ-2sv_dtkIvlnM=",
   "voiceChannelName": "KOOK语音",
-  "voiceChannelDescription": "点击加入我们的语音频道"
+  "voiceChannelDescription": "点击加入我们的语音频道",
+  "redeemCode": "AION2TOGETHER",
+  "redeemCodeExpiry": "2026-01-20T19:00:00.000Z"
 }

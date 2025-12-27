@@ -1,17 +1,18 @@
 [
   {
-    "id": "A1pIWbd0UKoTYJ2XbL_Cwy6Z5WMbEvOg2fennecedXo=",
-    "name": "肆",
+    "id": "A1pIWbd0UKoTYJ2XbL_Cwys5RleNG3EVrZKBibx7Dto=",
+    "name": "梧",
     "role": "leader",
     "joinDate": "创始成员",
     "serverId": 1001,
-    "characterId": "A1pIWbd0UKoTYJ2XbL_Cwy6Z5WMbEvOg2fennecedXo="
+    "characterId": "A1pIWbd0UKoTYJ2XbL_Cwys5RleNG3EVrZKBibx7Dto="
   },
   {
+    
     "id": "A1pIWbd0UKoTYJ2XbL_Cw0VdSx_UlJ-2sv_dtkIvlnM=",
     "name": "Erimia",
     "role": "elite",
-    "joinDate": "2025-12-23",
+    "joinDate": "吉祥物",
     "serverId": 1001,
     "characterId": "A1pIWbd0UKoTYJ2XbL_Cw0VdSx_UlJ-2sv_dtkIvlnM="
   }

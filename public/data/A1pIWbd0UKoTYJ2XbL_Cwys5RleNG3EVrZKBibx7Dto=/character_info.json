@@ -5,15 +5,15 @@
         "rankingContentsType": 1,
         "rankingContentsName": "深淵",
         "rankingType": 0,
-        "rank": 2176,
+        "rank": 3850,
         "characterId": null,
-        "characterName": "Erimia",
-        "classId": 7,
-        "className": "Sorcerer",
+        "characterName": "啊琥",
+        "classId": 4,
+        "className": "Ranger",
         "guildName": "椿夏",
-        "point": 209896,
+        "point": 132246,
         "prevRank": 0,
-        "rankChange": -2,
+        "rankChange": -3,
         "gradeId": 18,
         "gradeName": "9等兵",
         "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Ranking_Grade_Abyss_Solidier_09.png",
@@ -24,18 +24,18 @@
         "rankingContentsType": 3,
         "rankingContentsName": "惡夢",
         "rankingType": 0,
-        "rank": 565,
+        "rank": 6881,
         "characterId": null,
-        "characterName": "Erimia",
-        "classId": 7,
-        "className": "Sorcerer",
+        "characterName": "啊琥",
+        "classId": 4,
+        "className": "Ranger",
         "guildName": "椿夏",
-        "point": 64198,
+        "point": 17297,
         "prevRank": 0,
-        "rankChange": -7,
-        "gradeId": 8,
-        "gradeName": "金",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Gold.png",
+        "rankChange": -14,
+        "gradeId": 10,
+        "gradeName": "銅",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
         "profileImage": null,
         "extraDataMap": null
       },
@@ -43,18 +43,18 @@
         "rankingContentsType": 4,
         "rankingContentsName": "超越",
         "rankingType": 0,
-        "rank": 520,
+        "rank": 7032,
         "characterId": null,
-        "characterName": "Erimia",
-        "classId": 7,
-        "className": "Sorcerer",
+        "characterName": "啊琥",
+        "classId": 4,
+        "className": "Ranger",
         "guildName": "椿夏",
-        "point": 634395,
+        "point": 92282,
         "prevRank": 0,
-        "rankChange": 0,
-        "gradeId": 8,
-        "gradeName": "金",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Gold.png",
+        "rankChange": -1,
+        "gradeId": 10,
+        "gradeName": "銅",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
         "profileImage": null,
         "extraDataMap": null
       },
@@ -99,19 +99,19 @@
       {
         "rankingContentsType": 20,
         "rankingContentsName": "討伐戰",
-        "rankingType": 0,
-        "rank": 4341,
+        "rankingType": null,
+        "rank": null,
         "characterId": null,
-        "characterName": "Erimia",
-        "classId": 7,
-        "className": "Sorcerer",
-        "guildName": "椿夏",
-        "point": 35348,
-        "prevRank": 0,
-        "rankChange": -11,
-        "gradeId": 10,
-        "gradeName": "銅",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
+        "characterName": null,
+        "classId": null,
+        "className": null,
+        "guildName": null,
+        "point": null,
+        "prevRank": null,
+        "rankChange": null,
+        "gradeId": null,
+        "gradeName": null,
+        "gradeIcon": null,
         "profileImage": null,
         "extraDataMap": null
       },
@@ -119,18 +119,18 @@
         "rankingContentsType": 21,
         "rankingContentsName": "覺醒戰",
         "rankingType": 0,
-        "rank": 1482,
+        "rank": 194,
         "characterId": null,
-        "characterName": "Erimia",
-        "classId": 7,
-        "className": "Sorcerer",
+        "characterName": "啊琥",
+        "classId": 4,
+        "className": "Ranger",
         "guildName": "椿夏",
-        "point": 93749,
+        "point": 174829,
         "prevRank": 0,
-        "rankChange": -1,
-        "gradeId": 10,
-        "gradeName": "銅",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
+        "rankChange": 0,
+        "gradeId": 7,
+        "gradeName": "白金",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Platinum.png",
         "profileImage": null,
         "extraDataMap": null
       }
@@ -139,7 +139,7 @@
   "daevanion": {
     "boardList": [
       {
-        "id": 61,
+        "id": 31,
         "name": "奈薩肯",
         "totalNodeCount": 88,
         "openNodeCount": 78,
@@ -147,42 +147,42 @@
         "open": 1
       },
       {
-        "id": 62,
+        "id": 32,
         "name": "吉凱爾",
         "totalNodeCount": 88,
-        "openNodeCount": 78,
+        "openNodeCount": 76,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
         "open": 1
       },
       {
-        "id": 63,
+        "id": 33,
         "name": "白傑爾",
         "totalNodeCount": 88,
-        "openNodeCount": 79,
+        "openNodeCount": 77,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
         "open": 1
       },
       {
-        "id": 64,
+        "id": 34,
         "name": "崔妮爾",
         "totalNodeCount": 116,
-        "openNodeCount": 102,
+        "openNodeCount": 107,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
         "open": 1
       },
       {
-        "id": 65,
+        "id": 35,
         "name": "艾瑞爾",
         "totalNodeCount": 152,
-        "openNodeCount": 22,
+        "openNodeCount": 23,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
         "open": 1
       },
       {
-        "id": 66,
+        "id": 36,
         "name": "阿斯佩爾",
         "totalNodeCount": 152,
-        "openNodeCount": 7,
+        "openNodeCount": 37,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
         "open": 1
       }
@@ -193,104 +193,102 @@
       {
         "type": "STR",
         "name": "威力",
-        "value": 125,
+        "value": 44,
         "statSecondList": [
-          "攻擊力增加 +12.5%"
+          "攻擊力增加 +4.4%"
         ]
       },
       {
         "type": "DEX",
         "name": "敏捷",
-        "value": 1,
-        "statSecondList": [
-          "迴避增加 +0.1%",
-          "格擋增加 +0.1%",
-          "暴擊抵抗增加 +0.1%"
-        ]
-      },
-      {
-        "type": "INT",
-        "name": "知識",
         "value": 0,
         "statSecondList": null
       },
       {
+        "type": "INT",
+        "name": "知識",
+        "value": 34,
+        "statSecondList": [
+          "異常狀態擊中 +3.4%"
+        ]
+      },
+      {
         "type": "CON",
         "name": "體力",
-        "value": 35,
+        "value": 43,
         "statSecondList": [
-          "生命力增加 +3.5%"
+          "生命力增加 +4.3%"
         ]
       },
       {
         "type": "AGI",
         "name": "精確",
-        "value": 4,
+        "value": 42,
         "statSecondList": [
-          "命中增加 +0.4%",
-          "暴擊增加 +0.4%"
+          "命中增加 +4.2%",
+          "暴擊增加 +4.2%"
         ]
       },
       {
         "type": "WIS",
         "name": "意志",
-        "value": 49,
+        "value": 44,
         "statSecondList": [
-          "異常狀態抵抗 +4.9%"
+          "異常狀態抵抗 +4.4%"
         ]
       },
       {
         "type": "Justice",
         "name": "正義[奈薩肯]",
-        "value": 85,
+        "value": 74,
         "statSecondList": [
-          "防禦力增加 +17%",
-          "完美 +17%"
+          "防禦力增加 +14.8%",
+          "完美 +14.8%"
         ]
       },
       {
         "type": "Freedom",
         "name": "自由[白傑爾]",
-        "value": 65,
+        "value": 67,
         "statSecondList": [
-          "命中增加 +13%",
-          "迴避增加 +13%"
+          "命中增加 +13.4%",
+          "迴避增加 +13.4%"
         ]
       },
       {
         "type": "Illusion",
         "name": "幻象[凱西內爾]",
-        "value": 56,
+        "value": 43,
         "statSecondList": [
-          "冷卻時間 -11.2%",
-          "鐵壁貫穿 +11.2%"
+          "冷卻時間 -8.6%",
+          "鐵壁貫穿 +8.6%"
         ]
       },
       {
         "type": "Life",
         "name": "生命[尤斯迪埃]",
-        "value": 62,
+        "value": 52,
         "statSecondList": [
-          "生命力增加 +12.4%",
-          "再生 +12.4%"
+          "生命力增加 +10.4%",
+          "再生 +10.4%"
         ]
       },
       {
         "type": "Time",
         "name": "時間[希埃爾]",
-        "value": 109,
+        "value": 98,
         "statSecondList": [
-          "戰鬥速度 +21.8%",
-          "強擊抵抗 +21.8%"
+          "戰鬥速度 +19.6%",
+          "強擊抵抗 +19.6%"
         ]
       },
       {
         "type": "Destruction",
         "name": "破壞[吉凱爾]",
-        "value": 65,
+        "value": 20,
         "statSecondList": [
-          "攻擊力增加 +13%",
-          "完美抵抗 +13%"
+          "攻擊力增加 +4%",
+          "完美抵抗 +4%"
         ]
       },
       {
@@ -305,63 +303,60 @@
       {
         "type": "Wisdom",
         "name": "智慧[露梅爾]",
-        "value": 68,
+        "value": 31,
         "statSecondList": [
-          "精神力消耗量 -13.6%",
-          "強擊 +13.6%"
+          "精神力消耗量 -6.2%",
+          "強擊 +6.2%"
         ]
       },
       {
         "type": "Destiny",
         "name": "命運[瑪爾庫坦]",
-        "value": 41,
+        "value": 34,
         "statSecondList": [
-          "精神力增加 +8.2%",
-          "鐵壁 +8.2%"
+          "精神力增加 +6.8%",
+          "鐵壁 +6.8%"
         ]
       },
       {
         "type": "Space",
         "name": "空間[伊斯拉佩爾]",
-        "value": 82,
+        "value": 72,
         "statSecondList": [
-          "移動速度 +16.4%",
-          "格擋增加 +16.4%"
+          "移動速度 +14.4%",
+          "格擋增加 +14.4%"
         ]
       },
       {
         "type": "ItemLevel",
         "name": "아이템레벨",
-        "value": 2889,
+        "value": 2748,
         "statSecondList": null
       }
     ]
   },
   "title": {
     "totalCount": 305,
-    "ownedCount": 232,
+    "ownedCount": 206,
     "titleList": [
       {
-        "id": 12010061,
+        "id": 11020057,
         "equipCategory": "Etc",
-        "name": "跨越羅生門的",
-        "grade": "Unique",
+        "name": "不錯過的",
+        "grade": "Legend",
         "totalCount": 101,
-        "ownedCount": 77,
+        "ownedCount": 72,
         "statList": [
           {
-            "desc": "格擋 +10"
+            "desc": "暴擊 +10"
           }
         ],
         "equipStatList": [
           {
-            "desc": "冷卻時間減少 +5%"
+            "desc": "戰鬥速度 +3.9%"
           },
           {
-            "desc": "生命力 +800"
-          },
-          {
-            "desc": "行動力 +200"
+            "desc": "精神力 +250"
           }
         ]
       },
@@ -371,7 +366,7 @@
         "name": "斐爾特朗聖者",
         "grade": "Unique",
         "totalCount": 100,
-        "ownedCount": 76,
+        "ownedCount": 67,
         "statList": [
           {
             "desc": "PVE傷害耐性 +1%"
@@ -395,7 +390,7 @@
         "name": "黃澄澄的光彩",
         "grade": "Unique",
         "totalCount": 104,
-        "ownedCount": 79,
+        "ownedCount": 67,
         "statList": [
           {
             "desc": "暴擊攻擊力 +3"
@@ -416,13 +411,13 @@
     ]
   },
   "profile": {
-    "characterId": "A1pIWbd0UKoTYJ2XbL_Cw0VdSx_UlJ-2sv_dtkIvlnM=",
-    "characterName": "Erimia",
+    "characterId": "A1pIWbd0UKoTYJ2XbL_Cwys5RleNG3EVrZKBibx7Dto=",
+    "characterName": "啊琥",
     "serverId": 1001,
     "serverName": "希埃爾",
     "regionName": "椿夏",
-    "pcId": 26,
-    "className": "魔道星",
+    "pcId": 14,
+    "className": "弓星",
     "raceId": 1,
     "raceName": "天族",
     "gender": 2,
@@ -431,6 +426,6 @@
     "titleId": 0,
     "titleName": "",
     "titleGrade": "",
-    "profileImage": "https://profileimg.plaync.com/game_profile_images/aion2_tw/images?gameServerKey=1001&charKey=281756451687373398"
+    "profileImage": "https://profileimg.plaync.com/game_profile_images/aion2_tw/images?gameServerKey=1001&charKey=281756451687374794"
   }
 }

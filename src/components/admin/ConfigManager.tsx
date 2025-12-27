@@ -7,6 +7,8 @@ interface GlobalConfig {
   voiceChannelUrl: string;
   voiceChannelName: string;
   voiceChannelDescription: string;
+  redeemCode: string;
+  redeemCodeExpiry: string; // ISO 格式日期
 }
 
 interface SyncStatus {
@@ -23,7 +25,7 @@ interface SyncLog {
   message: string;
 }
 
-type SubTabType = 'timing' | 'voice';
+type SubTabType = 'timing' | 'voice' | 'redeem';
 
 const ConfigManager: React.FC = () => {
   const [activeSubTab, setActiveSubTab] = useState<SubTabType>('timing');
@@ -32,6 +34,8 @@ const ConfigManager: React.FC = () => {
     voiceChannelUrl: '',
     voiceChannelName: '军团语音',
     voiceChannelDescription: '点击加入我们的语音频道',
+    redeemCode: '',
+    redeemCodeExpiry: '',
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -249,6 +253,12 @@ const ConfigManager: React.FC = () => {
           onClick={() => setActiveSubTab('voice')}
         >
           🎤 语音配置
+        </button>
+        <button
+          className={`config-subtabs__tab ${activeSubTab === 'redeem' ? 'config-subtabs__tab--active' : ''}`}
+          onClick={() => setActiveSubTab('redeem')}
+        >
+          🎁 兑换码管理
         </button>
       </div>
 
@@ -472,6 +482,114 @@ const ConfigManager: React.FC = () => {
                   </div>
                 ) : (
                   <div className="config-preview__empty">请先配置语音频道链接</div>
+                )}
+              </div>
+            </div>
+
+            {/* 操作按钮 */}
+            <div className="config-manager__actions">
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="btn btn--primary"
+              >
+                {saving ? '保存中...' : '保存配置'}
+              </button>
+              <button
+                onClick={loadConfig}
+                disabled={saving}
+                className="btn btn--secondary"
+              >
+                重置
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* 兑换码管理Tab */}
+        {activeSubTab === 'redeem' && (
+          <>
+            {/* 兑换码配置 */}
+            <div className="config-section">
+              <h3 className="config-section__title">
+                <span className="config-section__icon">🎁</span>
+                兑换码管理
+              </h3>
+              <p className="config-section__desc">
+                配置军团兑换码，将在军团页面显示供成员复制使用
+              </p>
+
+              <div className="config-field">
+                <label htmlFor="redeemCode">
+                  兑换码
+                  <span className="config-field__hint">（游戏内可兑换的礼包码）</span>
+                </label>
+                <input
+                  id="redeemCode"
+                  type="text"
+                  value={config.redeemCode}
+                  onChange={(e) => handleChange('redeemCode', e.target.value)}
+                  placeholder="请输入兑换码"
+                  maxLength={50}
+                />
+                <span className="config-field__help">
+                  留空表示暂无可用兑换码
+                </span>
+              </div>
+
+              <div className="config-field">
+                <label htmlFor="redeemCodeExpiry">
+                  到期时间
+                  <span className="config-field__hint">（兑换码过期日期）</span>
+                </label>
+                <input
+                  id="redeemCodeExpiry"
+                  type="datetime-local"
+                  value={config.redeemCodeExpiry ? config.redeemCodeExpiry.slice(0, 16) : ''}
+                  onChange={(e) => handleChange('redeemCodeExpiry', e.target.value ? new Date(e.target.value).toISOString() : '')}
+                />
+                <span className="config-field__help">
+                  设置兑换码的有效期，过期后会在军团页面显示"已过期"
+                </span>
+              </div>
+            </div>
+
+            {/* 预览区域 */}
+            <div className="config-preview">
+              <h4 className="config-preview__title">预览效果</h4>
+              <div className="config-preview__content config-preview__content--redeem">
+                {config.redeemCode ? (
+                  <>
+                    <div className="redeem-preview">
+                      <div className="redeem-preview__header">
+                        <span className="redeem-preview__icon">🎁</span>
+                        <span className="redeem-preview__title">军团兑换码</span>
+                      </div>
+                      <div className="redeem-preview__code-wrapper">
+                        <code className="redeem-preview__code">{config.redeemCode}</code>
+                        <button className="redeem-preview__copy">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                          </svg>
+                          复制
+                        </button>
+                      </div>
+                      {config.redeemCodeExpiry && (
+                        <div className="redeem-preview__expiry">
+                          到期时间：{new Date(config.redeemCodeExpiry).toLocaleString('zh-CN', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="config-preview__empty">请先配置兑换码</div>
                 )}
               </div>
             </div>

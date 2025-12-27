@@ -34,14 +34,19 @@ const LegionPage = () => {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showNotification, setShowNotification] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
   const [voiceConfig, setVoiceConfig] = useState<{
     voiceChannelUrl: string;
     voiceChannelName: string;
     voiceChannelDescription: string;
+    redeemCode: string;
+    redeemCodeExpiry: string;
   }>({
     voiceChannelUrl: '',
     voiceChannelName: '军团语音',
-    voiceChannelDescription: '点击加入我们的语音频道'
+    voiceChannelDescription: '点击加入我们的语音频道',
+    redeemCode: '',
+    redeemCodeExpiry: ''
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -82,6 +87,17 @@ const LegionPage = () => {
 
     loadMembers();
   }, []);
+
+  // 复制兑换码
+  const handleCopyRedeemCode = async () => {
+    try {
+      await navigator.clipboard.writeText(voiceConfig.redeemCode);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (error) {
+      console.error('复制失败:', error);
+    }
+  };
 
   // 加载语音配置
   useEffect(() => {
@@ -245,6 +261,34 @@ const LegionPage = () => {
           </div>
         </div>
       </section>
+
+      {/* 兑换码展示区域 */}
+      {voiceConfig.redeemCode && (
+        <section className="legion-redeem">
+          <div className="legion-redeem__container">
+            <span className="legion-redeem__label">兑换码：</span>
+            <code className="legion-redeem__code">{voiceConfig.redeemCode}</code>
+            <button
+              className={`legion-redeem__copy ${copySuccess ? 'legion-redeem__copy--success' : ''}`}
+              onClick={handleCopyRedeemCode}
+            >
+              {copySuccess ? '已复制' : '复制'}
+            </button>
+            {voiceConfig.redeemCodeExpiry && (
+              <span className={`legion-redeem__expiry ${new Date(voiceConfig.redeemCodeExpiry) < new Date() ? 'legion-redeem__expiry--expired' : ''}`}>
+                {new Date(voiceConfig.redeemCodeExpiry) < new Date() ? (
+                  '已过期'
+                ) : (
+                  `到期：${new Date(voiceConfig.redeemCodeExpiry).toLocaleDateString('zh-CN', {
+                    month: '2-digit',
+                    day: '2-digit'
+                  })}`
+                )}
+              </span>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* 标签切换 */}
       <div className="legion-tabs">
