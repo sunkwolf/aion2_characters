@@ -1,190 +1,76 @@
 {
-  "ranking": {
-    "rankingList": [
+  "title": {
+    "totalCount": 305,
+    "ownedCount": 206,
+    "titleList": [
       {
-        "rankingContentsType": 1,
-        "rankingContentsName": "深淵",
-        "rankingType": 0,
-        "rank": 3850,
-        "characterId": null,
-        "characterName": "啊琥",
-        "classId": 4,
-        "className": "Ranger",
-        "guildName": "椿夏",
-        "point": 132246,
-        "prevRank": 0,
-        "rankChange": -3,
-        "gradeId": 18,
-        "gradeName": "9等兵",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Ranking_Grade_Abyss_Solidier_09.png",
-        "profileImage": null,
-        "extraDataMap": null
+        "id": 11020057,
+        "equipCategory": "Etc",
+        "name": "不錯過的",
+        "grade": "Legend",
+        "totalCount": 101,
+        "ownedCount": 72,
+        "statList": [
+          {
+            "desc": "暴擊 +10"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "戰鬥速度 +3.9%"
+          },
+          {
+            "desc": "精神力 +250"
+          }
+        ]
       },
       {
-        "rankingContentsType": 3,
-        "rankingContentsName": "惡夢",
-        "rankingType": 0,
-        "rank": 6881,
-        "characterId": null,
-        "characterName": "啊琥",
-        "classId": 4,
-        "className": "Ranger",
-        "guildName": "椿夏",
-        "point": 17297,
-        "prevRank": 0,
-        "rankChange": -14,
-        "gradeId": 10,
-        "gradeName": "銅",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
-        "profileImage": null,
-        "extraDataMap": null
+        "id": 12030003,
+        "equipCategory": "Defense",
+        "name": "斐爾特朗聖者",
+        "grade": "Unique",
+        "totalCount": 100,
+        "ownedCount": 67,
+        "statList": [
+          {
+            "desc": "PVE傷害耐性 +1%"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "額外防禦力 +300"
+          },
+          {
+            "desc": "傷害耐性 +5%"
+          },
+          {
+            "desc": "格擋 +110"
+          }
+        ]
       },
       {
-        "rankingContentsType": 4,
-        "rankingContentsName": "超越",
-        "rankingType": 0,
-        "rank": 7032,
-        "characterId": null,
-        "characterName": "啊琥",
-        "classId": 4,
-        "className": "Ranger",
-        "guildName": "椿夏",
-        "point": 92282,
-        "prevRank": 0,
-        "rankChange": -1,
-        "gradeId": 10,
-        "gradeName": "銅",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
-        "profileImage": null,
-        "extraDataMap": null
-      },
-      {
-        "rankingContentsType": 5,
-        "rankingContentsName": "孤獨競技場",
-        "rankingType": null,
-        "rank": null,
-        "characterId": null,
-        "characterName": null,
-        "classId": null,
-        "className": null,
-        "guildName": null,
-        "point": null,
-        "prevRank": null,
-        "rankChange": null,
-        "gradeId": null,
-        "gradeName": null,
-        "gradeIcon": null,
-        "profileImage": null,
-        "extraDataMap": null
-      },
-      {
-        "rankingContentsType": 6,
-        "rankingContentsName": "協力競技場",
-        "rankingType": null,
-        "rank": null,
-        "characterId": null,
-        "characterName": null,
-        "classId": null,
-        "className": null,
-        "guildName": null,
-        "point": null,
-        "prevRank": null,
-        "rankChange": null,
-        "gradeId": null,
-        "gradeName": null,
-        "gradeIcon": null,
-        "profileImage": null,
-        "extraDataMap": null
-      },
-      {
-        "rankingContentsType": 20,
-        "rankingContentsName": "討伐戰",
-        "rankingType": null,
-        "rank": null,
-        "characterId": null,
-        "characterName": null,
-        "classId": null,
-        "className": null,
-        "guildName": null,
-        "point": null,
-        "prevRank": null,
-        "rankChange": null,
-        "gradeId": null,
-        "gradeName": null,
-        "gradeIcon": null,
-        "profileImage": null,
-        "extraDataMap": null
-      },
-      {
-        "rankingContentsType": 21,
-        "rankingContentsName": "覺醒戰",
-        "rankingType": 0,
-        "rank": 194,
-        "characterId": null,
-        "characterName": "啊琥",
-        "classId": 4,
-        "className": "Ranger",
-        "guildName": "椿夏",
-        "point": 174829,
-        "prevRank": 0,
-        "rankChange": 0,
-        "gradeId": 7,
-        "gradeName": "白金",
-        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Platinum.png",
-        "profileImage": null,
-        "extraDataMap": null
-      }
-    ]
-  },
-  "daevanion": {
-    "boardList": [
-      {
-        "id": 31,
-        "name": "奈薩肯",
-        "totalNodeCount": 88,
-        "openNodeCount": 78,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
-        "open": 1
-      },
-      {
-        "id": 32,
-        "name": "吉凱爾",
-        "totalNodeCount": 88,
-        "openNodeCount": 76,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
-        "open": 1
-      },
-      {
-        "id": 33,
-        "name": "白傑爾",
-        "totalNodeCount": 88,
-        "openNodeCount": 77,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
-        "open": 1
-      },
-      {
-        "id": 34,
-        "name": "崔妮爾",
-        "totalNodeCount": 116,
-        "openNodeCount": 107,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
-        "open": 1
-      },
-      {
-        "id": 35,
-        "name": "艾瑞爾",
-        "totalNodeCount": 152,
-        "openNodeCount": 23,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
-        "open": 1
-      },
-      {
-        "id": 36,
-        "name": "阿斯佩爾",
-        "totalNodeCount": 152,
-        "openNodeCount": 37,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
-        "open": 1
+        "id": 13050017,
+        "equipCategory": "Attack",
+        "name": "黃澄澄的光彩",
+        "grade": "Unique",
+        "totalCount": 104,
+        "ownedCount": 67,
+        "statList": [
+          {
+            "desc": "暴擊攻擊力 +3"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "暴擊攻擊力 +35"
+          },
+          {
+            "desc": "暴擊傷害增幅 +5.5%"
+          },
+          {
+            "desc": "完美 +4%"
+          }
+        ]
       }
     ]
   },
@@ -330,89 +216,203 @@
       {
         "type": "ItemLevel",
         "name": "아이템레벨",
-        "value": 2748,
+        "value": 2752,
         "statSecondList": null
       }
     ]
   },
-  "title": {
-    "totalCount": 305,
-    "ownedCount": 206,
-    "titleList": [
+  "daevanion": {
+    "boardList": [
       {
-        "id": 11020057,
-        "equipCategory": "Etc",
-        "name": "不錯過的",
-        "grade": "Legend",
-        "totalCount": 101,
-        "ownedCount": 72,
-        "statList": [
-          {
-            "desc": "暴擊 +10"
-          }
-        ],
-        "equipStatList": [
-          {
-            "desc": "戰鬥速度 +3.9%"
-          },
-          {
-            "desc": "精神力 +250"
-          }
-        ]
+        "id": 31,
+        "name": "奈薩肯",
+        "totalNodeCount": 88,
+        "openNodeCount": 78,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
       },
       {
-        "id": 12030003,
-        "equipCategory": "Defense",
-        "name": "斐爾特朗聖者",
-        "grade": "Unique",
-        "totalCount": 100,
-        "ownedCount": 67,
-        "statList": [
-          {
-            "desc": "PVE傷害耐性 +1%"
-          }
-        ],
-        "equipStatList": [
-          {
-            "desc": "額外防禦力 +300"
-          },
-          {
-            "desc": "傷害耐性 +5%"
-          },
-          {
-            "desc": "格擋 +110"
-          }
-        ]
+        "id": 32,
+        "name": "吉凱爾",
+        "totalNodeCount": 88,
+        "openNodeCount": 77,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
       },
       {
-        "id": 13050017,
-        "equipCategory": "Attack",
-        "name": "黃澄澄的光彩",
-        "grade": "Unique",
-        "totalCount": 104,
-        "ownedCount": 67,
-        "statList": [
-          {
-            "desc": "暴擊攻擊力 +3"
-          }
-        ],
-        "equipStatList": [
-          {
-            "desc": "暴擊攻擊力 +35"
-          },
-          {
-            "desc": "暴擊傷害增幅 +5.5%"
-          },
-          {
-            "desc": "完美 +4%"
-          }
-        ]
+        "id": 33,
+        "name": "白傑爾",
+        "totalNodeCount": 88,
+        "openNodeCount": 77,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 34,
+        "name": "崔妮爾",
+        "totalNodeCount": 116,
+        "openNodeCount": 107,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      },
+      {
+        "id": 35,
+        "name": "艾瑞爾",
+        "totalNodeCount": 152,
+        "openNodeCount": 24,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 36,
+        "name": "阿斯佩爾",
+        "totalNodeCount": 152,
+        "openNodeCount": 37,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      }
+    ]
+  },
+  "ranking": {
+    "rankingList": [
+      {
+        "rankingContentsType": 1,
+        "rankingContentsName": "深淵",
+        "rankingType": 0,
+        "rank": 3967,
+        "characterId": null,
+        "characterName": "梧",
+        "classId": 4,
+        "className": "Ranger",
+        "guildName": "椿夏",
+        "point": 132246,
+        "prevRank": 0,
+        "rankChange": -1,
+        "gradeId": 18,
+        "gradeName": "9等兵",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Ranking_Grade_Abyss_Solidier_09.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 3,
+        "rankingContentsName": "惡夢",
+        "rankingType": 0,
+        "rank": 6887,
+        "characterId": null,
+        "characterName": "梧",
+        "classId": 4,
+        "className": "Ranger",
+        "guildName": "椿夏",
+        "point": 18315,
+        "prevRank": 0,
+        "rankChange": -18,
+        "gradeId": 10,
+        "gradeName": "銅",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 4,
+        "rankingContentsName": "超越",
+        "rankingType": 0,
+        "rank": 6981,
+        "characterId": null,
+        "characterName": "梧",
+        "classId": 4,
+        "className": "Ranger",
+        "guildName": "椿夏",
+        "point": 100716,
+        "prevRank": 0,
+        "rankChange": -10,
+        "gradeId": 10,
+        "gradeName": "銅",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 5,
+        "rankingContentsName": "孤獨競技場",
+        "rankingType": null,
+        "rank": null,
+        "characterId": null,
+        "characterName": null,
+        "classId": null,
+        "className": null,
+        "guildName": null,
+        "point": null,
+        "prevRank": null,
+        "rankChange": null,
+        "gradeId": null,
+        "gradeName": null,
+        "gradeIcon": null,
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 6,
+        "rankingContentsName": "協力競技場",
+        "rankingType": null,
+        "rank": null,
+        "characterId": null,
+        "characterName": null,
+        "classId": null,
+        "className": null,
+        "guildName": null,
+        "point": null,
+        "prevRank": null,
+        "rankChange": null,
+        "gradeId": null,
+        "gradeName": null,
+        "gradeIcon": null,
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 20,
+        "rankingContentsName": "討伐戰",
+        "rankingType": null,
+        "rank": null,
+        "characterId": null,
+        "characterName": null,
+        "classId": null,
+        "className": null,
+        "guildName": null,
+        "point": null,
+        "prevRank": null,
+        "rankChange": null,
+        "gradeId": null,
+        "gradeName": null,
+        "gradeIcon": null,
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 21,
+        "rankingContentsName": "覺醒戰",
+        "rankingType": 0,
+        "rank": 218,
+        "characterId": null,
+        "characterName": "梧",
+        "classId": 4,
+        "className": "Ranger",
+        "guildName": "椿夏",
+        "point": 174829,
+        "prevRank": 0,
+        "rankChange": -1,
+        "gradeId": 7,
+        "gradeName": "白金",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Platinum.png",
+        "profileImage": null,
+        "extraDataMap": null
       }
     ]
   },
   "profile": {
     "characterId": "A1pIWbd0UKoTYJ2XbL_Cwys5RleNG3EVrZKBibx7Dto=",
-    "characterName": "啊琥",
+    "characterName": "梧",
     "serverId": 1001,
     "serverName": "希埃爾",
     "regionName": "椿夏",

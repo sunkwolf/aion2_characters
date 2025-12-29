@@ -3,7 +3,7 @@
     "id": "A1pIWbd0UKoTYJ2XbL_Cwys5RleNG3EVrZKBibx7Dto=",
     "name": "梧",
     "role": "leader",
-    "title": "创始成员",
+    "title": "捡垃圾",
     "serverId": 1001,
     "characterId": "A1pIWbd0UKoTYJ2XbL_Cwys5RleNG3EVrZKBibx7Dto="
   },
@@ -14,5 +14,37 @@
     "title": "吉祥物",
     "serverId": 1001,
     "characterId": "A1pIWbd0UKoTYJ2XbL_Cw0VdSx_UlJ-2sv_dtkIvlnM="
+  },
+  {
+    "id": "A1pIWbd0UKoTYJ2XbL_Cw1hqdU-OALitS-sZ-K05900=",
+    "name": "千屿",
+    "role": "elite",
+    "serverId": 1001,
+    "characterId": "A1pIWbd0UKoTYJ2XbL_Cw1hqdU-OALitS-sZ-K05900=",
+    "title": "大宝健"
+  },
+  {
+    "id": "YcW3j99uVfhx6TS4OW_p1KLy7RTijzr7NU_d-XDcHJ8=",
+    "name": "花剑雪",
+    "role": "member",
+    "serverId": 1011,
+    "characterId": "YcW3j99uVfhx6TS4OW_p1KLy7RTijzr7NU_d-XDcHJ8=",
+    "title": "冒充天一人员"
+  },
+  {
+    "id": "9BxfSzn-igwmY62Ob8CBvW1NDy0bD-SMyS1J2zV-3CE=",
+    "name": "東西与南北",
+    "role": "member",
+    "characterId": "9BxfSzn-igwmY62Ob8CBvW1NDy0bD-SMyS1J2zV-3CE=",
+    "serverId": 1013,
+    "title": "冒充天一人员"
+  },
+  {
+    "id": "YcW3j99uVfhx6TS4OW_p1G6pxT8bMa6aKDtqQLfyaw4=",
+    "name": "晚風綿綿",
+    "role": "member",
+    "characterId": "YcW3j99uVfhx6TS4OW_p1G6pxT8bMa6aKDtqQLfyaw4=",
+    "serverId": 1011,
+    "title": "冒充天一人员"
   }
 ]

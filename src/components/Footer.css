@@ -1,6 +1,6 @@
 .footer {
-  background: var(--color-text-primary);
-  color: rgba(255, 255, 255, 0.7);
+  background: #3a5a7c; /* 淡蓝色,比主体色更浅 */
+  color: rgba(255, 255, 255, 0.85);
   padding: var(--spacing-lg) var(--spacing-md);
   margin-top: auto;
 }
@@ -42,18 +42,33 @@
 .footer__slogan {
   font-family: var(--font-display);
   font-style: italic;
-  opacity: 0.6;
+  opacity: 0.7;
   margin-top: 4px !important;
 }
 
 .footer__copy {
   padding-top: var(--spacing-sm);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   width: 100%;
 }
 
 .footer__copy p {
-  font-size: 0.75rem;
-  opacity: 0.5;
+  font-size: 0.8rem;
+  opacity: 0.8;
   margin: 0;
+}
+
+.footer__icp {
+  margin-top: 8px !important;
+}
+
+.footer__icp a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer__icp a:hover {
+  color: white;
+  text-decoration: underline;
 }

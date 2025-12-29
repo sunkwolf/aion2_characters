@@ -23,7 +23,12 @@ const Footer = () => {
         </div>
 
         <div className="footer__copy">
-          <p>© {currentYear} 椿夏军团. 游戏素材版权归 NCSOFT 所有.</p>
+          <p>© {currentYear} 椿夏. 游戏素材版权归 NCSOFT 所有</p>
+          <p className="footer__icp">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+              滇ICP备2025076708号
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -267,49 +267,6 @@ const JoinPage = () => {
               </span>
             </div>
 
-            {/* 验证/提交按钮 - 根据状态智能切换 */}
-            {!showConfirm ? (
-              <button
-                type="button"
-                onClick={handleVerifyCharacter}
-                disabled={!formData.characterName.trim() || parsing}
-                style={{
-                  marginTop: '12px',
-                  padding: '12px 24px',
-                  background: 'var(--color-primary)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  cursor: 'pointer',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  width: '100%',
-                  opacity: (!formData.characterName.trim() || parsing) ? 0.5 : 1
-                }}
-              >
-                {parsing ? '验证中...' : '验证角色信息'}
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="join-page__submit"
-                style={{
-                  marginTop: '12px',
-                  padding: '12px 24px',
-                  background: 'var(--color-success)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  cursor: 'pointer',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  width: '100%'
-                }}
-              >
-                ✓ 确认提交申请
-              </button>
-            )}
-
             {/* 角色信息确认框 */}
             {showConfirm && parsedCharacter && (
               <div style={{
@@ -364,6 +321,22 @@ const JoinPage = () => {
               <p>✓ 天族与魔族均可填写并展示角色信息</p>
               <p>✓ 不涉及账号密码，角色信息均为使用角色名称从官方API请求得到的数据</p>
             </div>
+
+            {/* 底部智能按钮 - 根据验证状态和表单状态切换 */}
+            {!showConfirm ? (
+              <button
+                type="button"
+                onClick={handleVerifyCharacter}
+                disabled={!formData.characterName.trim() || parsing}
+                className="join-page__submit"
+              >
+                {parsing ? '验证中...' : '验证角色信息'}
+              </button>
+            ) : (
+              <button type="submit" className="join-page__submit">
+                提交申请
+              </button>
+            )}
           </form>
         </div>
       </div>

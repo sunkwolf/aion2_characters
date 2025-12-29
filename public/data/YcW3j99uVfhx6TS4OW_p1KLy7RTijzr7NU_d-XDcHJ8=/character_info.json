@@ -1,0 +1,435 @@
+{
+  "daevanion": {
+    "boardList": [
+      {
+        "id": 11,
+        "name": "奈薩肯",
+        "totalNodeCount": 88,
+        "openNodeCount": 84,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 12,
+        "name": "吉凱爾",
+        "totalNodeCount": 88,
+        "openNodeCount": 81,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      },
+      {
+        "id": 13,
+        "name": "白傑爾",
+        "totalNodeCount": 88,
+        "openNodeCount": 77,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 14,
+        "name": "崔妮爾",
+        "totalNodeCount": 116,
+        "openNodeCount": 103,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      },
+      {
+        "id": 15,
+        "name": "艾瑞爾",
+        "totalNodeCount": 152,
+        "openNodeCount": 29,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 16,
+        "name": "阿斯佩爾",
+        "totalNodeCount": 152,
+        "openNodeCount": 29,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      }
+    ]
+  },
+  "ranking": {
+    "rankingList": [
+      {
+        "rankingContentsType": 1,
+        "rankingContentsName": "深淵",
+        "rankingType": 0,
+        "rank": 719,
+        "characterId": null,
+        "characterName": "花剑雪",
+        "classId": 2,
+        "className": "Gladiator",
+        "guildName": null,
+        "point": 325727,
+        "prevRank": 0,
+        "rankChange": -4,
+        "gradeId": 15,
+        "gradeName": "6等兵",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Ranking_Grade_Abyss_Solidier_06.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 3,
+        "rankingContentsName": "惡夢",
+        "rankingType": 0,
+        "rank": 91,
+        "characterId": null,
+        "characterName": "花剑雪",
+        "classId": 2,
+        "className": "Gladiator",
+        "guildName": null,
+        "point": 73954,
+        "prevRank": 0,
+        "rankChange": -2,
+        "gradeId": 6,
+        "gradeName": "鑽石",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Diamond.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 4,
+        "rankingContentsName": "超越",
+        "rankingType": 0,
+        "rank": 147,
+        "characterId": null,
+        "characterName": "花剑雪",
+        "classId": 2,
+        "className": "Gladiator",
+        "guildName": null,
+        "point": 658624,
+        "prevRank": 0,
+        "rankChange": 0,
+        "gradeId": 7,
+        "gradeName": "白金",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Platinum.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 5,
+        "rankingContentsName": "孤獨競技場",
+        "rankingType": null,
+        "rank": null,
+        "characterId": null,
+        "characterName": null,
+        "classId": null,
+        "className": null,
+        "guildName": null,
+        "point": null,
+        "prevRank": null,
+        "rankChange": null,
+        "gradeId": null,
+        "gradeName": null,
+        "gradeIcon": null,
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 6,
+        "rankingContentsName": "協力競技場",
+        "rankingType": null,
+        "rank": null,
+        "characterId": null,
+        "characterName": null,
+        "classId": null,
+        "className": null,
+        "guildName": null,
+        "point": null,
+        "prevRank": null,
+        "rankChange": null,
+        "gradeId": null,
+        "gradeName": null,
+        "gradeIcon": null,
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 20,
+        "rankingContentsName": "討伐戰",
+        "rankingType": 0,
+        "rank": 353,
+        "characterId": null,
+        "characterName": "花剑雪",
+        "classId": 2,
+        "className": "Gladiator",
+        "guildName": null,
+        "point": 47504,
+        "prevRank": 0,
+        "rankChange": -2,
+        "gradeId": 8,
+        "gradeName": "金",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Gold.png",
+        "profileImage": null,
+        "extraDataMap": null
+      },
+      {
+        "rankingContentsType": 21,
+        "rankingContentsName": "覺醒戰",
+        "rankingType": 0,
+        "rank": 533,
+        "characterId": null,
+        "characterName": "花剑雪",
+        "classId": 2,
+        "className": "Gladiator",
+        "guildName": null,
+        "point": 89633,
+        "prevRank": 0,
+        "rankChange": -1,
+        "gradeId": 8,
+        "gradeName": "金",
+        "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Gold.png",
+        "profileImage": null,
+        "extraDataMap": null
+      }
+    ]
+  },
+  "profile": {
+    "characterId": "YcW3j99uVfhx6TS4OW_p1KLy7RTijzr7NU_d-XDcHJ8=",
+    "characterName": "花剑雪",
+    "serverId": 1011,
+    "serverName": "塔哈巴達",
+    "regionName": "",
+    "pcId": 5,
+    "className": "劍星",
+    "raceId": 1,
+    "raceName": "天族",
+    "gender": 1,
+    "genderName": "男性",
+    "characterLevel": 45,
+    "titleId": 0,
+    "titleName": "",
+    "titleGrade": "",
+    "profileImage": "https://profileimg.plaync.com/game_profile_images/aion2_tw/images?gameServerKey=1011&charKey=284571201454489461"
+  },
+  "title": {
+    "totalCount": 305,
+    "ownedCount": 244,
+    "titleList": [
+      {
+        "id": 12010061,
+        "equipCategory": "Etc",
+        "name": "跨越羅生門的",
+        "grade": "Unique",
+        "totalCount": 101,
+        "ownedCount": 80,
+        "statList": [
+          {
+            "desc": "格擋 +10"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "冷卻時間減少 +5%"
+          },
+          {
+            "desc": "生命力 +800"
+          },
+          {
+            "desc": "行動力 +200"
+          }
+        ]
+      },
+      {
+        "id": 12030002,
+        "equipCategory": "Attack",
+        "name": "斐爾特朗守護者",
+        "grade": "Legend",
+        "totalCount": 104,
+        "ownedCount": 82,
+        "statList": [
+          {
+            "desc": "PVE傷害增幅 +1%"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "PVE傷害增幅 +3.7%"
+          },
+          {
+            "desc": "強擊 +2%"
+          }
+        ]
+      },
+      {
+        "id": 12030003,
+        "equipCategory": "Defense",
+        "name": "斐爾特朗聖者",
+        "grade": "Unique",
+        "totalCount": 100,
+        "ownedCount": 82,
+        "statList": [
+          {
+            "desc": "PVE傷害耐性 +1%"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "額外防禦力 +300"
+          },
+          {
+            "desc": "傷害耐性 +5%"
+          },
+          {
+            "desc": "格擋 +110"
+          }
+        ]
+      }
+    ]
+  },
+  "stat": {
+    "statList": [
+      {
+        "type": "STR",
+        "name": "威力",
+        "value": 97,
+        "statSecondList": [
+          "攻擊力增加 +9.7%"
+        ]
+      },
+      {
+        "type": "DEX",
+        "name": "敏捷",
+        "value": 31,
+        "statSecondList": [
+          "迴避增加 +3.1%",
+          "格擋增加 +3.1%",
+          "暴擊抵抗增加 +3.1%"
+        ]
+      },
+      {
+        "type": "INT",
+        "name": "知識",
+        "value": 32,
+        "statSecondList": [
+          "異常狀態擊中 +3.2%"
+        ]
+      },
+      {
+        "type": "CON",
+        "name": "體力",
+        "value": 25,
+        "statSecondList": [
+          "生命力增加 +2.5%"
+        ]
+      },
+      {
+        "type": "AGI",
+        "name": "精確",
+        "value": 47,
+        "statSecondList": [
+          "命中增加 +4.7%",
+          "暴擊增加 +4.7%"
+        ]
+      },
+      {
+        "type": "WIS",
+        "name": "意志",
+        "value": 2,
+        "statSecondList": [
+          "異常狀態抵抗 +0.2%"
+        ]
+      },
+      {
+        "type": "Justice",
+        "name": "正義[奈薩肯]",
+        "value": 65,
+        "statSecondList": [
+          "防禦力增加 +13%",
+          "完美 +13%"
+        ]
+      },
+      {
+        "type": "Freedom",
+        "name": "自由[白傑爾]",
+        "value": 42,
+        "statSecondList": [
+          "命中增加 +8.4%",
+          "迴避增加 +8.4%"
+        ]
+      },
+      {
+        "type": "Illusion",
+        "name": "幻象[凱西內爾]",
+        "value": 68,
+        "statSecondList": [
+          "冷卻時間 -13.6%",
+          "鐵壁貫穿 +13.6%"
+        ]
+      },
+      {
+        "type": "Life",
+        "name": "生命[尤斯迪埃]",
+        "value": 39,
+        "statSecondList": [
+          "生命力增加 +7.8%",
+          "再生 +7.8%"
+        ]
+      },
+      {
+        "type": "Time",
+        "name": "時間[希埃爾]",
+        "value": 108,
+        "statSecondList": [
+          "戰鬥速度 +21.6%",
+          "強擊抵抗 +21.6%"
+        ]
+      },
+      {
+        "type": "Destruction",
+        "name": "破壞[吉凱爾]",
+        "value": 88,
+        "statSecondList": [
+          "攻擊力增加 +17.6%",
+          "完美抵抗 +17.6%"
+        ]
+      },
+      {
+        "type": "Death",
+        "name": "死亡[崔妮爾]",
+        "value": 85,
+        "statSecondList": [
+          "暴擊增加 +17%",
+          "再生貫穿 +17%"
+        ]
+      },
+      {
+        "type": "Wisdom",
+        "name": "智慧[露梅爾]",
+        "value": 60,
+        "statSecondList": [
+          "精神力消耗量 -12%",
+          "強擊 +12%"
+        ]
+      },
+      {
+        "type": "Destiny",
+        "name": "命運[瑪爾庫坦]",
+        "value": 68,
+        "statSecondList": [
+          "精神力增加 +13.6%",
+          "鐵壁 +13.6%"
+        ]
+      },
+      {
+        "type": "Space",
+        "name": "空間[伊斯拉佩爾]",
+        "value": 72,
+        "statSecondList": [
+          "移動速度 +14.4%",
+          "格擋增加 +14.4%"
+        ]
+      },
+      {
+        "type": "ItemLevel",
+        "name": "아이템레벨",
+        "value": 2988,
+        "statSecondList": null
+      }
+    ]
+  }
+}

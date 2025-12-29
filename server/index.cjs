@@ -898,8 +898,18 @@ function searchCharacter(characterName, serverId, race) {
             return;
           }
 
-          // 返回第一个匹配的角色
-          const character = jsonData.list[0];
+          // 完全匹配: 在搜索结果中查找名字完全一致的角色
+          const exactMatch = jsonData.list.find(char => {
+            const cleanName = char.name.replace(/<[^>]*>/g, ''); // 移除HTML标签
+            return cleanName === characterName;
+          });
+
+          if (!exactMatch) {
+            reject(new Error(`未找到名为"${characterName}"的角色，请确认角色名称是否正确`));
+            return;
+          }
+
+          const character = exactMatch;
           const cleanName = character.name.replace(/<[^>]*>/g, ''); // 移除HTML标签
 
           resolve({
