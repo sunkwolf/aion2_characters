@@ -1238,11 +1238,24 @@ async function syncServerList() {
       res.on('end', () => {
         try {
           const response = JSON.parse(data);
+
+          // 调试: 打印原始响应结构
+          console.log('[调试] API响应类型:', typeof response);
+          console.log('[调试] API响应是否为数组:', Array.isArray(response));
+          if (typeof response === 'object' && !Array.isArray(response)) {
+            console.log('[调试] API响应的键:', Object.keys(response));
+          }
+
           // 处理可能的数据格式: 可能是数组,也可能是对象包含data字段
           const servers = Array.isArray(response) ? response : (response.data || response.serverList || []);
 
           if (!Array.isArray(servers)) {
             throw new Error('服务器数据格式错误: 不是数组');
+          }
+
+          console.log(`[调试] 服务器数组长度: ${servers.length}`);
+          if (servers.length > 0) {
+            console.log('[调试] 第一个服务器数据样例:', JSON.stringify(servers[0]));
           }
 
           // 如果API返回空列表,不更新文件,保留现有数据
@@ -1252,12 +1265,31 @@ async function syncServerList() {
             return;
           }
 
-          const serverList = servers.map(server => ({
-            raceId: server.raceId || 1,
-            serverId: server.id,
-            serverName: server.label,
-            serverShortName: server.label.substring(0, 2)
-          }));
+          const serverList = servers.map(server => {
+            // 检查必需字段 - 兼容 id 或 serverId 字段
+            const serverId = server.id || server.serverId;
+            if (!serverId) {
+              console.warn('⚠️  跳过无效服务器数据 (缺少id/serverId):', server);
+              return null;
+            }
+
+            // 兼容不同的字段名
+            const serverName = server.label || server.name || server.serverName || `服务器${serverId}`;
+
+            return {
+              raceId: server.raceId || 1,
+              serverId: serverId,
+              serverName: serverName,
+              serverShortName: serverName.substring(0, 2)
+            };
+          }).filter(s => s !== null); // 过滤掉无效数据
+
+          // 如果处理后没有有效服务器,不更新文件
+          if (serverList.length === 0) {
+            console.log('⚠️ 没有有效的服务器数据,跳过更新以保留现有数据');
+            resolve({ success: false, message: '没有有效的服务器数据', count: 0 });
+            return;
+          }
 
           const outputPath = path.join(__dirname, '../public/data/serverId.json');
           const outputData = { serverList };
