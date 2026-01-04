@@ -7,6 +7,20 @@ export default defineConfig({
   build: {
     outDir: '../部署/chunxia-legion/dist',  // 直接输出到部署目录
     emptyOutDir: true,  // 构建前清空输出目录
+    rollupOptions: {
+      input: {
+        main: './index.html',
+      },
+      output: {
+        // 确保 Service Worker 文件不被 hash 重命名
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'sw.js') {
+            return 'sw.js';
+          }
+          return 'assets/[name]-[hash][extname]';
+        }
+      }
+    }
   },
   server: {
     host: '0.0.0.0', // 允许局域网访问
