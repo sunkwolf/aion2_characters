@@ -21,7 +21,7 @@ function App() {
             <Route path="/legion" element={<LegionPage />} />
             <Route path="/member/:id" element={<MemberDetailPage />} />
             <Route path="/character-bd" element={<CharacterBDPage />} />
-            <Route path="/character-detail" element={<MemberDetailPage />} />
+            <Route path="/character/:serverId/:characterId" element={<MemberDetailPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>

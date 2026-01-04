@@ -1,30 +1,15 @@
 {
-  "petwing": {
-    "pet": {
-      "id": 1211,
-      "name": "天空鯨魚",
-      "level": 5,
-      "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Vehicle_Portrait_SkyWhale_01.png"
-    },
-    "wing": {
-      "id": 30101200,
-      "name": "闇黑破片翅膀",
-      "enchantLevel": 0,
-      "grade": "Unique",
-      "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WingA_012.png"
-    }
-  },
   "equipment": {
     "equipmentList": [
       {
-        "id": 110430035,
-        "name": "破裂長弓",
+        "id": 110430015,
+        "name": "真龍王弓",
         "grade": "Unique",
         "gradeName": "獨特",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WP_BW_0031_T06.png",
-        "level": 68,
-        "levelValue": 24,
-        "enchantLevel": 10,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WP_BW_0036_T05.png",
+        "level": 70,
+        "levelValue": 41,
+        "enchantLevel": 17,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -32,6 +17,7 @@
         "decomposable": true,
         "maxEnchantLevel": 15,
         "maxExceedEnchantLevel": 5,
+        "raceName": "天族",
         "classNames": [
           "弓星"
         ],
@@ -41,18 +27,18 @@
         "magicStoneSlotCount": 4,
         "godStoneSlotCount": 1,
         "costumes": [
-          "吉凱爾思念體(弓)"
+          "被遺忘之歌(弓)"
         ],
-        "subStatCount": 4,
-        "subSkillCountMax": 4,
+        "subStatCount": 5,
+        "subSkillCountMax": 5,
         "subStatRandom": true,
         "mainStats": [
           {
             "id": "WeaponFixingDamage",
             "name": "攻擊力",
-            "minValue": "267",
-            "value": "336",
-            "extra": "125",
+            "minValue": "275",
+            "value": "346",
+            "extra": "225",
             "exceed": false
           },
           {
@@ -68,14 +54,45 @@
             "value": "100",
             "extra": "0",
             "exceed": false
+          },
+          {
+            "id": "PvEAmplifyDamage",
+            "name": "PVE傷害增幅",
+            "value": "5%",
+            "extra": "0%",
+            "exceed": false
+          },
+          {
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "0",
+            "extra": "60",
+            "exceed": true
+          },
+          {
+            "id": "DamageRatio",
+            "name": "攻擊力增加",
+            "value": "0%",
+            "extra": "2%",
+            "exceed": true
           }
         ],
-        "soulBindRate": "82.7",
+        "soulBindRate": "100",
         "subStats": [
+          {
+            "id": "STR",
+            "name": "威力",
+            "value": "68"
+          },
           {
             "id": "CombatSpeed",
             "name": "戰鬥速度",
-            "value": "10%"
+            "value": "10.6%"
+          },
+          {
+            "id": "AGI",
+            "name": "精確",
+            "value": "68"
           },
           {
             "id": "AdditionalHitRate",
@@ -83,58 +100,56 @@
             "value": "7.5%"
           },
           {
-            "id": "BackAttackDamage",
-            "name": "後方攻擊力",
-            "value": "46"
-          },
-          {
             "id": "AmplifyWeaponDamage",
             "name": "武器傷害增幅",
-            "value": "11%"
+            "value": "11.5%"
           }
         ],
         "magicStoneStat": [
           {
-            "id": "ArmorDefense",
+            "id": "HPMax",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+30",
-            "name": "防禦力",
+            "value": "+60",
+            "name": "生命力",
             "grade": "Rare",
             "slotPos": 0
           },
           {
-            "id": "Evasion",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+15",
-            "name": "額外迴避",
-            "grade": "Unique",
-            "slotPos": 1
-          },
-          {
-            "id": "Accuracy",
+            "id": "Block",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
             "value": "+10",
-            "name": "額外命中",
-            "grade": "Legend",
-            "slotPos": 2
+            "name": "格擋",
+            "grade": "Rare",
+            "slotPos": 1
           },
           {
             "id": "MPMax",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+30",
+            "value": "+50",
             "name": "精神力",
-            "grade": "Rare",
+            "grade": "Legend",
+            "slotPos": 2
+          },
+          {
+            "id": "AmplifyAllDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
+            "value": "+100",
+            "name": "傷害增幅",
+            "grade": "Unique",
             "slotPos": 3
           }
         ],
         "godStoneStat": [
           {
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Godstone_WP_r_011.png",
-            "name": "神石：吉凱爾的片段",
-            "desc": "攻擊時，以1%機率賦予單一目標火屬性傷害2000\n效果發動冷卻時間：1秒\n穿戴多個相同的神石時，僅套用一個效果。",
-            "grade": "Rare",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Godstone_WP_r_016.png",
+            "name": "神石：海格黛的聰明",
+            "desc": "攻擊時，以4%機率賦予最多4人廣域水屬性傷害1000\n效果發動冷卻時間：1秒\n穿戴多個相同的神石時，僅套用一個效果。",
+            "grade": "Legend",
             "slotPos": 0
           }
+        ],
+        "sources": [
+          "製作"
         ],
         "slotPos": 1,
         "slotPosName": "MainHand"
@@ -146,8 +161,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Weapon_Guarder_R_032.png",
         "level": 70,
-        "levelValue": 36,
-        "enchantLevel": 16,
+        "levelValue": 41,
+        "enchantLevel": 17,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -197,46 +212,43 @@
             "id": "WeaponFixingDamage",
             "name": "攻擊力",
             "value": "0",
-            "extra": "30",
+            "extra": "60",
             "exceed": true
           },
           {
             "id": "DamageRatio",
             "name": "攻擊力增加",
             "value": "0%",
-            "extra": "1%",
+            "extra": "2%",
             "exceed": true
           }
         ],
-        "soulBindRate": "39.6",
+        "soulBindRate": "100",
         "subStats": [
           {
             "id": "STR",
             "name": "威力",
-            "value": "44"
+            "value": "53"
           },
           {
             "id": "WeaponFixingDamage",
             "name": "攻擊力",
-            "value": "18"
+            "value": "25"
           },
           {
             "id": "AdditionalHitRate",
             "name": "多段打擊擊中",
-            "value": "4.9%"
+            "value": "5.7%"
           },
           {
             "id": "AGI",
             "name": "精確",
-            "value": "42"
-          }
-        ],
-        "subSkills": [
+            "value": "53"
+          },
           {
-            "id": 14340000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_034.png",
-            "name": "速射"
+            "id": "AmplifyWeaponDamage",
+            "name": "武器傷害增幅",
+            "value": "8.6%"
           }
         ],
         "magicStoneStat": [
@@ -275,9 +287,9 @@
         ],
         "godStoneStat": [
           {
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Godstone_WP_r_016.png",
-            "name": "神石：阿爾拉弗里的咒術",
-            "desc": "攻擊時，以4%機率賦予最多4人廣域水屬性傷害500\n效果發動冷卻時間：1秒\n穿戴多個相同的神石時，僅套用一個效果。",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Godstone_WP_r_008.png",
+            "name": "神石：諾頓的技巧",
+            "desc": "攻擊時，以3%機率5秒期間賦予戰鬥速度-50%\n效果發動冷卻時間：5秒\n穿戴多個相同的神石時，僅套用一個效果。",
             "grade": "Rare",
             "slotPos": 0
           }
@@ -289,14 +301,14 @@
         "slotPosName": "SubHand"
       },
       {
-        "id": 210130052,
-        "name": "巴克隆胸甲",
+        "id": 210130053,
+        "name": "努亞庫胸甲",
         "grade": "Unique",
         "gradeName": "獨特",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_0028_T05_Torso.png",
-        "level": 76,
-        "levelValue": 21,
-        "enchantLevel": 10,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Torso.png",
+        "level": 84,
+        "levelValue": 24,
+        "enchantLevel": 11,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -309,7 +321,7 @@
         "equipLevel": 45,
         "magicStoneSlotCount": 4,
         "costumes": [
-          "破滅捕食者(胸甲)"
+          "光榮守護者(胸甲)"
         ],
         "subStatCount": 4,
         "subSkillCountMax": 4,
@@ -318,60 +330,49 @@
           {
             "id": "ArmorDefense",
             "name": "防禦力",
-            "value": "377",
-            "extra": "125",
+            "value": "417",
+            "extra": "145",
             "exceed": false
           },
           {
             "id": "HPMax",
             "name": "生命力",
-            "value": "216",
-            "extra": "100",
+            "value": "238",
+            "extra": "110",
             "exceed": false
           }
         ],
-        "soulBindRate": "55.6",
+        "soulBindRate": "42.8",
         "subStats": [
-          {
-            "id": "CON",
-            "name": "體力",
-            "value": "28"
-          },
-          {
-            "id": "Critical",
-            "name": "暴擊",
-            "value": "18"
-          },
           {
             "id": "AmplifyAllDamage",
             "name": "傷害增幅",
-            "value": "9.7%"
-          }
-        ],
-        "subSkills": [
+            "value": "9.2%"
+          },
           {
-            "id": 14710000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_004.png",
-            "name": "警戒之眼"
+            "id": "ArmorEvasion",
+            "name": "迴避",
+            "value": "34"
+          },
+          {
+            "id": "HPMax",
+            "name": "生命力",
+            "value": "152"
+          },
+          {
+            "id": "CriticalResist",
+            "name": "暴擊抵抗",
+            "value": "22"
           }
         ],
         "magicStoneStat": [
           {
-            "id": "Block",
+            "id": "Accuracy",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
             "value": "+10",
-            "name": "格擋",
-            "grade": "Rare",
+            "name": "額外命中",
+            "grade": "Legend",
             "slotPos": 0
-          },
-          {
-            "id": "Critical",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+7",
-            "name": "暴擊",
-            "grade": "Rare",
-            "slotPos": 1
           },
           {
             "id": "WeaponFixingDamage",
@@ -379,14 +380,22 @@
             "value": "+5",
             "name": "攻擊力",
             "grade": "Legend",
+            "slotPos": 1
+          },
+          {
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
+            "value": "+10",
+            "name": "攻擊力",
+            "grade": "Unique",
             "slotPos": 2
           },
           {
-            "id": "HPMax",
+            "id": "CriticalResist",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+160",
-            "name": "生命力",
-            "grade": "Unique",
+            "value": "+10",
+            "name": "暴擊抵抗",
+            "grade": "Legend",
             "slotPos": 3
           }
         ],
@@ -398,14 +407,14 @@
         "slotPosName": "Torso"
       },
       {
-        "id": 210230052,
-        "name": "巴克隆腿甲",
+        "id": 210230053,
+        "name": "努亞庫腿甲",
         "grade": "Unique",
         "gradeName": "獨特",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_0028_T05_Pants.png",
-        "level": 76,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Pants.png",
+        "level": 84,
         "levelValue": 21,
-        "enchantLevel": 10,
+        "enchantLevel": 13,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -418,7 +427,7 @@
         "equipLevel": 45,
         "magicStoneSlotCount": 4,
         "costumes": [
-          "破滅捕食者(腿甲)"
+          "光榮守護者(腿甲)"
         ],
         "subStatCount": 4,
         "subSkillCountMax": 4,
@@ -427,75 +436,75 @@
           {
             "id": "ArmorDefense",
             "name": "防禦力",
-            "value": "283",
-            "extra": "125",
+            "value": "312",
+            "extra": "185",
             "exceed": false
           },
           {
             "id": "HPMax",
             "name": "生命力",
-            "value": "162",
-            "extra": "100",
+            "value": "179",
+            "extra": "130",
             "exceed": false
           }
         ],
-        "soulBindRate": "47.5",
+        "soulBindRate": "39.9",
         "subStats": [
+          {
+            "id": "DecreaseDamage",
+            "name": "傷害耐性",
+            "value": "7.7%"
+          },
           {
             "id": "BackAttackDefense",
             "name": "後方防禦力",
-            "value": "142"
+            "value": "137"
           },
           {
-            "id": "WIS",
-            "name": "意志",
-            "value": "24"
-          },
-          {
-            "id": "Block",
-            "name": "格擋",
-            "value": "20"
+            "id": "ArmorEvasion",
+            "name": "迴避",
+            "value": "25"
           }
         ],
         "subSkills": [
           {
-            "id": 14720000,
+            "id": 14730000,
             "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_003.png",
-            "name": "集中砲火"
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_006.png",
+            "name": "風之活力"
           }
         ],
         "magicStoneStat": [
           {
-            "id": "MPMax",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
-            "value": "+65",
-            "name": "精神力",
-            "grade": "Legend",
+            "value": "+4",
+            "name": "攻擊力",
+            "grade": "Rare",
             "slotPos": 0
           },
           {
-            "id": "Accuracy",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
-            "value": "+13",
-            "name": "額外命中",
+            "value": "+8",
+            "name": "攻擊力",
             "grade": "Legend",
             "slotPos": 1
           },
           {
-            "id": "HPMax",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
-            "value": "+130",
-            "name": "生命力",
-            "grade": "Legend",
+            "value": "+4",
+            "name": "攻擊力",
+            "grade": "Rare",
             "slotPos": 2
           },
           {
             "id": "Block",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
-            "value": "+13",
+            "value": "+9",
             "name": "格擋",
-            "grade": "Rare",
+            "grade": "Common",
             "slotPos": 3
           }
         ],
@@ -513,8 +522,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Helmet.png",
         "level": 84,
-        "levelValue": 15,
-        "enchantLevel": 5,
+        "levelValue": 13,
+        "enchantLevel": 0,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -537,74 +546,71 @@
             "id": "ArmorDefense",
             "name": "防禦力",
             "value": "260",
-            "extra": "50",
+            "extra": "0",
             "exceed": false
           },
           {
             "id": "HPMax",
             "name": "生命力",
             "value": "149",
-            "extra": "50",
+            "extra": "0",
             "exceed": false
           }
         ],
-        "soulBindRate": "52.4",
+        "soulBindRate": "28.3",
         "subStats": [
           {
-            "id": "Critical",
-            "name": "暴擊",
-            "value": "16"
+            "id": "MPRegen",
+            "name": "精神力自然恢復",
+            "value": "12"
           },
           {
-            "id": "HPMax",
-            "name": "生命力",
-            "value": "101"
+            "id": "Block",
+            "name": "格擋",
+            "value": "17"
           },
           {
-            "id": "ArmorDefense",
-            "name": "防禦力",
-            "value": "75"
-          }
-        ],
-        "subSkills": [
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "13"
+          },
           {
-            "id": 14770000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_008.png",
-            "name": "束縛之眼"
+            "id": "CriticalDamageDefense",
+            "name": "暴擊防禦力",
+            "value": "121"
           }
         ],
         "magicStoneStat": [
           {
-            "id": "CriticalResist",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+15",
-            "name": "暴擊抵抗",
-            "grade": "Unique",
+            "value": "+3",
+            "name": "攻擊力",
+            "grade": "Rare",
             "slotPos": 0
           },
           {
-            "id": "Critical",
+            "id": "Block",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+7",
-            "name": "暴擊",
-            "grade": "Rare",
+            "value": "+20",
+            "name": "格擋",
+            "grade": "Unique",
             "slotPos": 1
           },
           {
             "id": "Critical",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+7",
+            "value": "+15",
             "name": "暴擊",
-            "grade": "Rare",
+            "grade": "Unique",
             "slotPos": 2
           },
           {
-            "id": "ArmorDefense",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+30",
-            "name": "防禦力",
-            "grade": "Rare",
+            "value": "+5",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 3
           }
         ],
@@ -622,8 +628,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Shoulder.png",
         "level": 84,
-        "levelValue": 16,
-        "enchantLevel": 5,
+        "levelValue": 21,
+        "enchantLevel": 10,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -646,50 +652,50 @@
             "id": "ArmorDefense",
             "name": "防禦力",
             "value": "260",
-            "extra": "50",
+            "extra": "125",
             "exceed": false
           },
           {
             "id": "HPMax",
             "name": "生命力",
             "value": "149",
-            "extra": "50",
+            "extra": "100",
             "exceed": false
           }
         ],
-        "soulBindRate": "49.2",
+        "soulBindRate": "32.6",
         "subStats": [
+          {
+            "id": "AmplifyCriticalDamage",
+            "name": "暴擊傷害增幅",
+            "value": "10.8%"
+          },
+          {
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "10"
+          },
           {
             "id": "MPRegen",
             "name": "精神力自然恢復",
             "value": "13"
-          },
-          {
-            "id": "MPMax",
-            "name": "精神力",
-            "value": "50"
-          },
-          {
-            "id": "ArmorDefense",
-            "name": "防禦力",
-            "value": "81"
           }
         ],
         "subSkills": [
           {
-            "id": 14740000,
+            "id": 14790000,
             "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_001.png",
-            "name": "集中之眼"
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_009.png",
+            "name": "回生契約"
           }
         ],
         "magicStoneStat": [
           {
-            "id": "Critical",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+7",
-            "name": "暴擊",
-            "grade": "Rare",
+            "value": "+10",
+            "name": "攻擊力",
+            "grade": "Unique",
             "slotPos": 0
           },
           {
@@ -701,19 +707,19 @@
             "slotPos": 1
           },
           {
-            "id": "CriticalResist",
+            "id": "Accuracy",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
             "value": "+7",
-            "name": "暴擊抵抗",
+            "name": "額外命中",
             "grade": "Rare",
             "slotPos": 2
           },
           {
-            "id": "HPMax",
+            "id": "Evasion",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+160",
-            "name": "生命力",
-            "grade": "Unique",
+            "value": "+7",
+            "name": "額外迴避",
+            "grade": "Rare",
             "slotPos": 3
           }
         ],
@@ -766,12 +772,12 @@
             "exceed": false
           }
         ],
-        "soulBindRate": "54.7",
+        "soulBindRate": "51.9",
         "subStats": [
           {
-            "id": "WIS",
-            "name": "意志",
-            "value": "20"
+            "id": "HPMax",
+            "name": "生命力",
+            "value": "101"
           },
           {
             "id": "Critical",
@@ -854,7 +860,7 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Boots.png",
         "level": 84,
-        "levelValue": 16,
+        "levelValue": 14,
         "enchantLevel": 5,
         "storable": true,
         "tradable": false,
@@ -914,35 +920,35 @@
         ],
         "magicStoneStat": [
           {
-            "id": "Evasion",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+10",
-            "name": "額外迴避",
-            "grade": "Legend",
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
+            "value": "+4",
+            "name": "攻擊力",
+            "grade": "Rare",
             "slotPos": 0
           },
           {
-            "id": "Evasion",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+7",
-            "name": "額外迴避",
-            "grade": "Rare",
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
+            "value": "+8",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 1
           },
           {
-            "id": "MPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+30",
-            "name": "精神力",
-            "grade": "Rare",
+            "id": "ArmorDefense",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
+            "value": "+75",
+            "name": "防禦力",
+            "grade": "Legend",
             "slotPos": 2
           },
           {
-            "id": "HPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+160",
-            "name": "生命力",
-            "grade": "Unique",
+            "id": "MPMax",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_002.png",
+            "value": "+23",
+            "name": "精神力",
+            "grade": "Common",
             "slotPos": 3
           }
         ],
@@ -960,8 +966,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Equip_AR_L_Idris_01_Cape.png",
         "level": 84,
-        "levelValue": 15,
-        "enchantLevel": 5,
+        "levelValue": 20,
+        "enchantLevel": 10,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -984,14 +990,14 @@
             "id": "ArmorDefense",
             "name": "防禦力",
             "value": "208",
-            "extra": "50",
+            "extra": "125",
             "exceed": false
           },
           {
             "id": "HPMax",
             "name": "生命力",
             "value": "119",
-            "extra": "50",
+            "extra": "100",
             "exceed": false
           }
         ],
@@ -1023,35 +1029,35 @@
         ],
         "magicStoneStat": [
           {
+            "id": "Accuracy",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
+            "value": "+7",
+            "name": "額外命中",
+            "grade": "Rare",
+            "slotPos": 0
+          },
+          {
             "id": "MPMax",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
             "value": "+30",
             "name": "精神力",
             "grade": "Rare",
-            "slotPos": 0
-          },
-          {
-            "id": "WeaponFixingDamage",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+3",
-            "name": "攻擊力",
-            "grade": "Rare",
             "slotPos": 1
           },
           {
-            "id": "Evasion",
+            "id": "HPMax",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+15",
-            "name": "額外迴避",
-            "grade": "Unique",
+            "value": "+60",
+            "name": "生命力",
+            "grade": "Rare",
             "slotPos": 2
           },
           {
             "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_MagicStone_A_c_003.png",
-            "value": "+3",
+            "value": "+10",
             "name": "攻擊力",
-            "grade": "Rare",
+            "grade": "Unique",
             "slotPos": 3
           }
         ],
@@ -1360,7 +1366,7 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_ER_0053.png",
         "level": 84,
-        "levelValue": 19,
+        "levelValue": 12,
         "enchantLevel": 5,
         "storable": true,
         "tradable": false,
@@ -1423,35 +1429,35 @@
         ],
         "magicStoneStat": [
           {
-            "id": "Block",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+10",
-            "name": "格擋",
-            "grade": "Rare",
+            "id": "HPMax",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+130",
+            "name": "生命力",
+            "grade": "Legend",
             "slotPos": 0
           },
           {
-            "id": "Evasion",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+15",
-            "name": "額外迴避",
-            "grade": "Unique",
+            "id": "Block",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+13",
+            "name": "格擋",
+            "grade": "Rare",
             "slotPos": 1
           },
           {
-            "id": "HPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+160",
-            "name": "生命力",
-            "grade": "Unique",
+            "id": "Critical",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+6",
+            "name": "暴擊",
+            "grade": "Common",
             "slotPos": 2
           },
           {
             "id": "MPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+80",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+23",
             "name": "精神力",
-            "grade": "Unique",
+            "grade": "Common",
             "slotPos": 3
           }
         ],
@@ -1463,14 +1469,14 @@
         "slotPosName": "Earring2"
       },
       {
-        "id": 310330053,
-        "name": "憤怒的克羅梅德戒指",
+        "id": 310330015,
+        "name": "真龍王戒指",
         "grade": "Unique",
         "gradeName": "獨特",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Ring_0053.png",
-        "level": 84,
-        "levelValue": 19,
-        "enchantLevel": 5,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Ring_0036.png",
+        "level": 70,
+        "levelValue": 31,
+        "enchantLevel": 16,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -1478,105 +1484,140 @@
         "decomposable": true,
         "maxEnchantLevel": 15,
         "maxExceedEnchantLevel": 5,
+        "raceName": "天族",
         "categoryName": "戒指",
         "type": "Accessory",
         "equipLevel": 45,
         "magicStoneSlotCount": 4,
-        "subStatCount": 4,
-        "subSkillCountMax": 4,
+        "subStatCount": 5,
+        "subSkillCountMax": 5,
         "subStatRandom": true,
         "mainStats": [
           {
             "id": "WeaponFixingDamage",
             "name": "攻擊力",
-            "value": "43",
-            "extra": "25",
+            "value": "36",
+            "extra": "75",
             "exceed": false
           },
           {
             "id": "ArmorDefense",
             "name": "防禦力",
-            "value": "149",
-            "extra": "25",
+            "value": "124",
+            "extra": "75",
             "exceed": false
+          },
+          {
+            "id": "PvEAmplifyDamage",
+            "name": "PVE傷害增幅",
+            "value": "2.5%",
+            "extra": "0%",
+            "exceed": false
+          },
+          {
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "0",
+            "extra": "20",
+            "exceed": true
+          },
+          {
+            "id": "ArmorDefense",
+            "name": "防禦力",
+            "value": "0",
+            "extra": "20",
+            "exceed": true
+          },
+          {
+            "id": "DamageRatio",
+            "name": "攻擊力增加",
+            "value": "0%",
+            "extra": "1%",
+            "exceed": true
           }
         ],
-        "soulBindRate": "39.3",
+        "soulBindRate": "82",
         "subStats": [
           {
-            "id": "HPMax",
-            "name": "生命力",
-            "value": "81"
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "16"
           },
           {
-            "id": "INT",
-            "name": "知識",
-            "value": "15"
-          },
-          {
-            "id": "WeaponAccuracy",
-            "name": "命中",
-            "value": "20"
+            "id": "ArmorEvasion",
+            "name": "迴避",
+            "value": "13"
           }
         ],
         "subSkills": [
+          {
+            "id": 14010000,
+            "level": 1,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_002.png",
+            "name": "瞄準箭"
+          },
           {
             "id": 14080000,
             "level": 1,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_008.png",
             "name": "破裂箭"
+          },
+          {
+            "id": 14330000,
+            "level": 1,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_033.png",
+            "name": "箭矢掃射"
           }
         ],
         "magicStoneStat": [
           {
             "id": "HPMax",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+160",
+            "value": "+60",
             "name": "生命力",
-            "grade": "Unique",
+            "grade": "Rare",
             "slotPos": 0
           },
           {
-            "id": "Block",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+20",
-            "name": "格擋",
-            "grade": "Unique",
+            "value": "+5",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 1
           },
           {
-            "id": "ArmorDefense",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+30",
-            "name": "防禦力",
-            "grade": "Rare",
+            "value": "+5",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 2
           },
           {
-            "id": "MPMax",
+            "id": "WeaponFixingDamage",
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+80",
-            "name": "精神力",
-            "grade": "Unique",
+            "value": "+5",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 3
           }
         ],
         "sources": [
-          "遠征",
-          "聖域"
+          "製作"
         ],
-        "slotPos": 13,
-        "slotPosName": "Ring1"
+        "slotPos": 14,
+        "slotPosName": "Ring2"
       },
       {
-        "id": 310330053,
-        "name": "憤怒的克羅梅德戒指",
+        "id": 310330015,
+        "name": "真龍王戒指",
         "grade": "Unique",
         "gradeName": "獨特",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Ring_0053.png",
-        "level": 84,
-        "levelValue": 10,
-        "enchantLevel": 0,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Ring_0036.png",
+        "level": 70,
+        "levelValue": 28,
+        "enchantLevel": 16,
         "storable": true,
         "tradable": false,
         "tradablePersonal": false,
@@ -1584,92 +1625,130 @@
         "decomposable": true,
         "maxEnchantLevel": 15,
         "maxExceedEnchantLevel": 5,
+        "raceName": "天族",
         "categoryName": "戒指",
         "type": "Accessory",
         "equipLevel": 45,
         "magicStoneSlotCount": 4,
-        "subStatCount": 4,
-        "subSkillCountMax": 4,
+        "subStatCount": 5,
+        "subSkillCountMax": 5,
         "subStatRandom": true,
         "mainStats": [
           {
             "id": "WeaponFixingDamage",
             "name": "攻擊力",
-            "value": "43",
-            "extra": "0",
+            "value": "36",
+            "extra": "75",
             "exceed": false
           },
           {
             "id": "ArmorDefense",
             "name": "防禦力",
-            "value": "149",
-            "extra": "0",
+            "value": "124",
+            "extra": "75",
             "exceed": false
+          },
+          {
+            "id": "PvEAmplifyDamage",
+            "name": "PVE傷害增幅",
+            "value": "2.5%",
+            "extra": "0%",
+            "exceed": false
+          },
+          {
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "0",
+            "extra": "20",
+            "exceed": true
+          },
+          {
+            "id": "ArmorDefense",
+            "name": "防禦力",
+            "value": "0",
+            "extra": "20",
+            "exceed": true
+          },
+          {
+            "id": "DamageRatio",
+            "name": "攻擊力增加",
+            "value": "0%",
+            "extra": "1%",
+            "exceed": true
           }
         ],
-        "soulBindRate": "35.8",
+        "soulBindRate": "80",
         "subStats": [
           {
-            "id": "CriticalResist",
-            "name": "暴擊抵抗",
+            "id": "WeaponFixingDamage",
+            "name": "攻擊力",
+            "value": "9"
+          },
+          {
+            "id": "Critical",
+            "name": "暴擊",
             "value": "15"
+          }
+        ],
+        "subSkills": [
+          {
+            "id": 14010000,
+            "level": 1,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_002.png",
+            "name": "瞄準箭"
           },
           {
-            "id": "HPMax",
-            "name": "生命力",
-            "value": "82"
+            "id": 14020000,
+            "level": 1,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_001.png",
+            "name": "狙擊"
           },
           {
-            "id": "MPMax",
-            "name": "精神力",
-            "value": "44"
-          },
-          {
-            "id": "HPRegen",
-            "name": "生命力自然恢復",
-            "value": "24"
+            "id": 14340000,
+            "level": 1,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_034.png",
+            "name": "速射"
           }
         ],
         "magicStoneStat": [
           {
-            "id": "Block",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+20",
-            "name": "格擋",
-            "grade": "Unique",
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+8",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 0
           },
           {
-            "id": "MPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+30",
-            "name": "精神力",
-            "grade": "Rare",
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+2",
+            "name": "攻擊力",
+            "grade": "Common",
             "slotPos": 1
           },
           {
-            "id": "Block",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+10",
-            "name": "格擋",
-            "grade": "Rare",
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+2",
+            "name": "攻擊力",
+            "grade": "Common",
             "slotPos": 2
           },
           {
-            "id": "ArmorDefense",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+30",
-            "name": "防禦力",
-            "grade": "Rare",
+            "id": "WeaponFixingDamage",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+8",
+            "name": "攻擊力",
+            "grade": "Legend",
             "slotPos": 3
           }
         ],
         "sources": [
-          "遠征",
-          "聖域"
+          "製作"
         ],
-        "slotPos": 14,
-        "slotPosName": "Ring2"
+        "slotPos": 13,
+        "slotPosName": "Ring1"
       },
       {
         "id": 310430046,
@@ -1678,7 +1757,7 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Bracelet_R_027.png",
         "level": 63,
-        "levelValue": 21,
+        "levelValue": 20,
         "enchantLevel": 10,
         "storable": false,
         "tradable": false,
@@ -1740,33 +1819,33 @@
         "magicStoneStat": [
           {
             "id": "MPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+30",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+40",
             "name": "精神力",
             "grade": "Rare",
             "slotPos": 0
           },
           {
-            "id": "Critical",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+15",
-            "name": "暴擊",
-            "grade": "Unique",
+            "id": "HPMax",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+80",
+            "name": "生命力",
+            "grade": "Rare",
             "slotPos": 1
           },
           {
             "id": "WeaponFixingDamage",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+3",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+8",
             "name": "攻擊力",
-            "grade": "Rare",
+            "grade": "Legend",
             "slotPos": 2
           },
           {
-            "id": "MPMax",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_003.png",
-            "value": "+50",
-            "name": "精神力",
+            "id": "CriticalResist",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+13",
+            "name": "暴擊抵抗",
             "grade": "Legend",
             "slotPos": 3
           }
@@ -1781,7 +1860,7 @@
         "gradeName": "傳承",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_ACC_Bracelet_0071.png",
         "level": 54,
-        "levelValue": 15,
+        "levelValue": 18,
         "enchantLevel": 10,
         "storable": false,
         "tradable": false,
@@ -1836,25 +1915,25 @@
         "magicStoneStat": [
           {
             "id": "WeaponFixingDamage",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_001.png",
-            "value": "+1",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+8",
             "name": "攻擊力",
-            "grade": "Common",
+            "grade": "Legend",
             "slotPos": 0
           },
           {
-            "id": "WeaponFixingDamage",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_001.png",
-            "value": "+3",
-            "name": "攻擊力",
-            "grade": "Rare",
+            "id": "Critical",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+13",
+            "name": "暴擊",
+            "grade": "Legend",
             "slotPos": 1
           },
           {
-            "id": "Accuracy",
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_001.png",
-            "value": "+7",
-            "name": "額外命中",
+            "id": "HPMax",
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Usable_Enchant_SoulStone_A_c_002.png",
+            "value": "+80",
+            "name": "生命力",
             "grade": "Rare",
             "slotPos": 2
           }
@@ -1873,8 +1952,8 @@
         "gradeName": "特殊",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Rune_R_002.png",
         "level": 40,
-        "levelValue": 3,
-        "enchantLevel": 3,
+        "levelValue": 5,
+        "enchantLevel": 5,
         "storable": false,
         "tradable": false,
         "tradablePersonal": false,
@@ -1899,7 +1978,7 @@
             "id": "DefensePierce",
             "name": "貫穿",
             "value": "100",
-            "extra": "0",
+            "extra": "50",
             "exceed": false
           },
           {
@@ -1913,14 +1992,14 @@
             "id": "PvEAmplifyDamage",
             "name": "PVE傷害增幅",
             "value": "0.5%",
-            "extra": "0.5%",
+            "extra": "1.5%",
             "exceed": false
           },
           {
             "id": "PvEDecreaseDamage",
             "name": "PVE傷害耐性",
             "value": "0.5%",
-            "extra": "1.5%",
+            "extra": "2.5%",
             "exceed": false
           }
         ],
@@ -1938,8 +2017,8 @@
         "gradeName": "特殊",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Acc_Rune_R_002.png",
         "level": 40,
-        "levelValue": 4,
-        "enchantLevel": 4,
+        "levelValue": 5,
+        "enchantLevel": 5,
         "storable": false,
         "tradable": false,
         "tradablePersonal": false,
@@ -1964,7 +2043,7 @@
             "id": "DefensePierce",
             "name": "貫穿",
             "value": "100",
-            "extra": "0",
+            "extra": "50",
             "exceed": false
           },
           {
@@ -1978,14 +2057,14 @@
             "id": "PvEAmplifyDamage",
             "name": "PVE傷害增幅",
             "value": "0.5%",
-            "extra": "1%",
+            "extra": "1.5%",
             "exceed": false
           },
           {
             "id": "PvEDecreaseDamage",
             "name": "PVE傷害耐性",
             "value": "0.5%",
-            "extra": "2%",
+            "extra": "2.5%",
             "exceed": false
           }
         ],
@@ -2004,8 +2083,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Item_Craft_Conversion_Crystal_L_lv5_01.png",
         "level": 65,
-        "levelValue": 6,
-        "enchantLevel": 6,
+        "levelValue": 7,
+        "enchantLevel": 7,
         "storable": false,
         "tradable": false,
         "tradablePersonal": false,
@@ -2023,14 +2102,14 @@
             "id": "DefensePierce",
             "name": "貫穿",
             "value": "700",
-            "extra": "180",
+            "extra": "210",
             "exceed": false
           },
           {
             "id": "SealStoneAddDamage",
             "name": "封魂石額外傷害",
             "value": "40",
-            "extra": "18",
+            "extra": "21",
             "exceed": false
           },
           {
@@ -2062,8 +2141,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Grail_u_PveSet2.png",
         "level": 80,
-        "levelValue": 3,
-        "enchantLevel": 3,
+        "levelValue": 4,
+        "enchantLevel": 4,
         "storable": false,
         "tradable": false,
         "tradablePersonal": false,
@@ -2081,7 +2160,7 @@
             "id": "Time",
             "name": "時間[希埃爾]",
             "value": "20",
-            "extra": "3",
+            "extra": "4",
             "exceed": false
           }
         ],
@@ -2107,7 +2186,7 @@
           },
           {
             "id": 14730000,
-            "level": 1,
+            "level": 2,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_006.png",
             "name": "風之活力"
           }
@@ -2115,7 +2194,7 @@
         "set": {
           "id": "Arcana_A_set_001",
           "name": "太初活力",
-          "equippedCount": 5,
+          "equippedCount": 2,
           "items": [
             {
               "id": 810130001,
@@ -2164,20 +2243,19 @@
               ]
             },
             {
-              "id": 810350001,
+              "id": 810330001,
               "name": "活力指南針",
-              "grade": "Rare",
-              "equipped": true,
+              "grade": "Unique",
               "children": [
-                {
-                  "id": 810330001,
-                  "name": "活力指南針",
-                  "grade": "Unique"
-                },
                 {
                   "id": 810340001,
                   "name": "活力指南針",
                   "grade": "Legend"
+                },
+                {
+                  "id": 810350001,
+                  "name": "活力指南針",
+                  "grade": "Rare"
                 },
                 {
                   "id": 810360001,
@@ -2187,15 +2265,14 @@
               ]
             },
             {
-              "id": 810440001,
+              "id": 810430001,
               "name": "活力鐘",
-              "grade": "Legend",
-              "equipped": true,
+              "grade": "Unique",
               "children": [
                 {
-                  "id": 810430001,
+                  "id": 810440001,
                   "name": "活力鐘",
-                  "grade": "Unique"
+                  "grade": "Legend"
                 },
                 {
                   "id": 810450001,
@@ -2210,20 +2287,19 @@
               ]
             },
             {
-              "id": 810550001,
+              "id": 810530001,
               "name": "活力鏡子",
-              "grade": "Rare",
-              "equipped": true,
+              "grade": "Unique",
               "children": [
-                {
-                  "id": 810530001,
-                  "name": "活力鏡子",
-                  "grade": "Unique"
-                },
                 {
                   "id": 810540001,
                   "name": "活力鏡子",
                   "grade": "Legend"
+                },
+                {
+                  "id": 810550001,
+                  "name": "活力鏡子",
+                  "grade": "Rare"
                 },
                 {
                   "id": 810560001,
@@ -2258,8 +2334,8 @@
         "gradeName": "獨特",
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Parchment_u_PveSet2.png",
         "level": 80,
-        "levelValue": 2,
-        "enchantLevel": 2,
+        "levelValue": 4,
+        "enchantLevel": 4,
         "storable": false,
         "tradable": false,
         "tradablePersonal": false,
@@ -2277,18 +2353,12 @@
             "id": "Life",
             "name": "生命[尤斯迪埃]",
             "value": "20",
-            "extra": "2",
+            "extra": "4",
             "exceed": false
           }
         ],
         "soulBindRate": "100",
         "subSkills": [
-          {
-            "id": 14340000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_034.png",
-            "name": "速射"
-          },
           {
             "id": 14020000,
             "level": 2,
@@ -2297,21 +2367,27 @@
           },
           {
             "id": 14080000,
-            "level": 1,
+            "level": 2,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_008.png",
             "name": "破裂箭"
           },
           {
-            "id": 14170000,
+            "id": 14050000,
             "level": 2,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_017.png",
-            "name": "爆炸圈套"
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_005.png",
+            "name": "利錐箭"
+          },
+          {
+            "id": 14340000,
+            "level": 2,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_034.png",
+            "name": "速射"
           }
         ],
         "set": {
           "id": "Arcana_A_set_001",
           "name": "太初活力",
-          "equippedCount": 5,
+          "equippedCount": 2,
           "items": [
             {
               "id": 810130001,
@@ -2360,20 +2436,19 @@
               ]
             },
             {
-              "id": 810350001,
+              "id": 810330001,
               "name": "活力指南針",
-              "grade": "Rare",
-              "equipped": true,
+              "grade": "Unique",
               "children": [
-                {
-                  "id": 810330001,
-                  "name": "活力指南針",
-                  "grade": "Unique"
-                },
                 {
                   "id": 810340001,
                   "name": "活力指南針",
                   "grade": "Legend"
+                },
+                {
+                  "id": 810350001,
+                  "name": "活力指南針",
+                  "grade": "Rare"
                 },
                 {
                   "id": 810360001,
@@ -2383,15 +2458,14 @@
               ]
             },
             {
-              "id": 810440001,
+              "id": 810430001,
               "name": "活力鐘",
-              "grade": "Legend",
-              "equipped": true,
+              "grade": "Unique",
               "children": [
                 {
-                  "id": 810430001,
+                  "id": 810440001,
                   "name": "活力鐘",
-                  "grade": "Unique"
+                  "grade": "Legend"
                 },
                 {
                   "id": 810450001,
@@ -2406,20 +2480,19 @@
               ]
             },
             {
-              "id": 810550001,
+              "id": 810530001,
               "name": "活力鏡子",
-              "grade": "Rare",
-              "equipped": true,
+              "grade": "Unique",
               "children": [
-                {
-                  "id": 810530001,
-                  "name": "活力鏡子",
-                  "grade": "Unique"
-                },
                 {
                   "id": 810540001,
                   "name": "活力鏡子",
                   "grade": "Legend"
+                },
+                {
+                  "id": 810550001,
+                  "name": "活力鏡子",
+                  "grade": "Rare"
                 },
                 {
                   "id": 810560001,
@@ -2448,12 +2521,12 @@
         "slotPosName": "Arcana2"
       },
       {
-        "id": 810350001,
-        "name": "活力指南針",
-        "grade": "Rare",
-        "gradeName": "稀有",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Compass_u_PveSet2.png",
-        "level": 40,
+        "id": 810330002,
+        "name": "魔力指南針",
+        "grade": "Unique",
+        "gradeName": "獨特",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Compass_u_DefenceSet2.png",
+        "level": 80,
         "levelValue": 3,
         "enchantLevel": 3,
         "storable": false,
@@ -2461,18 +2534,18 @@
         "tradablePersonal": false,
         "enchantable": true,
         "decomposable": true,
-        "maxEnchantLevel": 3,
+        "maxEnchantLevel": 5,
         "categoryName": "指南針",
         "type": "Equip",
         "equipLevel": 45,
         "subStatCount": 0,
-        "subSkillCountMax": 2,
+        "subSkillCountMax": 4,
         "subStatRandom": true,
         "mainStats": [
           {
-            "id": "Freedom",
-            "name": "自由[白傑爾]",
-            "value": "12",
+            "id": "Death",
+            "name": "死亡[崔妮爾]",
+            "value": "20",
             "extra": "3",
             "exceed": false
           }
@@ -2486,140 +2559,138 @@
             "name": "瞄準箭"
           },
           {
+            "id": 14110000,
+            "level": 3,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_011.png",
+            "name": "狂風箭"
+          },
+          {
+            "id": 14070000,
+            "level": 1,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_007.png",
+            "name": "壓制箭"
+          },
+          {
             "id": 14090000,
             "level": 1,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_031.png",
             "name": "目標箭"
-          },
-          {
-            "id": 14330000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_033.png",
-            "name": "箭矢掃射"
-          },
-          {
-            "id": 14110000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_011.png",
-            "name": "狂風箭"
           }
         ],
         "set": {
-          "id": "Arcana_A_set_001",
-          "name": "太初活力",
-          "equippedCount": 5,
+          "id": "Arcana_A_set_002",
+          "name": "魔力盔甲",
+          "equippedCount": 3,
           "items": [
             {
-              "id": 810130001,
-              "name": "活力聖杯",
+              "id": 810130002,
+              "name": "魔力聖杯",
+              "grade": "Unique",
+              "children": [
+                {
+                  "id": 810140002,
+                  "name": "魔力聖杯",
+                  "grade": "Legend"
+                },
+                {
+                  "id": 810150002,
+                  "name": "魔力聖杯",
+                  "grade": "Rare"
+                },
+                {
+                  "id": 810160002,
+                  "name": "魔力聖杯",
+                  "grade": "Common"
+                }
+              ]
+            },
+            {
+              "id": 810230002,
+              "name": "魔力羊皮紙",
+              "grade": "Unique",
+              "children": [
+                {
+                  "id": 810240002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Legend"
+                },
+                {
+                  "id": 810250002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Rare"
+                },
+                {
+                  "id": 810260002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Common"
+                }
+              ]
+            },
+            {
+              "id": 810330002,
+              "name": "魔力指南針",
               "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810140001,
-                  "name": "活力聖杯",
+                  "id": 810340002,
+                  "name": "魔力指南針",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810150001,
-                  "name": "活力聖杯",
+                  "id": 810350002,
+                  "name": "魔力指南針",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810160001,
-                  "name": "活力聖杯",
+                  "id": 810360002,
+                  "name": "魔力指南針",
                   "grade": "Common"
                 }
               ]
             },
             {
-              "id": 810230001,
-              "name": "活力羊皮紙",
+              "id": 810430002,
+              "name": "魔力鐘",
               "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810240001,
-                  "name": "活力羊皮紙",
+                  "id": 810440002,
+                  "name": "魔力鐘",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810250001,
-                  "name": "活力羊皮紙",
+                  "id": 810450002,
+                  "name": "魔力鐘",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810260001,
-                  "name": "活力羊皮紙",
+                  "id": 810460002,
+                  "name": "魔力鐘",
                   "grade": "Common"
                 }
               ]
             },
             {
-              "id": 810350001,
-              "name": "活力指南針",
-              "grade": "Rare",
+              "id": 810530002,
+              "name": "魔力鏡子",
+              "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810330001,
-                  "name": "活力指南針",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810340001,
-                  "name": "活力指南針",
+                  "id": 810540002,
+                  "name": "魔力鏡子",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810360001,
-                  "name": "活力指南針",
-                  "grade": "Common"
-                }
-              ]
-            },
-            {
-              "id": 810440001,
-              "name": "活力鐘",
-              "grade": "Legend",
-              "equipped": true,
-              "children": [
-                {
-                  "id": 810430001,
-                  "name": "活力鐘",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810450001,
-                  "name": "活力鐘",
+                  "id": 810550002,
+                  "name": "魔力鏡子",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810460001,
-                  "name": "活力鐘",
-                  "grade": "Common"
-                }
-              ]
-            },
-            {
-              "id": 810550001,
-              "name": "活力鏡子",
-              "grade": "Rare",
-              "equipped": true,
-              "children": [
-                {
-                  "id": 810530001,
-                  "name": "活力鏡子",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810540001,
-                  "name": "活力鏡子",
-                  "grade": "Legend"
-                },
-                {
-                  "id": 810560001,
-                  "name": "活力鏡子",
+                  "id": 810560002,
+                  "name": "魔力鏡子",
                   "grade": "Common"
                 }
               ]
@@ -2629,13 +2700,13 @@
             {
               "degree": 2,
               "descriptions": [
-                "生命力高於70%時，PVE攻擊力增加60"
+                "精神力低於20%時，立即恢復精神力1500[冷卻時間30秒]"
               ]
             },
             {
               "degree": 4,
               "descriptions": [
-                "生命力高於70%時，PVE攻擊力增加150"
+                "精神力高於50%時，PVE防禦力增加1000"
               ]
             }
           ]
@@ -2644,12 +2715,12 @@
         "slotPosName": "Arcana3"
       },
       {
-        "id": 810440001,
-        "name": "活力鐘",
-        "grade": "Legend",
-        "gradeName": "傳承",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Bell_u_PveSet2.png",
-        "level": 60,
+        "id": 810430002,
+        "name": "魔力鐘",
+        "grade": "Unique",
+        "gradeName": "獨特",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Bell_u_DefenceSet2.png",
+        "level": 80,
         "levelValue": 3,
         "enchantLevel": 3,
         "storable": false,
@@ -2657,18 +2728,18 @@
         "tradablePersonal": false,
         "enchantable": true,
         "decomposable": true,
-        "maxEnchantLevel": 4,
+        "maxEnchantLevel": 5,
         "categoryName": "鐘",
         "type": "Equip",
         "equipLevel": 45,
         "subStatCount": 0,
-        "subSkillCountMax": 3,
+        "subSkillCountMax": 4,
         "subStatRandom": true,
         "mainStats": [
           {
-            "id": "Justice",
-            "name": "正義[奈薩肯]",
-            "value": "16",
+            "id": "Destruction",
+            "name": "破壞[吉凱爾]",
+            "value": "20",
             "extra": "3",
             "exceed": false
           }
@@ -2676,146 +2747,144 @@
         "soulBindRate": "100",
         "subSkills": [
           {
+            "id": 14730000,
+            "level": 2,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_006.png",
+            "name": "風之活力"
+          },
+          {
             "id": 14710000,
-            "level": 3,
+            "level": 1,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_004.png",
             "name": "警戒之眼"
           },
           {
             "id": 14770000,
-            "level": 1,
+            "level": 2,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_008.png",
             "name": "束縛之眼"
           },
           {
-            "id": 14730000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_006.png",
-            "name": "風之活力"
-          },
-          {
             "id": 14750000,
-            "level": 1,
+            "level": 2,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_011.png",
             "name": "獵人決心"
           }
         ],
         "set": {
-          "id": "Arcana_A_set_001",
-          "name": "太初活力",
-          "equippedCount": 5,
+          "id": "Arcana_A_set_002",
+          "name": "魔力盔甲",
+          "equippedCount": 3,
           "items": [
             {
-              "id": 810130001,
-              "name": "活力聖杯",
+              "id": 810130002,
+              "name": "魔力聖杯",
+              "grade": "Unique",
+              "children": [
+                {
+                  "id": 810140002,
+                  "name": "魔力聖杯",
+                  "grade": "Legend"
+                },
+                {
+                  "id": 810150002,
+                  "name": "魔力聖杯",
+                  "grade": "Rare"
+                },
+                {
+                  "id": 810160002,
+                  "name": "魔力聖杯",
+                  "grade": "Common"
+                }
+              ]
+            },
+            {
+              "id": 810230002,
+              "name": "魔力羊皮紙",
+              "grade": "Unique",
+              "children": [
+                {
+                  "id": 810240002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Legend"
+                },
+                {
+                  "id": 810250002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Rare"
+                },
+                {
+                  "id": 810260002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Common"
+                }
+              ]
+            },
+            {
+              "id": 810330002,
+              "name": "魔力指南針",
               "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810140001,
-                  "name": "活力聖杯",
+                  "id": 810340002,
+                  "name": "魔力指南針",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810150001,
-                  "name": "活力聖杯",
+                  "id": 810350002,
+                  "name": "魔力指南針",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810160001,
-                  "name": "活力聖杯",
+                  "id": 810360002,
+                  "name": "魔力指南針",
                   "grade": "Common"
                 }
               ]
             },
             {
-              "id": 810230001,
-              "name": "活力羊皮紙",
+              "id": 810430002,
+              "name": "魔力鐘",
               "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810240001,
-                  "name": "活力羊皮紙",
+                  "id": 810440002,
+                  "name": "魔力鐘",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810250001,
-                  "name": "活力羊皮紙",
+                  "id": 810450002,
+                  "name": "魔力鐘",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810260001,
-                  "name": "活力羊皮紙",
+                  "id": 810460002,
+                  "name": "魔力鐘",
                   "grade": "Common"
                 }
               ]
             },
             {
-              "id": 810350001,
-              "name": "活力指南針",
-              "grade": "Rare",
+              "id": 810530002,
+              "name": "魔力鏡子",
+              "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810330001,
-                  "name": "活力指南針",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810340001,
-                  "name": "活力指南針",
+                  "id": 810540002,
+                  "name": "魔力鏡子",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810360001,
-                  "name": "活力指南針",
-                  "grade": "Common"
-                }
-              ]
-            },
-            {
-              "id": 810440001,
-              "name": "活力鐘",
-              "grade": "Legend",
-              "equipped": true,
-              "children": [
-                {
-                  "id": 810430001,
-                  "name": "活力鐘",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810450001,
-                  "name": "活力鐘",
+                  "id": 810550002,
+                  "name": "魔力鏡子",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810460001,
-                  "name": "活力鐘",
-                  "grade": "Common"
-                }
-              ]
-            },
-            {
-              "id": 810550001,
-              "name": "活力鏡子",
-              "grade": "Rare",
-              "equipped": true,
-              "children": [
-                {
-                  "id": 810530001,
-                  "name": "活力鏡子",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810540001,
-                  "name": "活力鏡子",
-                  "grade": "Legend"
-                },
-                {
-                  "id": 810560001,
-                  "name": "活力鏡子",
+                  "id": 810560002,
+                  "name": "魔力鏡子",
                   "grade": "Common"
                 }
               ]
@@ -2825,13 +2894,13 @@
             {
               "degree": 2,
               "descriptions": [
-                "生命力高於70%時，PVE攻擊力增加60"
+                "精神力低於20%時，立即恢復精神力1500[冷卻時間30秒]"
               ]
             },
             {
               "degree": 4,
               "descriptions": [
-                "生命力高於70%時，PVE攻擊力增加150"
+                "精神力高於50%時，PVE防禦力增加1000"
               ]
             }
           ]
@@ -2840,32 +2909,32 @@
         "slotPosName": "Arcana4"
       },
       {
-        "id": 810550001,
-        "name": "活力鏡子",
-        "grade": "Rare",
-        "gradeName": "稀有",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Mirror_u_PveSet2.png",
-        "level": 40,
-        "levelValue": 3,
-        "enchantLevel": 3,
+        "id": 810530002,
+        "name": "魔力鏡子",
+        "grade": "Unique",
+        "gradeName": "獨特",
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_Arcana_Card_Mirror_u_DefenceSet2.png",
+        "level": 80,
+        "levelValue": 4,
+        "enchantLevel": 4,
         "storable": false,
         "tradable": false,
         "tradablePersonal": false,
         "enchantable": true,
         "decomposable": true,
-        "maxEnchantLevel": 3,
+        "maxEnchantLevel": 5,
         "categoryName": "鏡子",
         "type": "Equip",
         "equipLevel": 45,
         "subStatCount": 0,
-        "subSkillCountMax": 2,
+        "subSkillCountMax": 4,
         "subStatRandom": true,
         "mainStats": [
           {
-            "id": "Illusion",
-            "name": "幻象[凱西內爾]",
-            "value": "12",
-            "extra": "3",
+            "id": "Wisdom",
+            "name": "智慧[露梅爾]",
+            "value": "20",
+            "extra": "4",
             "exceed": false
           }
         ],
@@ -2873,145 +2942,143 @@
         "subSkills": [
           {
             "id": 14720000,
-            "level": 2,
+            "level": 1,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_003.png",
             "name": "集中砲火"
           },
           {
-            "id": 14740000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_001.png",
-            "name": "集中之眼"
-          },
-          {
-            "id": 14760000,
-            "level": 1,
-            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_012.png",
-            "name": "抵抗決心"
-          },
-          {
             "id": 14800000,
-            "level": 1,
+            "level": 2,
             "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_007.png",
             "name": "獵人之魂"
+          },
+          {
+            "id": 14780000,
+            "level": 2,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_013.png",
+            "name": "近距離射擊"
+          },
+          {
+            "id": 14740000,
+            "level": 3,
+            "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_001.png",
+            "name": "集中之眼"
           }
         ],
         "set": {
-          "id": "Arcana_A_set_001",
-          "name": "太初活力",
-          "equippedCount": 5,
+          "id": "Arcana_A_set_002",
+          "name": "魔力盔甲",
+          "equippedCount": 3,
           "items": [
             {
-              "id": 810130001,
-              "name": "活力聖杯",
+              "id": 810130002,
+              "name": "魔力聖杯",
+              "grade": "Unique",
+              "children": [
+                {
+                  "id": 810140002,
+                  "name": "魔力聖杯",
+                  "grade": "Legend"
+                },
+                {
+                  "id": 810150002,
+                  "name": "魔力聖杯",
+                  "grade": "Rare"
+                },
+                {
+                  "id": 810160002,
+                  "name": "魔力聖杯",
+                  "grade": "Common"
+                }
+              ]
+            },
+            {
+              "id": 810230002,
+              "name": "魔力羊皮紙",
+              "grade": "Unique",
+              "children": [
+                {
+                  "id": 810240002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Legend"
+                },
+                {
+                  "id": 810250002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Rare"
+                },
+                {
+                  "id": 810260002,
+                  "name": "魔力羊皮紙",
+                  "grade": "Common"
+                }
+              ]
+            },
+            {
+              "id": 810330002,
+              "name": "魔力指南針",
               "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810140001,
-                  "name": "活力聖杯",
+                  "id": 810340002,
+                  "name": "魔力指南針",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810150001,
-                  "name": "活力聖杯",
+                  "id": 810350002,
+                  "name": "魔力指南針",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810160001,
-                  "name": "活力聖杯",
+                  "id": 810360002,
+                  "name": "魔力指南針",
                   "grade": "Common"
                 }
               ]
             },
             {
-              "id": 810230001,
-              "name": "活力羊皮紙",
+              "id": 810430002,
+              "name": "魔力鐘",
               "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810240001,
-                  "name": "活力羊皮紙",
+                  "id": 810440002,
+                  "name": "魔力鐘",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810250001,
-                  "name": "活力羊皮紙",
+                  "id": 810450002,
+                  "name": "魔力鐘",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810260001,
-                  "name": "活力羊皮紙",
+                  "id": 810460002,
+                  "name": "魔力鐘",
                   "grade": "Common"
                 }
               ]
             },
             {
-              "id": 810350001,
-              "name": "活力指南針",
-              "grade": "Rare",
+              "id": 810530002,
+              "name": "魔力鏡子",
+              "grade": "Unique",
               "equipped": true,
               "children": [
                 {
-                  "id": 810330001,
-                  "name": "活力指南針",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810340001,
-                  "name": "活力指南針",
+                  "id": 810540002,
+                  "name": "魔力鏡子",
                   "grade": "Legend"
                 },
                 {
-                  "id": 810360001,
-                  "name": "活力指南針",
-                  "grade": "Common"
-                }
-              ]
-            },
-            {
-              "id": 810440001,
-              "name": "活力鐘",
-              "grade": "Legend",
-              "equipped": true,
-              "children": [
-                {
-                  "id": 810430001,
-                  "name": "活力鐘",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810450001,
-                  "name": "活力鐘",
+                  "id": 810550002,
+                  "name": "魔力鏡子",
                   "grade": "Rare"
                 },
                 {
-                  "id": 810460001,
-                  "name": "活力鐘",
-                  "grade": "Common"
-                }
-              ]
-            },
-            {
-              "id": 810550001,
-              "name": "活力鏡子",
-              "grade": "Rare",
-              "equipped": true,
-              "children": [
-                {
-                  "id": 810530001,
-                  "name": "活力鏡子",
-                  "grade": "Unique"
-                },
-                {
-                  "id": 810540001,
-                  "name": "活力鏡子",
-                  "grade": "Legend"
-                },
-                {
-                  "id": 810560001,
-                  "name": "活力鏡子",
+                  "id": 810560002,
+                  "name": "魔力鏡子",
                   "grade": "Common"
                 }
               ]
@@ -3021,13 +3088,13 @@
             {
               "degree": 2,
               "descriptions": [
-                "生命力高於70%時，PVE攻擊力增加60"
+                "精神力低於20%時，立即恢復精神力1500[冷卻時間30秒]"
               ]
             },
             {
               "degree": 4,
               "descriptions": [
-                "生命力高於70%時，PVE攻擊力增加150"
+                "精神力高於50%時，PVE防禦力增加1000"
               ]
             }
           ]
@@ -3058,16 +3125,31 @@
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_GF_Idol_03_Boots.png"
       },
       {
-        "id": 10052104,
-        "name": "真實審判者(弓)",
+        "id": 10081104,
+        "name": "光之指環(弓)",
         "enchantLevel": 0,
         "exceedLevel": 0,
-        "grade": "Common",
+        "grade": "Legend",
         "slotPos": 13,
         "slotPosName": "Bow",
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WP_BW_0052_T04.png"
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WP_BW_0081_T05.png"
       }
     ]
+  },
+  "petwing": {
+    "pet": {
+      "id": 1211,
+      "name": "天空鯨魚",
+      "level": 5,
+      "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Vehicle_Portrait_SkyWhale_01.png"
+    },
+    "wing": {
+      "id": 30201900,
+      "name": "黑暗帳幕翅膀",
+      "enchantLevel": 0,
+      "grade": "Unique",
+      "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/Icon_WingB_019.png"
+    }
   },
   "skill": {
     "skillList": [
@@ -3075,7 +3157,7 @@
         "id": 14020000,
         "name": "狙擊",
         "needLevel": 1,
-        "skillLevel": 16,
+        "skillLevel": 17,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_001.png",
         "category": "Active",
         "acquired": 1,
@@ -3085,7 +3167,7 @@
         "id": 14340000,
         "name": "速射",
         "needLevel": 1,
-        "skillLevel": 19,
+        "skillLevel": 20,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_034.png",
         "category": "Active",
         "acquired": 1,
@@ -3095,7 +3177,7 @@
         "id": 14130000,
         "name": "套索箭",
         "needLevel": 1,
-        "skillLevel": 12,
+        "skillLevel": 13,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_013.png",
         "category": "Active",
         "acquired": 1,
@@ -3105,7 +3187,7 @@
         "id": 14090000,
         "name": "目標箭",
         "needLevel": 3,
-        "skillLevel": 15,
+        "skillLevel": 14,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_031.png",
         "category": "Active",
         "acquired": 1,
@@ -3115,7 +3197,7 @@
         "id": 14050000,
         "name": "利錐箭",
         "needLevel": 4,
-        "skillLevel": 14,
+        "skillLevel": 16,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_005.png",
         "category": "Active",
         "acquired": 1,
@@ -3135,7 +3217,7 @@
         "id": 14110000,
         "name": "狂風箭",
         "needLevel": 7,
-        "skillLevel": 17,
+        "skillLevel": 19,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_011.png",
         "category": "Active",
         "acquired": 1,
@@ -3155,7 +3237,7 @@
         "id": 14080000,
         "name": "破裂箭",
         "needLevel": 10,
-        "skillLevel": 16,
+        "skillLevel": 17,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_008.png",
         "category": "Active",
         "acquired": 1,
@@ -3165,7 +3247,7 @@
         "id": 14070000,
         "name": "壓制箭",
         "needLevel": 12,
-        "skillLevel": 14,
+        "skillLevel": 12,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_007.png",
         "category": "Active",
         "acquired": 1,
@@ -3175,7 +3257,7 @@
         "id": 14010000,
         "name": "瞄準箭",
         "needLevel": 14,
-        "skillLevel": 16,
+        "skillLevel": 18,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_002.png",
         "category": "Active",
         "acquired": 1,
@@ -3185,7 +3267,7 @@
         "id": 14260000,
         "name": "衝擊解除",
         "needLevel": 16,
-        "skillLevel": 8,
+        "skillLevel": 12,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_CO_SKILL_002.png",
         "category": "Active",
         "acquired": 1,
@@ -3195,7 +3277,7 @@
         "id": 14710000,
         "name": "警戒之眼",
         "needLevel": 1,
-        "skillLevel": 19,
+        "skillLevel": 16,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_004.png",
         "category": "Passive",
         "acquired": 1,
@@ -3205,7 +3287,7 @@
         "id": 14720000,
         "name": "集中砲火",
         "needLevel": 6,
-        "skillLevel": 18,
+        "skillLevel": 16,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_003.png",
         "category": "Passive",
         "acquired": 1,
@@ -3215,7 +3297,7 @@
         "id": 14730000,
         "name": "風之活力",
         "needLevel": 9,
-        "skillLevel": 9,
+        "skillLevel": 11,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_006.png",
         "category": "Passive",
         "acquired": 1,
@@ -3225,7 +3307,7 @@
         "id": 14740000,
         "name": "集中之眼",
         "needLevel": 11,
-        "skillLevel": 16,
+        "skillLevel": 17,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_001.png",
         "category": "Passive",
         "acquired": 1,
@@ -3235,7 +3317,7 @@
         "id": 14750000,
         "name": "獵人決心",
         "needLevel": 13,
-        "skillLevel": 15,
+        "skillLevel": 16,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_011.png",
         "category": "Passive",
         "acquired": 1,
@@ -3265,7 +3347,7 @@
         "id": 14780000,
         "name": "近距離射擊",
         "needLevel": 21,
-        "skillLevel": 16,
+        "skillLevel": 18,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_013.png",
         "category": "Passive",
         "acquired": 1,
@@ -3275,7 +3357,7 @@
         "id": 14790000,
         "name": "回生契約",
         "needLevel": 23,
-        "skillLevel": 7,
+        "skillLevel": 8,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_AS_SKILL_Passive_009.png",
         "category": "Passive",
         "acquired": 1,
@@ -3285,7 +3367,7 @@
         "id": 14800000,
         "name": "獵人之魂",
         "needLevel": 25,
-        "skillLevel": 16,
+        "skillLevel": 17,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_Passive_007.png",
         "category": "Passive",
         "acquired": 1,
@@ -3305,17 +3387,17 @@
         "id": 14310000,
         "name": "白傑爾權能",
         "needLevel": 22,
-        "skillLevel": 11,
+        "skillLevel": 0,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_022.png",
         "category": "Dp",
         "acquired": 1,
-        "equip": 1
+        "equip": 0
       },
       {
         "id": 14220000,
         "name": "祝福之弓",
         "needLevel": 22,
-        "skillLevel": 5,
+        "skillLevel": 12,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_030.png",
         "category": "Dp",
         "acquired": 1,
@@ -3395,11 +3477,11 @@
         "id": 14360000,
         "name": "爆炸箭",
         "needLevel": 22,
-        "skillLevel": 0,
+        "skillLevel": 5,
         "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/ICON_RA_SKILL_023.png",
         "category": "Dp",
         "acquired": 1,
-        "equip": 0
+        "equip": 1
       },
       {
         "id": 14700000,

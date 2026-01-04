@@ -91,11 +91,39 @@ export async function updateMember(members: MemberConfig[], updatedMember: Membe
 
 /**
  * 删除成员
+ * 先调用后端 DELETE API 删除成员数据文件夹,然后更新 members.json
  */
 export async function deleteMember(members: MemberConfig[], memberId: string): Promise<MemberConfig[]> {
-  const updated = members.filter(m => m.id !== memberId);
-  await saveMembers(updated);
-  return updated;
+  try {
+    // 1. 调用后端 DELETE API 删除成员数据文件夹
+    console.log(`正在删除成员: ${memberId}`);
+    const response = await fetch(`/api/members/${encodeURIComponent(memberId)}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: '未知错误' }));
+      throw new Error(errorData.error || `HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || '删除失败');
+    }
+
+    console.log(`✓ 成员 ${memberId} 删除成功`);
+
+    // 2. 更新本地成员列表(从数组中移除)
+    const updated = members.filter(m => m.id !== memberId);
+
+    // 3. 保存更新后的列表到后端
+    await saveMembers(updated);
+
+    return updated;
+  } catch (error: any) {
+    console.error(`删除成员 ${memberId} 失败:`, error);
+    throw new Error(`删除失败: ${error.message}`);
+  }
 }
 
 /**

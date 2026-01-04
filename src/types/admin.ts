@@ -102,6 +102,8 @@ export interface EquipmentDetail {
   magicStoneSlotCount?: number;
   godStoneSlotCount?: number;
   soulBindRate?: string;        // 灵魂刻印进度(百分比)
+  slotPos?: number;              // 装备槽位置,用于区分Ring1/Ring2等相同ID的装备
+  slotPosName?: string;          // 装备槽名称
   // 属性
   mainStats?: EquipmentStat[];
   subStats?: EquipmentStat[];
@@ -140,4 +142,20 @@ export interface ImportResult {
   success: boolean;
   message: string;
   data?: unknown;
+}
+
+// ============= PVE评分相关 =============
+
+// 评分数据
+export interface RatingScores {
+  score: number;  // PVE评分分数
+}
+
+// 评分信息
+export interface Rating {
+  id: string;
+  scores: RatingScores;
+  modelType: string;      // 评分模型类型 (如 "PVE")
+  modelVersion: string;   // 评分模型版本 (如 "PvE-1.1")
+  ratedAt: string;        // 评分时间 (ISO格式)
 }

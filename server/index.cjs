@@ -351,15 +351,21 @@ app.delete('/api/members/:id', (req, res) => {
 
     // 删除成员数据文件夹
     const memberDir = path.join(__dirname, '../public/data', id);
+    console.log(`[删除成员] 准备删除文件夹: ${memberDir}`);
+    console.log(`[删除成员] __dirname: ${__dirname}`);
+
     if (fs.existsSync(memberDir)) {
       try {
         // 递归删除文件夹及其所有内容
         fs.rmSync(memberDir, { recursive: true, force: true });
-        console.log(`✓ 删除成员文件夹: ${id}`);
+        console.log(`✓ 成功删除成员文件夹: ${id}`);
+        console.log(`✓ 删除路径: ${memberDir}`);
       } catch (error) {
-        console.error(`删除成员文件夹失败 (${id}):`, error);
+        console.error(`❌ 删除成员文件夹失败 (${id}):`, error);
         // 继续执行，即使文件夹删除失败也要删除配置
       }
+    } else {
+      console.warn(`⚠️  成员文件夹不存在: ${memberDir}`);
     }
 
     // 从配置中删除成员
@@ -728,6 +734,61 @@ app.get('/api/character/equipment-detail', (req, res) => {
   });
 });
 
+// 获取角色PVE评分 - 代理 aion-api.bnshive.com 的评分API
+app.get('/api/character/rating', (req, res) => {
+  const { characterId, serverId } = req.query;
+
+  if (!characterId || !serverId) {
+    return res.status(400).json({ error: '缺少必要参数：characterId 和 serverId' });
+  }
+
+  // 将 characterId 中的 = 转换为 %3D 进行URL编码
+  const encodedCharacterId = characterId.replace(/=/g, '%3D');
+  const url = `https://aion-api.bnshive.com/character/query?serverId=${serverId}&characterId=${encodedCharacterId}`;
+
+  console.log(`[PVE评分API] 请求URL: ${url}`);
+
+  https.get(url, (apiRes) => {
+    let data = '';
+
+    apiRes.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    apiRes.on('end', () => {
+      try {
+        const jsonData = JSON.parse(data);
+
+        // 提取评分数据
+        if (jsonData.rating && jsonData.rating.scores) {
+          res.json({
+            success: true,
+            rating: jsonData.rating
+          });
+        } else {
+          res.json({
+            success: false,
+            error: '该角色暂无评分数据'
+          });
+        }
+      } catch (error) {
+        console.error('解析PVE评分API响应失败:', error);
+        console.error('原始响应数据:', data);
+        res.status(500).json({
+          success: false,
+          error: '解析评分数据失败'
+        });
+      }
+    });
+  }).on('error', (error) => {
+    console.error('请求PVE评分API失败:', error);
+    res.status(500).json({
+      success: false,
+      error: '请求评分数据失败: ' + error.message
+    });
+  });
+});
+
 // ==================== 成员数据保存 API ====================
 
 // 保存成员角色信息
@@ -865,6 +926,42 @@ function fetchCharacterEquipment(characterId, serverId) {
 }
 
 /**
+ * 从API获取角色PVE评分
+ */
+function fetchCharacterRating(characterId, serverId) {
+  return new Promise((resolve, reject) => {
+    // 将 characterId 中的 = 转换为 %3D 进行URL编码
+    const encodedCharacterId = characterId.replace(/=/g, '%3D');
+    const url = `https://aion-api.bnshive.com/character/query?serverId=${serverId}&characterId=${encodedCharacterId}`;
+
+    https.get(url, (apiRes) => {
+      let data = '';
+
+      apiRes.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      apiRes.on('end', () => {
+        try {
+          const jsonData = JSON.parse(data);
+
+          // 提取评分数据
+          if (jsonData.rating && jsonData.rating.scores) {
+            resolve(jsonData.rating);
+          } else {
+            resolve(null); // 没有评分数据时返回null
+          }
+        } catch (error) {
+          reject(new Error('解析评分API响应失败'));
+        }
+      });
+    }).on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
+/**
  * 搜索角色 - 通过角色名和服务器ID获取characterId
  */
 function searchCharacter(characterName, serverId, race) {
@@ -955,7 +1052,9 @@ function delay(ms) {
  */
 function fetchEquipmentDetail(itemId, enchantLevel, characterId, serverId, slotPos) {
   return new Promise((resolve, reject) => {
-    const url = `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=zh`;
+    // 添加时间戳防止API缓存,确保相同装备ID但不同slotPos时能获取到不同数据
+    const timestamp = Date.now();
+    const url = `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=zh&_t=${timestamp}`;
 
     https.get(url, (apiRes) => {
       let data = '';
@@ -1043,6 +1142,9 @@ async function syncMemberData(member) {
           // 计算总强化等级
           const totalEnchantLevel = (equip.enchantLevel || 0) + (equip.exceedLevel || 0);
 
+          // 调试:打印即将请求的参数
+          console.log(`  [调试] 请求装备详情: ${equip.slotPosName}, slotPos=${equip.slotPos}, id=${equip.id}`);
+
           const detail = await fetchEquipmentDetail(
             equip.id,
             totalEnchantLevel,
@@ -1060,7 +1162,7 @@ async function syncMemberData(member) {
 
           equipmentDetails.push(enrichedDetail);
           console.log(`  ✓ ${equip.slotPosName || equip.slotPos}: ${detail.name || equip.name}`);
-          await delay(300);
+          await delay(500); // 增加延迟至500ms,配合时间戳参数确保API返回正确数据
         } catch (error) {
           console.log(`  ✗ ${equip.slotPosName || equip.slotPos}: ${error.message}`);
         }
@@ -1089,6 +1191,25 @@ async function syncMemberData(member) {
     const equipmentFilePath = path.join(memberDir, 'equipment_details.json');
     fs.writeFileSync(equipmentFilePath, JSON.stringify(equipmentData, null, 2), 'utf-8');
     console.log(`  ✓ 装备详情已保存`);
+
+    // 步骤 4/4: 获取PVE评分数据
+    console.log(`  [${member.name}] 步骤 4/4: 请求PVE评分...`);
+    try {
+      await delay(300); // 添加延迟避免请求过快
+      const ratingData = await fetchCharacterRating(characterId, serverId);
+
+      if (ratingData) {
+        // 保存评分数据到 score.json
+        const scoreFilePath = path.join(memberDir, 'score.json');
+        fs.writeFileSync(scoreFilePath, JSON.stringify(ratingData, null, 2), 'utf-8');
+        console.log(`  ✓ PVE评分已保存到 score.json: ${Math.floor(ratingData.scores.score)}`);
+      } else {
+        console.log(`  ⚠️  该角色暂无评分数据`);
+      }
+    } catch (error) {
+      console.log(`  ⚠️  获取PVE评分失败: ${error.message}`);
+      // 评分获取失败不影响整体同步
+    }
 
     console.log(`  ✓ 成员 ${member.name} 数据同步成功`);
     return { success: true };

@@ -49,7 +49,7 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     loading: false,
   });
 
-  const [equipmentCache, setEquipmentCache] = useState<Map<number, EquipmentDetail>>(new Map());
+  const [equipmentCache, setEquipmentCache] = useState<Map<string, EquipmentDetail>>(new Map());
   const showTimeoutRef = useRef<number | null>(null);
 
   // 加载装备缓存
@@ -57,12 +57,14 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     // 如果直接传入了装备详情数据，直接使用
     if (equipmentDetails) {
       console.log('[useEquipmentTooltip] 使用传入的装备详情数据');
-      const cacheMap = new Map<number, EquipmentDetail>();
-      Object.entries(equipmentDetails).forEach(([id, detail]) => {
-        cacheMap.set(Number(id), detail);
+      const cacheMap = new Map<string, EquipmentDetail>();
+      Object.entries(equipmentDetails).forEach(([_id, detail]) => {
+        // 使用 slotPos 作为唯一key,因为同一个装备ID可能在不同slotPos有不同属性
+        const cacheKey = detail.slotPos ? `${detail.id}_${detail.slotPos}` : String(detail.id);
+        cacheMap.set(cacheKey, detail);
       });
       console.log('[useEquipmentTooltip] 装备详情 Map 大小:', cacheMap.size);
-      console.log('[useEquipmentTooltip] 装备 ID 列表:', Array.from(cacheMap.keys()));
+      console.log('[useEquipmentTooltip] 装备缓存 keys:', Array.from(cacheMap.keys()));
       setEquipmentCache(cacheMap);
       return;
     }
@@ -79,12 +81,14 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
       console.log('[useEquipmentTooltip] 装备缓存数据:', cache);
 
       if (cache && cache.details) {
-        const cacheMap = new Map<number, EquipmentDetail>();
+        const cacheMap = new Map<string, EquipmentDetail>();
         cache.details.forEach(detail => {
-          cacheMap.set(detail.id, detail);
+          // 使用 slotPos 作为唯一key,确保Ring1/Ring2, Earring1/Earring2等能区分
+          const cacheKey = detail.slotPos ? `${detail.id}_${detail.slotPos}` : String(detail.id);
+          cacheMap.set(cacheKey, detail);
         });
         console.log('[useEquipmentTooltip] 装备缓存 Map 大小:', cacheMap.size);
-        console.log('[useEquipmentTooltip] 装备 ID 列表:', Array.from(cacheMap.keys()));
+        console.log('[useEquipmentTooltip] 装备缓存 keys:', Array.from(cacheMap.keys()));
         setEquipmentCache(cacheMap);
       } else {
         console.warn('[useEquipmentTooltip] 装备缓存为空');
@@ -158,7 +162,12 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     });
 
     // 先检查缓存中是否已有该装备详情
-    let detail = equipmentCache.get(equipmentId);
+    // 对于有slotPos的装备(Ring1/Ring2等),使用复合key: id_slotPos
+    const actualEquipItem = equipmentItem || equipmentList?.find((item: any) => item.id === equipmentId);
+    const cacheKeyForMemory = actualEquipItem?.slotPos
+      ? `${equipmentId}_${actualEquipItem.slotPos}`
+      : String(equipmentId);
+    let detail = equipmentCache.get(cacheKeyForMemory);
 
     if (detail) {
       console.log('[useEquipmentTooltip] 从缓存获取装备详情, ID:', equipmentId);
@@ -192,9 +201,11 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
           slotPos: actualEquipItem.slotPos
         });
 
-        // 检查浏览器缓存
+        // 检查浏览器缓存 - 使用包含slotPos的key
         const CACHE_DURATION = 4 * 60 * 60 * 1000; // 4小时
-        const cacheKey = `equipment_detail_${equipmentId}`;
+        const cacheKey = actualEquipItem.slotPos
+          ? `equipment_detail_${equipmentId}_${actualEquipItem.slotPos}`
+          : `equipment_detail_${equipmentId}`;
         const cached = localStorage.getItem(cacheKey);
         const now = Date.now();
 
@@ -207,7 +218,7 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
               // 更新到内存缓存
               setEquipmentCache(prev => {
                 const newCache = new Map(prev);
-                newCache.set(equipmentId, detail!);
+                newCache.set(cacheKeyForMemory, detail!);
                 return newCache;
               });
             }
@@ -236,7 +247,7 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
               // 更新到内存缓存
               setEquipmentCache(prev => {
                 const newCache = new Map(prev);
-                newCache.set(equipmentId, detail!);
+                newCache.set(cacheKeyForMemory, detail!);
                 return newCache;
               });
             } else {

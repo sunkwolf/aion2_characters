@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { gradeColors, classIcons } from '../data/memberTypes';
 import type { CharacterInfo, CharacterEquipment, EquipmentItem, TitleItem } from '../data/memberTypes';
+import type { Rating } from '../types/admin';
 import EquipmentTooltip from '../components/EquipmentTooltip';
 import EquipmentDetailModal from '../components/EquipmentDetailModal';
 import ExceedLevel from '../components/ExceedLevel';
+import ConfirmDialog from '../components/ConfirmDialog';
 import { useEquipmentTooltip } from '../hooks/useEquipmentTooltip';
 import './MemberDetailPage.css';
 
@@ -21,6 +23,21 @@ const titleCategoryNames: Record<string, string> = {
   'Defense': '防禦系列',
   'Etc': '其他系列'
 };
+
+// 搜索历史记录常量和类型
+const HISTORY_STORAGE_KEY = 'character_search_history';
+const MAX_HISTORY_ITEMS = 5;
+
+interface SearchHistory {
+  characterId: string;
+  characterName: string;
+  serverId: number;
+  serverLabel: string;
+  level?: number;
+  race?: number;
+  profileImage?: string;
+  timestamp: number;
+}
 
 // 称号分类图标
 const titleCategoryIcons: Record<string, string> = {
@@ -39,30 +56,46 @@ const getDaevanionColor = (id: number): string => {
 };
 
 const MemberDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, serverId, characterId } = useParams<{ id?: string; serverId?: string; characterId?: string }>();
   const location = useLocation();
 
   // 从 location.state 获取角色数据（角色BD查询时使用）
   const characterData = location.state?.characterData;
+
+  // 判断数据来源:
+  // 1. 军团成员: id 存在
+  // 2. 角色BD查询 (旧): characterData 存在
+  // 3. 分享链接 (新): serverId 和 characterId 存在
+  const isFromMember = !!id;
   const isFromCharacterBD = !!characterData;
+  const isFromShare = !!serverId && !!characterId;
 
   const [charInfo, setCharInfo] = useState<CharacterInfo | null>(null);
   const [charEquip, setCharEquip] = useState<CharacterEquipment | null>(null);
   const [_memberConfig, setMemberConfig] = useState<MemberConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'equipment' | 'skills'>('equipment');
+  const [rating, setRating] = useState<Rating | null>(null);
+  const [ratingLoading, setRatingLoading] = useState(false);
+  const [showShareDialog, setShowShareDialog] = useState(false);
+  const [shareUrl, setShareUrl] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastRefreshTime, setLastRefreshTime] = useState<number>(0);
 
-  // 提前准备装备列表数据
-  const equipment = charEquip?.equipment?.equipmentList || [];
+  // 准备装备列表数据
+  // 角色BD查询: 直接从 characterData 获取
+  // 分享链接/军团成员: 从 state 获取
+  const equipment = isFromCharacterBD
+    ? (characterData?.equipment?.equipment?.equipmentList || [])
+    : (charEquip?.equipment?.equipmentList || []);
 
   // 装备悬浮提示和详情模态框
-  // 如果是从角色BD查询来的，不传 characterId 和 serverId(因为此时还是 undefined)
-  // 而是在点击时通过函数参数传递
-  // 否则传 memberId（从成员装备缓存加载）
   const { tooltipState, modalState, handleMouseEnter, handleMouseMove, handleMouseLeave, handleClick, handleCloseModal } = useEquipmentTooltip(
-    isFromCharacterBD
+    isFromCharacterBD || isFromShare
       ? {
-          equipmentList: equipment  // 只传装备列表,不传 characterId 和 serverId
+          characterId: isFromShare ? characterId : characterData?.info?.profile?.characterId,
+          serverId: isFromShare ? Number(serverId) : characterData?.info?.profile?.serverId,
+          equipmentList: equipment
         }
       : { memberId: id || '' }
   );
@@ -77,6 +110,68 @@ const MemberDetailPage = () => {
         setCharEquip(characterData.equipment);
       }
       setLoading(false);
+      return;
+    }
+
+    // 如果是分享链接，从API加载数据（支持4小时缓存）
+    if (isFromShare && serverId && characterId) {
+      const loadSharedData = async () => {
+        try {
+          const cacheKey = `character_${serverId}_${characterId}`;
+          const cached = localStorage.getItem(cacheKey);
+
+          // 检查缓存是否有效（8小时内）
+          if (cached) {
+            try {
+              const cacheData = JSON.parse(cached);
+              const cacheTime = cacheData.timestamp || 0;
+              const now = Date.now();
+              const eightHours = 8 * 60 * 60 * 1000; // 8小时的毫秒数
+
+              if (now - cacheTime < eightHours) {
+                console.log('使用缓存的角色数据');
+                setCharInfo(cacheData.info);
+                setCharEquip(cacheData.equipment);
+                setLoading(false);
+                return;
+              }
+            } catch (e) {
+              console.log('缓存数据解析失败，重新加载');
+            }
+          }
+
+          // 缓存失效或不存在，从API加载
+          const infoUrl = `/api/character/info?characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
+          const equipUrl = `/api/character/equipment?characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
+
+          const [infoResponse, equipmentResponse] = await Promise.all([
+            fetch(infoUrl),
+            fetch(equipUrl)
+          ]);
+
+          const [infoData, equipmentData] = await Promise.all([
+            infoResponse.json(),
+            equipmentResponse.json()
+          ]);
+
+          setCharInfo(infoData);
+          setCharEquip(equipmentData);
+
+          // 保存到缓存
+          const cacheData = {
+            info: infoData,
+            equipment: equipmentData,
+            timestamp: Date.now()
+          };
+          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+          console.log('角色数据已缓存');
+        } catch (e) {
+          console.error('加载分享角色数据失败', e);
+        }
+        setLoading(false);
+      };
+
+      loadSharedData();
       return;
     }
 
@@ -118,7 +213,123 @@ const MemberDetailPage = () => {
     };
 
     loadData();
-  }, [id, isFromCharacterBD, characterData]);
+  }, [id, serverId, characterId, isFromCharacterBD, isFromShare, characterData]);
+
+  // 加载PVE评分数据
+  useEffect(() => {
+    const loadRating = async () => {
+      if (!charInfo?.profile?.characterId || !charInfo?.profile?.serverId) {
+        return;
+      }
+
+      setRatingLoading(true);
+
+      try {
+        // 优先从本地文件读取评分数据(仅军团成员)
+        if (isFromMember && id) {
+          try {
+            const timestamp = Date.now();
+            const localResponse = await fetch(`/data/${id}/score.json?t=${timestamp}`);
+
+            if (localResponse.ok) {
+              const localRating = await localResponse.json();
+              setRating(localRating);
+              setRatingLoading(false);
+              return;
+            }
+          } catch (error) {
+            console.log('本地评分文件不存在,尝试从API获取');
+          }
+        }
+
+        // 角色BD查询/分享链接: 使用缓存
+        if (isFromCharacterBD || isFromShare) {
+          // 评分缓存键
+          const ratingCacheKey = `rating_${charInfo.profile.serverId}_${charInfo.profile.characterId}`;
+          const cached = localStorage.getItem(ratingCacheKey);
+
+          // 检查缓存是否有效（8小时内）
+          if (cached) {
+            try {
+              const cacheData = JSON.parse(cached);
+              const now = Date.now();
+              const eightHours = 8 * 60 * 60 * 1000;
+
+              if (now - cacheData.timestamp < eightHours) {
+                console.log('[评分缓存] 使用缓存数据');
+                setRating(cacheData.rating);
+                setRatingLoading(false);
+                return;
+              }
+            } catch (e) {
+              console.log('[评分缓存] 缓存解析失败');
+            }
+          }
+        }
+
+        // 本地文件不存在或缓存失效,从API获取
+        const response = await fetch(
+          `/api/character/rating?characterId=${encodeURIComponent(charInfo.profile.characterId)}&serverId=${charInfo.profile.serverId}`
+        );
+        const data = await response.json();
+
+        if (data.success && data.rating) {
+          setRating(data.rating);
+
+          // 保存到缓存(仅角色BD查询/分享链接)
+          if (isFromCharacterBD || isFromShare) {
+            const ratingCacheKey = `rating_${charInfo.profile.serverId}_${charInfo.profile.characterId}`;
+            localStorage.setItem(ratingCacheKey, JSON.stringify({
+              rating: data.rating,
+              timestamp: Date.now()
+            }));
+            console.log('[评分缓存] 已缓存评分数据');
+          }
+        }
+      } catch (error) {
+        console.error('加载PVE评分失败:', error);
+      } finally {
+        setRatingLoading(false);
+      }
+    };
+
+    loadRating();
+  }, [charInfo, id, isFromMember, isFromCharacterBD, isFromShare]);
+
+  // 保存到查询历史（仅角色BD查询/分享链接）
+  useEffect(() => {
+    if (!charInfo?.profile || (!isFromCharacterBD && !isFromShare)) {
+      return;
+    }
+
+    // 保存到历史记录
+    try {
+      const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
+      const history: SearchHistory[] = stored ? JSON.parse(stored) : [];
+
+      const newHistory: SearchHistory = {
+        characterId: charInfo.profile.characterId,
+        characterName: charInfo.profile.characterName,
+        serverId: charInfo.profile.serverId,
+        serverLabel: charInfo.profile.serverName,
+        level: charInfo.profile.characterLevel,
+        race: charInfo.profile.raceId,
+        profileImage: charInfo.profile.profileImage,
+        timestamp: Date.now()
+      };
+
+      // 去重并添加到历史记录最前面
+      const filtered = history.filter(
+        h => !(h.characterName === newHistory.characterName && h.serverId === newHistory.serverId)
+      );
+      const updated = [newHistory, ...filtered].slice(0, MAX_HISTORY_ITEMS);
+
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
+      console.log('[查询历史] 已保存角色到查询历史');
+    } catch (error) {
+      console.error('保存查询历史失败:', error);
+    }
+  }, [charInfo, isFromCharacterBD, isFromShare]);
 
   if (loading) {
     return (
@@ -145,12 +356,129 @@ const MemberDetailPage = () => {
   }
 
   const profile = charInfo.profile;
-  const stats = charInfo.stat.statList;
-  const rankings = charInfo.ranking.rankingList.filter(r => r.rank !== null);
+  const stats = charInfo.stat?.statList || [];
+  const rankings = charInfo.ranking?.rankingList?.filter(r => r.rank !== null) || [];
+
+  // 分享功能
+  const handleShare = () => {
+    if (!profile.characterId || !profile.serverId) {
+      alert('无法获取角色信息');
+      return;
+    }
+
+    // 生成分享链接
+    const url = isFromShare
+      ? window.location.href
+      : `${window.location.origin}${window.location.pathname}#/character/${profile.serverId}/${encodeURIComponent(profile.characterId)}`;
+
+    setShareUrl(url);
+    setShowShareDialog(true);
+  };
+
+  // 确认分享 - 复制到剪贴板
+  const confirmShare = () => {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setShowShareDialog(false);
+      alert('分享链接已复制到剪贴板！');
+    }).catch(() => {
+      // 降级方案：显示链接让用户手动复制
+      setShowShareDialog(false);
+      prompt('复制以下链接分享:', shareUrl);
+    });
+  };
+
+  // 刷新角色数据（仅角色BD查询）
+  const handleRefresh = async () => {
+    // 仅角色BD查询和分享链接可以刷新
+    if (!isFromCharacterBD && !isFromShare) {
+      return;
+    }
+
+    // 检查冷却时间（10分钟）
+    const now = Date.now();
+    const tenMinutes = 10 * 60 * 1000;
+    if (lastRefreshTime && now - lastRefreshTime < tenMinutes) {
+      const remainingSeconds = Math.ceil((tenMinutes - (now - lastRefreshTime)) / 1000);
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      alert(`刷新冷却中，请等待 ${minutes}分${seconds}秒 后再试`);
+      return;
+    }
+
+    // 开始刷新
+    setRefreshing(true);
+    setLastRefreshTime(now);
+
+    try {
+      // 获取角色ID和服务器ID
+      const targetServerId = isFromShare ? Number(serverId) : characterData?.info?.profile?.serverId;
+      const targetCharacterId = isFromShare ? characterId : characterData?.info?.profile?.characterId;
+
+      if (!targetServerId || !targetCharacterId) {
+        alert('无法获取角色信息');
+        setRefreshing(false);
+        return;
+      }
+
+      // 清除缓存
+      const cacheKey = `character_${targetServerId}_${targetCharacterId}`;
+      const ratingCacheKey = `rating_${targetServerId}_${targetCharacterId}`;
+      localStorage.removeItem(cacheKey);
+      localStorage.removeItem(ratingCacheKey);
+
+      // 重新加载角色数据
+      const infoUrl = `/api/character/info?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`;
+      const equipUrl = `/api/character/equipment?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`;
+
+      const [infoResponse, equipmentResponse] = await Promise.all([
+        fetch(infoUrl),
+        fetch(equipUrl)
+      ]);
+
+      const [infoData, equipmentData] = await Promise.all([
+        infoResponse.json(),
+        equipmentResponse.json()
+      ]);
+
+      setCharInfo(infoData);
+      setCharEquip(equipmentData);
+
+      // 重新缓存
+      const cacheData = {
+        info: infoData,
+        equipment: equipmentData,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+
+      // 重新加载评分
+      setRatingLoading(true);
+      const ratingResponse = await fetch(
+        `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`
+      );
+      const ratingData = await ratingResponse.json();
+
+      if (ratingData.success && ratingData.rating) {
+        setRating(ratingData.rating);
+        localStorage.setItem(ratingCacheKey, JSON.stringify({
+          rating: ratingData.rating,
+          timestamp: Date.now()
+        }));
+      }
+      setRatingLoading(false);
+
+      alert('数据已刷新！');
+    } catch (error) {
+      console.error('刷新失败:', error);
+      alert('刷新失败，请稍后重试');
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // 根据来源确定返回链接和文字
-  const backLink = isFromCharacterBD ? "/character-bd" : "/legion";
-  const backText = isFromCharacterBD ? "返回查询" : "返回军团";
+  const backLink = (isFromCharacterBD || isFromShare) ? "/character-bd" : "/legion";
+  const backText = (isFromCharacterBD || isFromShare) ? "返回查询" : "返回军团";
 
   // 兼容旧数据格式(items对象)和新数据格式(equipment/skill/petwing结构)
   // equipment 已在前面定义
@@ -167,7 +495,7 @@ const MemberDetailPage = () => {
   const itemLevel = stats.find(s => s.type === 'ItemLevel')?.value || 0;
 
   // 称号按分类分组
-  const titlesByCategory = charInfo.title.titleList.reduce((acc, title) => {
+  const titlesByCategory = (charInfo.title?.titleList || []).reduce((acc, title) => {
     const category = title.equipCategory;
     if (!acc[category]) {
       acc[category] = [];
@@ -180,8 +508,8 @@ const MemberDetailPage = () => {
   const daevanionBoards = charInfo.daevanion?.boardList || [];
 
   // 装备分类
-  const gearEquipment = equipment.filter(e => e.slotPosName && !e.slotPosName.startsWith('Arcana'));
-  const arcanaEquipment = equipment.filter(e => e.slotPosName && e.slotPosName.startsWith('Arcana'));
+  const gearEquipment = equipment.filter((e: EquipmentItem) => e.slotPosName && !e.slotPosName.startsWith('Arcana'));
+  const arcanaEquipment = equipment.filter((e: EquipmentItem) => e.slotPosName && e.slotPosName.startsWith('Arcana'));
 
   // 技能分类
   const activeSkills = skills.filter(s => s.category === 'Active');
@@ -236,35 +564,90 @@ const MemberDetailPage = () => {
       <div className="member-hero">
         <div className="member-hero__bg"></div>
         <div className="member-hero__content">
-          <Link to={backLink} className="member-hero__back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            {backText}
-          </Link>
+          <div className="member-hero__top-bar">
+            <Link to={backLink} className="member-hero__back">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              {backText}
+            </Link>
+            <div className="member-hero__actions">
+              {/* 刷新按钮（仅角色BD查询） */}
+              {(isFromCharacterBD || isFromShare) && (
+                <button
+                  onClick={handleRefresh}
+                  className="member-hero__refresh-btn"
+                  disabled={refreshing}
+                  title="刷新角色数据（10分钟冷却）"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    width="18"
+                    height="18"
+                    className={refreshing ? 'spinning' : ''}
+                  >
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                  </svg>
+                  <span>{refreshing ? '刷新中...' : '刷新数据'}</span>
+                </button>
+              )}
+              {/* 分享按钮 */}
+              <button onClick={handleShare} className="member-hero__share-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                  <polyline points="16 6 12 2 8 6"/>
+                  <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                <span>分享角色</span>
+              </button>
+            </div>
+          </div>
 
           <div className="member-hero__profile">
             <div className="member-hero__avatar">
-              <img src={profile.profileImage} alt={profile.characterName} />
+              <img src={profile.profileImage || '/default-avatar.png'} alt={profile.characterName} />
               <div className="member-hero__item-level">
                 <span className="member-hero__il-label">装备等级</span>
                 <span className="member-hero__il-value">{itemLevel}</span>
               </div>
             </div>
             <div className="member-hero__info">
-              <h1 className="member-hero__name">
-                {profile.characterName}
+              <div className="member-hero__name-row">
+                <h1 className="member-hero__name">{profile.characterName}</h1>
                 {profile.titleName && (
-                  <span className={`member-hero__title member-hero__title--${profile.titleGrade.toLowerCase()}`}>
+                  <span className={`member-hero__title member-hero__title--${profile.titleGrade?.toLowerCase() || 'normal'}`}>
                     「{profile.titleName}」
                   </span>
                 )}
-              </h1>
+              </div>
               <div className="member-hero__meta">
                 <span className="member-hero__level">Lv.{profile.characterLevel}</span>
-                <span className="member-hero__server">{profile.raceName} · {profile.serverName}</span>
-                <span className="member-hero__region">{profile.regionName}</span>
+                <span className="member-hero__divider">|</span>
+                <span className="member-hero__race">{profile.raceName}</span>
+                <span className="member-hero__divider">|</span>
+                <span className="member-hero__server">{profile.serverName}</span>
+                {profile.regionName && (
+                  <>
+                    <span className="member-hero__divider">|</span>
+                    <span className="member-hero__region">{profile.regionName}</span>
+                  </>
+                )}
               </div>
+              {/* PVE评分显示 */}
+              {ratingLoading ? (
+                <div className="member-hero__rating-loading">
+                  <span className="member-hero__rating-spinner"></span>
+                  <span>评分计算中...</span>
+                </div>
+              ) : rating ? (
+                <div className="member-hero__rating">
+                  <span className="member-hero__rating-label">PVE评分:</span>
+                  <span className="member-hero__rating-value">{Math.floor(rating.scores.score)}</span>
+                </div>
+              ) : null}
             </div>
             <div className="member-hero__class-wrapper">
               <img
@@ -501,7 +884,7 @@ const MemberDetailPage = () => {
           )}
 
           {/* 称号 */}
-          {charInfo.title.titleList.length > 0 && (
+          {charInfo.title?.titleList && charInfo.title.titleList.length > 0 && (
             <div className="title-panel">
               <h3 className="title-panel__header">
                 <span className="title-panel__title">称号</span>
@@ -606,6 +989,17 @@ const MemberDetailPage = () => {
         visible={modalState.visible}
         loading={modalState.loading}
         onClose={handleCloseModal}
+      />
+
+      {/* 分享确认框 */}
+      <ConfirmDialog
+        visible={showShareDialog}
+        title="分享角色"
+        message="确认复制分享链接到剪贴板？"
+        confirmText="复制链接"
+        cancelText="取消"
+        onConfirm={confirmShare}
+        onCancel={() => setShowShareDialog(false)}
       />
     </div>
   );

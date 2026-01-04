@@ -1,293 +1,19 @@
 {
-  "title": {
-    "totalCount": 305,
-    "ownedCount": 206,
-    "titleList": [
-      {
-        "id": 11020057,
-        "equipCategory": "Etc",
-        "name": "不錯過的",
-        "grade": "Legend",
-        "totalCount": 101,
-        "ownedCount": 72,
-        "statList": [
-          {
-            "desc": "暴擊 +10"
-          }
-        ],
-        "equipStatList": [
-          {
-            "desc": "戰鬥速度 +3.9%"
-          },
-          {
-            "desc": "精神力 +250"
-          }
-        ]
-      },
-      {
-        "id": 12030003,
-        "equipCategory": "Defense",
-        "name": "斐爾特朗聖者",
-        "grade": "Unique",
-        "totalCount": 100,
-        "ownedCount": 67,
-        "statList": [
-          {
-            "desc": "PVE傷害耐性 +1%"
-          }
-        ],
-        "equipStatList": [
-          {
-            "desc": "額外防禦力 +300"
-          },
-          {
-            "desc": "傷害耐性 +5%"
-          },
-          {
-            "desc": "格擋 +110"
-          }
-        ]
-      },
-      {
-        "id": 13050017,
-        "equipCategory": "Attack",
-        "name": "黃澄澄的光彩",
-        "grade": "Unique",
-        "totalCount": 104,
-        "ownedCount": 67,
-        "statList": [
-          {
-            "desc": "暴擊攻擊力 +3"
-          }
-        ],
-        "equipStatList": [
-          {
-            "desc": "暴擊攻擊力 +35"
-          },
-          {
-            "desc": "暴擊傷害增幅 +5.5%"
-          },
-          {
-            "desc": "完美 +4%"
-          }
-        ]
-      }
-    ]
-  },
-  "stat": {
-    "statList": [
-      {
-        "type": "STR",
-        "name": "威力",
-        "value": 44,
-        "statSecondList": [
-          "攻擊力增加 +4.4%"
-        ]
-      },
-      {
-        "type": "DEX",
-        "name": "敏捷",
-        "value": 0,
-        "statSecondList": null
-      },
-      {
-        "type": "INT",
-        "name": "知識",
-        "value": 34,
-        "statSecondList": [
-          "異常狀態擊中 +3.4%"
-        ]
-      },
-      {
-        "type": "CON",
-        "name": "體力",
-        "value": 43,
-        "statSecondList": [
-          "生命力增加 +4.3%"
-        ]
-      },
-      {
-        "type": "AGI",
-        "name": "精確",
-        "value": 42,
-        "statSecondList": [
-          "命中增加 +4.2%",
-          "暴擊增加 +4.2%"
-        ]
-      },
-      {
-        "type": "WIS",
-        "name": "意志",
-        "value": 44,
-        "statSecondList": [
-          "異常狀態抵抗 +4.4%"
-        ]
-      },
-      {
-        "type": "Justice",
-        "name": "正義[奈薩肯]",
-        "value": 74,
-        "statSecondList": [
-          "防禦力增加 +14.8%",
-          "完美 +14.8%"
-        ]
-      },
-      {
-        "type": "Freedom",
-        "name": "自由[白傑爾]",
-        "value": 67,
-        "statSecondList": [
-          "命中增加 +13.4%",
-          "迴避增加 +13.4%"
-        ]
-      },
-      {
-        "type": "Illusion",
-        "name": "幻象[凱西內爾]",
-        "value": 43,
-        "statSecondList": [
-          "冷卻時間 -8.6%",
-          "鐵壁貫穿 +8.6%"
-        ]
-      },
-      {
-        "type": "Life",
-        "name": "生命[尤斯迪埃]",
-        "value": 52,
-        "statSecondList": [
-          "生命力增加 +10.4%",
-          "再生 +10.4%"
-        ]
-      },
-      {
-        "type": "Time",
-        "name": "時間[希埃爾]",
-        "value": 98,
-        "statSecondList": [
-          "戰鬥速度 +19.6%",
-          "強擊抵抗 +19.6%"
-        ]
-      },
-      {
-        "type": "Destruction",
-        "name": "破壞[吉凱爾]",
-        "value": 20,
-        "statSecondList": [
-          "攻擊力增加 +4%",
-          "完美抵抗 +4%"
-        ]
-      },
-      {
-        "type": "Death",
-        "name": "死亡[崔妮爾]",
-        "value": 52,
-        "statSecondList": [
-          "暴擊增加 +10.4%",
-          "再生貫穿 +10.4%"
-        ]
-      },
-      {
-        "type": "Wisdom",
-        "name": "智慧[露梅爾]",
-        "value": 31,
-        "statSecondList": [
-          "精神力消耗量 -6.2%",
-          "強擊 +6.2%"
-        ]
-      },
-      {
-        "type": "Destiny",
-        "name": "命運[瑪爾庫坦]",
-        "value": 34,
-        "statSecondList": [
-          "精神力增加 +6.8%",
-          "鐵壁 +6.8%"
-        ]
-      },
-      {
-        "type": "Space",
-        "name": "空間[伊斯拉佩爾]",
-        "value": 72,
-        "statSecondList": [
-          "移動速度 +14.4%",
-          "格擋增加 +14.4%"
-        ]
-      },
-      {
-        "type": "ItemLevel",
-        "name": "아이템레벨",
-        "value": 2752,
-        "statSecondList": null
-      }
-    ]
-  },
-  "daevanion": {
-    "boardList": [
-      {
-        "id": 31,
-        "name": "奈薩肯",
-        "totalNodeCount": 88,
-        "openNodeCount": 78,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
-        "open": 1
-      },
-      {
-        "id": 32,
-        "name": "吉凱爾",
-        "totalNodeCount": 88,
-        "openNodeCount": 77,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
-        "open": 1
-      },
-      {
-        "id": 33,
-        "name": "白傑爾",
-        "totalNodeCount": 88,
-        "openNodeCount": 77,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
-        "open": 1
-      },
-      {
-        "id": 34,
-        "name": "崔妮爾",
-        "totalNodeCount": 116,
-        "openNodeCount": 107,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
-        "open": 1
-      },
-      {
-        "id": 35,
-        "name": "艾瑞爾",
-        "totalNodeCount": 152,
-        "openNodeCount": 24,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
-        "open": 1
-      },
-      {
-        "id": 36,
-        "name": "阿斯佩爾",
-        "totalNodeCount": 152,
-        "openNodeCount": 37,
-        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
-        "open": 1
-      }
-    ]
-  },
   "ranking": {
     "rankingList": [
       {
         "rankingContentsType": 1,
         "rankingContentsName": "深淵",
         "rankingType": 0,
-        "rank": 3967,
+        "rank": 4623,
         "characterId": null,
         "characterName": "梧",
         "classId": 4,
         "className": "Ranger",
         "guildName": "椿夏",
-        "point": 132246,
+        "point": 132429,
         "prevRank": 0,
-        "rankChange": -1,
+        "rankChange": -20,
         "gradeId": 18,
         "gradeName": "9等兵",
         "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Ranking_Grade_Abyss_Solidier_09.png",
@@ -298,15 +24,15 @@
         "rankingContentsType": 3,
         "rankingContentsName": "惡夢",
         "rankingType": 0,
-        "rank": 6887,
+        "rank": 5052,
         "characterId": null,
         "characterName": "梧",
         "classId": 4,
         "className": "Ranger",
         "guildName": "椿夏",
-        "point": 18315,
+        "point": 29761,
         "prevRank": 0,
-        "rankChange": -18,
+        "rankChange": -8,
         "gradeId": 10,
         "gradeName": "銅",
         "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
@@ -317,15 +43,15 @@
         "rankingContentsType": 4,
         "rankingContentsName": "超越",
         "rankingType": 0,
-        "rank": 6981,
+        "rank": 4312,
         "characterId": null,
         "characterName": "梧",
         "classId": 4,
         "className": "Ranger",
         "guildName": "椿夏",
-        "point": 100716,
+        "point": 262769,
         "prevRank": 0,
-        "rankChange": -10,
+        "rankChange": -8,
         "gradeId": 10,
         "gradeName": "銅",
         "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Bronze.png",
@@ -393,13 +119,13 @@
         "rankingContentsType": 21,
         "rankingContentsName": "覺醒戰",
         "rankingType": 0,
-        "rank": 218,
+        "rank": 227,
         "characterId": null,
         "characterName": "梧",
         "classId": 4,
         "className": "Ranger",
         "guildName": "椿夏",
-        "point": 174829,
+        "point": 209309,
         "prevRank": 0,
         "rankChange": -1,
         "gradeId": 7,
@@ -407,6 +133,279 @@
         "gradeIcon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Arena_Ranking_Grade_Platinum.png",
         "profileImage": null,
         "extraDataMap": null
+      }
+    ]
+  },
+  "daevanion": {
+    "boardList": [
+      {
+        "id": 31,
+        "name": "奈薩肯",
+        "totalNodeCount": 88,
+        "openNodeCount": 80,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 32,
+        "name": "吉凱爾",
+        "totalNodeCount": 88,
+        "openNodeCount": 79,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      },
+      {
+        "id": 33,
+        "name": "白傑爾",
+        "totalNodeCount": 88,
+        "openNodeCount": 79,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 34,
+        "name": "崔妮爾",
+        "totalNodeCount": 116,
+        "openNodeCount": 111,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      },
+      {
+        "id": 35,
+        "name": "艾瑞爾",
+        "totalNodeCount": 152,
+        "openNodeCount": 28,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Sword_1H.png",
+        "open": 1
+      },
+      {
+        "id": 36,
+        "name": "阿斯佩爾",
+        "totalNodeCount": 152,
+        "openNodeCount": 37,
+        "icon": "https://assets.playnccdn.com/static-aion2-gamedata/resources/UT_Weapon_Mace.png",
+        "open": 1
+      }
+    ]
+  },
+  "stat": {
+    "statList": [
+      {
+        "type": "STR",
+        "name": "威力",
+        "value": 122,
+        "statSecondList": [
+          "攻擊力增加 +12.2%"
+        ]
+      },
+      {
+        "type": "DEX",
+        "name": "敏捷",
+        "value": 3,
+        "statSecondList": [
+          "迴避增加 +0.3%",
+          "格擋增加 +0.3%",
+          "暴擊抵抗增加 +0.3%"
+        ]
+      },
+      {
+        "type": "INT",
+        "name": "知識",
+        "value": 19,
+        "statSecondList": [
+          "異常狀態擊中 +1.9%"
+        ]
+      },
+      {
+        "type": "CON",
+        "name": "體力",
+        "value": 16,
+        "statSecondList": [
+          "生命力增加 +1.6%"
+        ]
+      },
+      {
+        "type": "AGI",
+        "name": "精確",
+        "value": 122,
+        "statSecondList": [
+          "命中增加 +12.2%",
+          "暴擊增加 +12.2%"
+        ]
+      },
+      {
+        "type": "WIS",
+        "name": "意志",
+        "value": 0,
+        "statSecondList": null
+      },
+      {
+        "type": "Justice",
+        "name": "正義[奈薩肯]",
+        "value": 65,
+        "statSecondList": [
+          "防禦力增加 +13%",
+          "完美 +13%"
+        ]
+      },
+      {
+        "type": "Freedom",
+        "name": "自由[白傑爾]",
+        "value": 52,
+        "statSecondList": [
+          "命中增加 +10.4%",
+          "迴避增加 +10.4%"
+        ]
+      },
+      {
+        "type": "Illusion",
+        "name": "幻象[凱西內爾]",
+        "value": 40,
+        "statSecondList": [
+          "冷卻時間 -8%",
+          "鐵壁貫穿 +8%"
+        ]
+      },
+      {
+        "type": "Life",
+        "name": "生命[尤斯迪埃]",
+        "value": 66,
+        "statSecondList": [
+          "生命力增加 +13.2%",
+          "再生 +13.2%"
+        ]
+      },
+      {
+        "type": "Time",
+        "name": "時間[希埃爾]",
+        "value": 109,
+        "statSecondList": [
+          "戰鬥速度 +21.8%",
+          "強擊抵抗 +21.8%"
+        ]
+      },
+      {
+        "type": "Destruction",
+        "name": "破壞[吉凱爾]",
+        "value": 88,
+        "statSecondList": [
+          "攻擊力增加 +17.6%",
+          "完美抵抗 +17.6%"
+        ]
+      },
+      {
+        "type": "Death",
+        "name": "死亡[崔妮爾]",
+        "value": 75,
+        "statSecondList": [
+          "暴擊增加 +15%",
+          "再生貫穿 +15%"
+        ]
+      },
+      {
+        "type": "Wisdom",
+        "name": "智慧[露梅爾]",
+        "value": 71,
+        "statSecondList": [
+          "精神力消耗量 -14.2%",
+          "強擊 +14.2%"
+        ]
+      },
+      {
+        "type": "Destiny",
+        "name": "命運[瑪爾庫坦]",
+        "value": 42,
+        "statSecondList": [
+          "精神力增加 +8.4%",
+          "鐵壁 +8.4%"
+        ]
+      },
+      {
+        "type": "Space",
+        "name": "空間[伊斯拉佩爾]",
+        "value": 72,
+        "statSecondList": [
+          "移動速度 +14.4%",
+          "格擋增加 +14.4%"
+        ]
+      },
+      {
+        "type": "ItemLevel",
+        "name": "아이템레벨",
+        "value": 2922,
+        "statSecondList": null
+      }
+    ]
+  },
+  "title": {
+    "totalCount": 305,
+    "ownedCount": 219,
+    "titleList": [
+      {
+        "id": 11020040,
+        "equipCategory": "Etc",
+        "name": "事必歸正",
+        "grade": "Legend",
+        "totalCount": 101,
+        "ownedCount": 74,
+        "statList": [
+          {
+            "desc": "額外防禦力 +20"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "戰鬥速度 +3.9%"
+          },
+          {
+            "desc": "行動力 +170"
+          }
+        ]
+      },
+      {
+        "id": 12030002,
+        "equipCategory": "Attack",
+        "name": "斐爾特朗守護者",
+        "grade": "Legend",
+        "totalCount": 104,
+        "ownedCount": 72,
+        "statList": [
+          {
+            "desc": "PVE傷害增幅 +1%"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "PVE傷害增幅 +3.7%"
+          },
+          {
+            "desc": "強擊 +2%"
+          }
+        ]
+      },
+      {
+        "id": 12030003,
+        "equipCategory": "Defense",
+        "name": "斐爾特朗聖者",
+        "grade": "Unique",
+        "totalCount": 100,
+        "ownedCount": 73,
+        "statList": [
+          {
+            "desc": "PVE傷害耐性 +1%"
+          }
+        ],
+        "equipStatList": [
+          {
+            "desc": "額外防禦力 +300"
+          },
+          {
+            "desc": "傷害耐性 +5%"
+          },
+          {
+            "desc": "格擋 +110"
+          }
+        ]
       }
     ]
   },

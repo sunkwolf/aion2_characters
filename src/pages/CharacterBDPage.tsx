@@ -23,12 +23,6 @@ interface CharacterBasicInfo {
   profileImage?: string;
 }
 
-// 缓存数据类型
-interface CachedCharacter {
-  data: any;
-  timestamp: number;
-}
-
 // 搜索历史记录类型
 interface SearchHistory {
   characterId: string;
@@ -44,12 +38,110 @@ interface SearchHistory {
 const HISTORY_STORAGE_KEY = 'character_search_history';
 const MAX_HISTORY_ITEMS = 5;
 
+// 历史记录项组件 - 显示缓存的评分（不主动请求）
+interface HistoryItemProps {
+  history: SearchHistory;
+  onClick: () => void;
+  onDelete: (e: React.MouseEvent) => void;
+}
+
+const HistoryItem = ({ history, onClick, onDelete }: HistoryItemProps) => {
+  const [cachedRating, setCachedRating] = useState<number | null>(null);
+
+  useEffect(() => {
+    // 尝试从缓存读取评分（不主动请求）
+    const ratingCacheKey = `rating_${history.serverId}_${history.characterId}`;
+    const cached = localStorage.getItem(ratingCacheKey);
+
+    if (cached) {
+      try {
+        const cacheData = JSON.parse(cached);
+        const now = Date.now();
+        const eightHours = 8 * 60 * 60 * 1000;
+
+        // 检查缓存是否有效（8小时内）
+        if (now - cacheData.timestamp < eightHours && cacheData.rating?.scores?.score) {
+          setCachedRating(Math.floor(cacheData.rating.scores.score));
+        }
+      } catch (e) {
+        // 缓存解析失败，不显示评分
+      }
+    }
+  }, [history.serverId, history.characterId]);
+
+  return (
+    <div className="history-item" onClick={onClick}>
+      {history.profileImage && (
+        <img src={history.profileImage} alt={history.characterName} className="history-item__avatar" />
+      )}
+      <div className="history-item__info">
+        <div className="history-item__name-row">
+          <span className="history-item__name">{history.characterName}</span>
+          {cachedRating !== null && (
+            <div className="history-item__rating">
+              <span className="history-item__rating-label">PVE评分:</span>
+              <span className="history-item__rating-value">{cachedRating}</span>
+            </div>
+          )}
+        </div>
+        <span className="history-item__meta">
+          {history.serverLabel}
+          {history.level && ` · Lv.${history.level}`}
+          {history.race && ` · ${history.race === 1 ? '天族' : '魔族'}`}
+        </span>
+      </div>
+      <button
+        className="history-item__delete"
+        onClick={onDelete}
+        title="删除此记录"
+      >
+        ✕
+      </button>
+    </div>
+  );
+};
+
+// 搜索结果卡片组件 - 不显示评分(避免频繁请求)
+interface SearchResultCardProps {
+  result: CharacterBasicInfo;
+  onClick: () => void;
+}
+
+const SearchResultCard = ({ result, onClick }: SearchResultCardProps) => {
+  return (
+    <div className="result-card" onClick={onClick}>
+      {result.profileImage && (
+        <div className="result-card__avatar">
+          <img src={result.profileImage} alt={result.characterName} />
+        </div>
+      )}
+      <div className="result-card__info">
+        <div className="result-card__name">{result.characterName}</div>
+        <div className="result-card__details">
+          <span className="result-card__server">{result.serverLabel}</span>
+          <span className="result-card__divider">·</span>
+          <span className="result-card__level">Lv.{result.level}</span>
+          <span className="result-card__divider">·</span>
+          <span className="result-card__race">
+            {result.race === 1 ? '天族' : '魔族'}
+          </span>
+        </div>
+      </div>
+      <div className="result-card__action">
+        <span>查看详情</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
 const CharacterBDPage = () => {
   const navigate = useNavigate();
   const [characterName, setCharacterName] = useState('');
   const [servers, setServers] = useState<Server[]>([]);
   const [searching, setSearching] = useState(false);
-  const [loadingDetail, setLoadingDetail] = useState(false);
   const [searchResults, setSearchResults] = useState<CharacterBasicInfo[]>([]);
   const [error, setError] = useState('');
   const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
@@ -214,7 +306,8 @@ const CharacterBDPage = () => {
       return;
     }
 
-    performSearchAllServers(characterName);
+    // 去除角色名前后空格
+    performSearchAllServers(characterName.trim());
   };
 
   // 查看角色详情
@@ -230,69 +323,8 @@ const CharacterBDPage = () => {
       character.profileImage
     );
 
-    const cacheKey = `character_${character.characterId}`;
-    const now = Date.now();
-    const CACHE_DURATION = 4 * 60 * 60 * 1000; // 4小时
-
-    // 检查缓存
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      try {
-        const cachedData: CachedCharacter = JSON.parse(cached);
-        if (now - cachedData.timestamp < CACHE_DURATION) {
-          // 导航到详情页
-          navigate('/character-detail', {
-            state: { characterData: cachedData.data }
-          });
-          return;
-        }
-      } catch (e) {
-        console.error('解析缓存失败:', e);
-      }
-    }
-
-    // 缓存不存在或已过期,请求新数据
-    setLoadingDetail(true);
-    setError('');
-
-    try {
-      const infoUrl = `/api/character/info?characterId=${character.characterId}&serverId=${character.serverId}`;
-      const equipUrl = `/api/character/equipment?characterId=${character.characterId}&serverId=${character.serverId}`;
-
-      const [infoResponse, equipmentResponse] = await Promise.all([
-        fetch(infoUrl),
-        fetch(equipUrl)
-      ]);
-
-      const [infoData, equipmentData] = await Promise.all([
-        infoResponse.json(),
-        equipmentResponse.json()
-      ]);
-
-      const characterData = {
-        info: infoData,
-        equipment: equipmentData
-      };
-
-      // 保存到 LocalStorage
-      const cacheData: CachedCharacter = {
-        data: characterData,
-        timestamp: now
-      };
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-
-      // 关闭 loading 状态
-      setLoadingDetail(false);
-
-      // 导航到详情页
-      navigate('/character-detail', {
-        state: { characterData }
-      });
-    } catch (error) {
-      console.error('获取角色详情失败:', error);
-      setError('获取角色详情失败，请稍后重试');
-      setLoadingDetail(false);
-    }
+    // 直接跳转到新的分享路由 (实时加载数据)
+    navigate(`/character/${character.serverId}/${encodeURIComponent(character.characterId)}`);
   };
 
   // 清除输入
@@ -378,6 +410,15 @@ const CharacterBDPage = () => {
           </div>
         </form>
 
+        {/* 搜索提示 */}
+        <div className="search-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+          </svg>
+          <span>💡 建议选择服务器,查询速度更快更精准</span>
+        </div>
+
         {/* 错误提示 */}
         {error && (
           <div className="error-message">
@@ -398,35 +439,11 @@ const CharacterBDPage = () => {
             </h2>
             <div className="search-results__list">
               {searchResults.map((result, index) => (
-                <div
+                <SearchResultCard
                   key={index}
-                  className="result-card"
+                  result={result}
                   onClick={() => handleViewDetail(result)}
-                >
-                  {result.profileImage && (
-                    <div className="result-card__avatar">
-                      <img src={result.profileImage} alt={result.characterName} />
-                    </div>
-                  )}
-                  <div className="result-card__info">
-                    <div className="result-card__name">{result.characterName}</div>
-                    <div className="result-card__details">
-                      <span className="result-card__server">{result.serverLabel}</span>
-                      <span className="result-card__divider">·</span>
-                      <span className="result-card__level">Lv.{result.level}</span>
-                      <span className="result-card__divider">·</span>
-                      <span className="result-card__race">
-                        {result.race === 1 ? '天族' : '魔族'}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="result-card__action">
-                    <span>查看详情</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </div>
-                </div>
+                />
               ))}
             </div>
           </div>
@@ -436,15 +453,15 @@ const CharacterBDPage = () => {
         <div className="favorites-section">
           <div className="favorites-section__header">
             <div className="favorites-section__title">
-              <span className="favorites-section__count">{searchHistory.length}条</span>
+              查询记录 <span className="favorites-section__count">{searchHistory.length}条</span>
             </div>
             {searchHistory.length > 0 && (
               <button
                 className="favorites-section__clear"
                 onClick={clearHistory}
-                title="清空查询记录"
+                title="一键清空"
               >
-                🗑️
+                ✕
               </button>
             )}
           </div>
@@ -452,65 +469,23 @@ const CharacterBDPage = () => {
           {searchHistory.length > 0 ? (
             <>
               {/* 显示最多2条预览 */}
-              <div className="search-results__list">
+              <div className="history-list">
                 {searchHistory.slice(0, 2).map((history, index) => (
-                  <div
+                  <HistoryItem
                     key={index}
-                    className="result-card"
-                  >
-                    <div
-                      className="result-card__clickable"
-                      onClick={() => handleViewDetail({
-                        characterId: history.characterId,
-                        characterName: history.characterName,
-                        serverId: history.serverId,
-                        serverName: history.serverLabel,
-                        serverLabel: history.serverLabel,
-                        level: history.level || 0,
-                        race: history.race || 0,
-                        profileImage: history.profileImage
-                      })}
-                    >
-                      {history.profileImage && (
-                        <div className="result-card__avatar">
-                          <img src={history.profileImage} alt={history.characterName} />
-                        </div>
-                      )}
-                      <div className="result-card__info">
-                        <div className="result-card__name">{history.characterName}</div>
-                        <div className="result-card__details">
-                          <span className="result-card__server">{history.serverLabel}</span>
-                          {history.level && (
-                            <>
-                              <span className="result-card__divider">·</span>
-                              <span className="result-card__level">Lv.{history.level}</span>
-                            </>
-                          )}
-                          {history.race && (
-                            <>
-                              <span className="result-card__divider">·</span>
-                              <span className="result-card__race">
-                                {history.race === 1 ? '天族' : '魔族'}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <div className="result-card__action">
-                        <span>查看详情</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </div>
-                    </div>
-                    <button
-                      className="result-card__delete"
-                      onClick={(e) => deleteHistoryItem(index, e)}
-                      title="删除此记录"
-                    >
-                      🗑️
-                    </button>
-                  </div>
+                    history={history}
+                    onClick={() => handleViewDetail({
+                      characterId: history.characterId,
+                      characterName: history.characterName,
+                      serverId: history.serverId,
+                      serverName: history.serverLabel,
+                      serverLabel: history.serverLabel,
+                      level: history.level || 0,
+                      race: history.race || 0,
+                      profileImage: history.profileImage
+                    })}
+                    onDelete={(e) => deleteHistoryItem(index, e)}
+                  />
                 ))}
               </div>
 
@@ -549,66 +524,24 @@ const CharacterBDPage = () => {
 
               <div className="history-modal__list">
                 {searchHistory.map((history, index) => (
-                  <div
+                  <HistoryItem
                     key={index}
-                    className="result-card"
-                  >
-                    <div
-                      className="result-card__clickable"
-                      onClick={() => {
-                        handleViewDetail({
-                          characterId: history.characterId,
-                          characterName: history.characterName,
-                          serverId: history.serverId,
-                          serverName: history.serverLabel,
-                          serverLabel: history.serverLabel,
-                          level: history.level || 0,
-                          race: history.race || 0,
-                          profileImage: history.profileImage
-                        });
-                        setShowHistoryModal(false);
-                      }}
-                    >
-                      {history.profileImage && (
-                        <div className="result-card__avatar">
-                          <img src={history.profileImage} alt={history.characterName} />
-                        </div>
-                      )}
-                      <div className="result-card__info">
-                        <div className="result-card__name">{history.characterName}</div>
-                        <div className="result-card__details">
-                          <span className="result-card__server">{history.serverLabel}</span>
-                          {history.level && (
-                            <>
-                              <span className="result-card__divider">·</span>
-                              <span className="result-card__level">Lv.{history.level}</span>
-                            </>
-                          )}
-                          {history.race && (
-                            <>
-                              <span className="result-card__divider">·</span>
-                              <span className="result-card__race">
-                                {history.race === 1 ? '天族' : '魔族'}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <div className="result-card__action">
-                        <span>查看详情</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </div>
-                    </div>
-                    <button
-                      className="result-card__delete"
-                      onClick={(e) => deleteHistoryItem(index, e)}
-                      title="删除此记录"
-                    >
-                      🗑️
-                    </button>
-                  </div>
+                    history={history}
+                    onClick={() => {
+                      handleViewDetail({
+                        characterId: history.characterId,
+                        characterName: history.characterName,
+                        serverId: history.serverId,
+                        serverName: history.serverLabel,
+                        serverLabel: history.serverLabel,
+                        level: history.level || 0,
+                        race: history.race || 0,
+                        profileImage: history.profileImage
+                      });
+                      setShowHistoryModal(false);
+                    }}
+                    onDelete={(e) => deleteHistoryItem(index, e)}
+                  />
                 ))}
               </div>
 
@@ -624,16 +557,6 @@ const CharacterBDPage = () => {
           </div>
         )}
       </div>
-
-      {/* 加载角色详情模态框 */}
-      {loadingDetail && (
-        <div className="loading-overlay">
-          <div className="loading-content">
-            <div className="loading-spinner"></div>
-            <p>载入角色信息中...</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

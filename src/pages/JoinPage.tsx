@@ -107,9 +107,12 @@ const JoinPage = () => {
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     try {
+      // 去除角色名前后空格
+      const trimmedName = formData.characterName.trim();
+
       // 调用后端搜索API (带超时信号)
       const response = await fetch(
-        `/api/character/search?name=${encodeURIComponent(formData.characterName)}&serverId=${formData.serverId}`,
+        `/api/character/search?name=${encodeURIComponent(trimmedName)}&serverId=${formData.serverId}`,
         { signal: controller.signal }
       );
 
