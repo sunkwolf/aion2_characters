@@ -426,10 +426,18 @@
 }
 
 .legion-member-card__join {
+  display: inline-block;
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  font-weight: 500;
+  padding: 2px 8px;
   margin-top: var(--spacing-xs);
+  background: rgba(52, 152, 219, 0.1);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: 4px;
+  color: #5dade2;
+  transition: all var(--transition-fast);
 }
+
 
 @media (max-width: 768px) {
   .legion-intro__values {

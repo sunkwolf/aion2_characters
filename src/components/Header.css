@@ -138,6 +138,16 @@
   opacity: 1;
 }
 
+/* 禁用状态的导航链接 */
+.header__nav-link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.header__nav-link--disabled::after {
+  display: none;
+}
+
 /* 按钮样式的导航链接 */
 .header__nav-link--btn {
   background: transparent;

@@ -1,0 +1,638 @@
+/* 加入军团整合页面样式 */
+
+.join-legion-page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-bg-secondary);
+}
+
+/* 背景图层 - 只在顶部显示 */
+.join-legion-page__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.join-legion-page__bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top center;
+}
+
+.join-legion-page__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 248, 245, 0.3) 0%,
+    rgba(250, 248, 245, 0.6) 40%,
+    rgba(250, 248, 245, 0.9) 70%,
+    var(--color-bg-secondary) 100%
+  );
+}
+
+/* ========== 成功状态 ========== */
+.join-legion__success {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl);
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  text-align: center;
+}
+
+.join-legion__success-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin-bottom: var(--spacing-xl);
+  animation: successPulse 2s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+  }
+}
+
+.join-legion__success h2 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.join-legion__success p {
+  font-size: 1.1rem;
+  margin: var(--spacing-sm) 0;
+  opacity: 0.95;
+}
+
+.join-legion__btn {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: white;
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.join-legion__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ========== 通用区块标题 ========== */
+.join-legion__section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.join-legion__section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* ========== 相册区域 ========== */
+.join-legion__gallery {
+  position: relative;
+  z-index: 1;
+  padding: var(--spacing-xxl) 0;
+}
+
+.join-legion__gallery-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.join-legion__gallery-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-lg);
+}
+
+.join-legion__upload-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.join-legion__upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.join-legion__upload-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.join-legion__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.join-legion__gallery-item {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.join-legion__gallery-item:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.join-legion__gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.join-legion__gallery-empty {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--color-text-muted);
+}
+
+.join-legion__gallery-empty p {
+  font-size: 1rem;
+  margin: var(--spacing-sm) 0;
+}
+
+/* 图片预览弹窗 */
+.join-legion__lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+  animation: fadeIn 0.2s;
+}
+
+.join-legion__lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.join-legion__lightbox-close {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.join-legion__lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.join-legion__lightbox-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* 上传通知 */
+.join-legion__notification {
+  position: fixed;
+  top: calc(var(--header-height) + var(--spacing-lg));
+  right: var(--spacing-lg);
+  z-index: 9998;
+  animation: slideInRight 0.3s;
+}
+
+.join-legion__notification-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-width: 400px;
+}
+
+.join-legion__notification-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.join-legion__notification-text {
+  flex: 1;
+}
+
+.join-legion__notification-text strong {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.join-legion__notification-text p {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.join-legion__notification-close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.join-legion__notification-close:hover {
+  color: var(--color-text-primary);
+}
+
+.join-legion__notification-close svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ========== 查看军团按钮区域 ========== */
+.join-legion__cta {
+  position: relative;
+  z-index: 1;
+  padding: var(--spacing-xxl) 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.join-legion__cta-container {
+  text-align: center;
+}
+
+.join-legion__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-xxl);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 20px rgba(107, 159, 216, 0.3);
+}
+
+.join-legion__cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 30px rgba(107, 159, 216, 0.5);
+}
+
+.join-legion__cta-btn svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* ========== 申请表单区域 ========== */
+.join-legion__form-section {
+  position: relative;
+  z-index: 1;
+  padding: var(--spacing-xl) 0;
+}
+
+.join-legion__form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.join-legion__form-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+/* 左侧:须知信息 */
+.join-legion__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.join-legion__info-card {
+  padding: var(--spacing-lg);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.join-legion__info-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.join-legion__info-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+.join-legion__info-card li {
+  padding: var(--spacing-xs) 0;
+  color: var(--color-text-secondary);
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: var(--spacing-xs);
+  font-size: 0.95rem;
+}
+
+.join-legion__info-card li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.join-legion__notice {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.join-legion__notice-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.join-legion__notice-content p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin: var(--spacing-xs) 0;
+  line-height: 1.5;
+}
+
+.join-legion__contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.join-legion__contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* 右侧:申请表单 */
+.join-legion__form {
+  padding: var(--spacing-lg);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.join-legion__form h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.join-legion__field {
+  margin-bottom: var(--spacing-md);
+}
+
+.join-legion__field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.join-legion__field input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  transition: all var(--transition-fast);
+}
+
+.join-legion__field input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.join-legion__field input:disabled {
+  background: var(--color-bg-tertiary);
+  cursor: not-allowed;
+}
+
+.join-legion__error {
+  display: block;
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: var(--spacing-xs);
+}
+
+.join-legion__hint {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-top: var(--spacing-xs);
+}
+
+/* 多条提示列表 */
+.join-legion__hints {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: rgba(52, 152, 219, 0.05);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-primary);
+}
+
+.join-legion__hint-item {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  margin: var(--spacing-xs) 0;
+  line-height: 1.6;
+}
+
+.join-legion__hint-item:first-child {
+  margin-top: 0;
+}
+
+.join-legion__hint-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 角色确认框 */
+.join-legion__confirm {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(46, 204, 113, 0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.join-legion__confirm-title {
+  font-weight: 600;
+  color: #27ae60;
+  font-size: 1rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.join-legion__confirm-info div {
+  margin: var(--spacing-xs) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.join-legion__confirm-info strong {
+  color: var(--color-text-primary);
+}
+
+/* 按钮 */
+.join-legion__verify-btn,
+.join-legion__submit-btn {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.join-legion__verify-btn {
+  background: var(--color-primary);
+  color: white;
+}
+
+.join-legion__verify-btn:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.join-legion__verify-btn:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.join-legion__submit-btn {
+  background: #2ecc71;
+  color: white;
+}
+
+.join-legion__submit-btn:hover {
+  background: #27ae60;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .join-legion__form-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .join-legion__gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .join-legion__notification {
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    left: var(--spacing-md);
+  }
+
+  .join-legion__notification-content {
+    max-width: 100%;
+  }
+}

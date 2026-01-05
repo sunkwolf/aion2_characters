@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { getRoleName, classIconsSmall } from '../data/memberTypes';
+import { classIconsSmall } from '../data/memberTypes';
 import type { CharacterInfo, MemberRole } from '../data/memberTypes';
 import './LegionPage.css';
 
@@ -239,9 +239,6 @@ const LegionPage = () => {
             {member.name.charAt(0).toUpperCase()}
           </div>
         )}
-        <span className={`legion-member-card__role legion-member-card__role--${member.role}`}>
-          {getRoleName(member.role)}
-        </span>
       </div>
       <div className="legion-member-card__info">
         <h3 className="legion-member-card__name">{member.profile?.characterName || member.name}</h3>
@@ -373,7 +370,6 @@ const LegionPage = () => {
             {groupByRole('leader').length > 0 && (
               <div className="legion-members__section">
                 <h3 className="legion-members__section-title">
-                  <span className="legion-members__section-icon">👑</span>
                   军团长
                 </h3>
                 <div className="legion-members__grid legion-members__grid--leader">
@@ -386,7 +382,6 @@ const LegionPage = () => {
             {groupByRole('elite').length > 0 && (
               <div className="legion-members__section">
                 <h3 className="legion-members__section-title">
-                  <span className="legion-members__section-icon">⭐</span>
                   军团精英
                 </h3>
                 <div className="legion-members__grid legion-members__grid--elite">
@@ -399,7 +394,6 @@ const LegionPage = () => {
             {groupByRole('member').length > 0 && (
               <div className="legion-members__section">
                 <h3 className="legion-members__section-title">
-                  <span className="legion-members__section-icon">🎖️</span>
                   军团成员
                 </h3>
                 <div className="legion-members__grid">

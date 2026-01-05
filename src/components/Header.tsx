@@ -1,82 +1,33 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAdmin } from '../contexts/AdminContext';
+import ConfirmDialog from './ConfirmDialog';
 import './Header.css';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('hero');
+  const [showDatabaseDialog, setShowDatabaseDialog] = useState(false);
   const { isAdmin, setShowLoginModal } = useAdmin();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isHome = location.pathname === '/';
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-
-      // 只在首页检测当前区域
-      if (isHome) {
-        const sections = ['members', 'about', 'hero'];
-        for (const sectionId of sections) {
-          const element = document.getElementById(sectionId);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            // 当区域顶部接近视口顶部时激活
-            if (rect.top <= 150 && rect.bottom > 150) {
-              setActiveSection(sectionId);
-              break;
-            }
-          }
-        }
-      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isHome]);
+  }, []);
 
   // 关闭移动菜单当路由变化时
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    if (!isHome) {
-      setActiveSection('');
-    } else {
-      setActiveSection('hero');
-    }
-  }, [location, isHome]);
-
-  // 滚动到顶部
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setIsMobileMenuOpen(false);
-  };
-
-  // 平滑滚动到锚点
-  const scrollToSection = (sectionId: string) => {
-    if (!isHome) {
-      navigate('/');
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        element?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      const element = document.getElementById(sectionId);
-      element?.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMobileMenuOpen(false);
-  };
-
-  // 判断导航项是否激活
-  const isNavActive = (section: string) => {
-    if (!isHome) return false;
-    if (section === 'home') return activeSection === 'hero';
-    return activeSection === section;
-  };
+  }, [location]);
 
   return (
+    <>
     <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
       <div className="header__container">
         {/* 左侧：游戏Logo + 导航链接 */}
@@ -85,51 +36,37 @@ const Header = () => {
             src="https://fizz-download.playnccdn.com/download/v2/buckets/conti-upload/files/196c7011305-f0c28862-ef32-4a1f-9d47-529292b0c46b"
             alt="AION2"
             className="header__game-logo"
-            onClick={() => {
-              if (isHome) {
-                scrollToTop();
-              } else {
-                navigate('/');
-              }
-            }}
+            onClick={() => navigate('/')}
             style={{ cursor: 'pointer' }}
           />
           <nav className={`header__nav ${isMobileMenuOpen ? 'header__nav--open' : ''}`}>
             <Link
               to="/"
-              onClick={(e) => {
-                if (isHome) {
-                  e.preventDefault();
-                  scrollToTop();
-                }
-              }}
-              className={`header__nav-link ${isNavActive('home') ? 'header__nav-link--active' : ''}`}
+              className={`header__nav-link ${location.pathname === '/' ? 'header__nav-link--active' : ''}`}
             >
               首页
             </Link>
-            <button
-              onClick={() => scrollToSection('about')}
-              className={`header__nav-link header__nav-link--btn ${isNavActive('about') ? 'header__nav-link--active' : ''}`}
-            >
-              关于我们
-            </button>
-            <button
-              onClick={() => scrollToSection('members')}
-              className={`header__nav-link header__nav-link--btn ${isNavActive('members') ? 'header__nav-link--active' : ''}`}
-            >
-              成员风采
-            </button>
             <Link
-              to="/character-bd"
-              className={`header__nav-link ${location.pathname === '/character-bd' ? 'header__nav-link--active' : ''}`}
+              to="/tools"
+              className={`header__nav-link ${location.pathname === '/tools' ? 'header__nav-link--active' : ''}`}
             >
-              角色BD
+              工具
             </Link>
             <Link
-              to="/join"
-              className={`header__nav-link ${location.pathname === '/join' ? 'header__nav-link--active' : ''}`}
+              to="/database"
+              className={`header__nav-link header__nav-link--disabled ${location.pathname === '/database' ? 'header__nav-link--active' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowDatabaseDialog(true);
+              }}
             >
-              加入军团
+              数据库
+            </Link>
+            <Link
+              to="/join-legion"
+              className={`header__nav-link ${location.pathname === '/join-legion' ? 'header__nav-link--active' : ''}`}
+            >
+              军团介绍
             </Link>
           </nav>
         </div>
@@ -168,6 +105,17 @@ const Header = () => {
         </button>
       </div>
     </header>
+
+    <ConfirmDialog
+      visible={showDatabaseDialog}
+      title="功能开发中"
+      message="数据库功能正在开发中，敬请期待！"
+      confirmText="知道了"
+      cancelText=""
+      onConfirm={() => setShowDatabaseDialog(false)}
+      onCancel={() => setShowDatabaseDialog(false)}
+    />
+    </>
   );
 };
 

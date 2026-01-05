@@ -29,7 +29,7 @@ const About = () => {
       <div className="about__container">
         <div className="about__header">
           <span className="about__label">关于我们</span>
-          <h2 className="about__title">一起走过的永恒之塔</h2>
+          <h2 className="about__title">一起走过的亚特雷亚</h2>
           <p className="about__subtitle">
             椿夏是一个以 PVE 副本和休闲娱乐为主的天族军团。<br />
             我们相信游戏的乐趣在于一起经历、互相帮助，而非追逐极致效率。
@@ -48,7 +48,7 @@ const About = () => {
 
         <div className="about__quote">
           <blockquote>
-            <p>"在永恒之塔的世界里，最珍贵的不是装备，而是一起奋战的伙伴。"</p>
+            <p>"在亚特雷亚的世界里，最珍贵的不是装备，而是一起奋战的伙伴。"</p>
           </blockquote>
         </div>
       </div>

@@ -599,6 +599,54 @@ app.put('/api/config', (req, res) => {
   }
 });
 
+// 3. 获取工具列表
+app.get('/api/tools', (req, res) => {
+  try {
+    const config = readConfigDB();
+    // 如果没有配置工具列表,返回默认工具
+    const tools = config.tools || [
+      {
+        id: 'character-builder',
+        name: '角色BD构筑',
+        description: '在线角色构筑工具,模拟技能、装备搭配',
+        url: 'https://questlog.gg/aion-2/zh/character-builder',
+        icon: '⚔️'
+      }
+    ];
+
+    res.json({
+      success: true,
+      data: tools
+    });
+  } catch (error) {
+    console.error('获取工具列表失败:', error);
+    res.status(500).json({ error: '获取工具列表失败: ' + error.message });
+  }
+});
+
+// 4. 更新工具列表
+app.put('/api/tools', (req, res) => {
+  try {
+    const tools = req.body;
+    const config = readConfigDB();
+    config.tools = tools;
+    const success = writeConfigDB(config);
+
+    if (success) {
+      res.json({
+        success: true,
+        message: '工具列表更新成功',
+        data: tools
+      });
+    } else {
+      res.status(500).json({ error: '更新失败' });
+    }
+  } catch (error) {
+    console.error('更新工具列表失败:', error);
+    res.status(500).json({ error: '更新失败: ' + error.message });
+  }
+});
+
 // ==================== 角色信息代理 API ====================
 
 // 代理角色信息请求(解决CORS问题)

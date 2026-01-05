@@ -81,6 +81,9 @@ const MemberDetailPage = () => {
   const [shareUrl, setShareUrl] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefreshTime, setLastRefreshTime] = useState<number>(0);
+  const [showRefreshDialog, setShowRefreshDialog] = useState(false);
+  const [refreshDialogMessage, setRefreshDialogMessage] = useState('');
+  const [refreshDialogTitle, setRefreshDialogTitle] = useState('');
 
   // 准备装备列表数据
   // 角色BD查询: 直接从 characterData 获取
@@ -387,13 +390,8 @@ const MemberDetailPage = () => {
     });
   };
 
-  // 刷新角色数据（仅角色BD查询）
+  // 刷新角色数据
   const handleRefresh = async () => {
-    // 仅角色BD查询和分享链接可以刷新
-    if (!isFromCharacterBD && !isFromShare) {
-      return;
-    }
-
     // 检查冷却时间（10分钟）
     const now = Date.now();
     const tenMinutes = 10 * 60 * 1000;
@@ -401,7 +399,9 @@ const MemberDetailPage = () => {
       const remainingSeconds = Math.ceil((tenMinutes - (now - lastRefreshTime)) / 1000);
       const minutes = Math.floor(remainingSeconds / 60);
       const seconds = remainingSeconds % 60;
-      alert(`刷新冷却中，请等待 ${minutes}分${seconds}秒 后再试`);
+      setRefreshDialogTitle('刷新冷却中');
+      setRefreshDialogMessage(`请等待 ${minutes}分${seconds}秒 后再试`);
+      setShowRefreshDialog(true);
       return;
     }
 
@@ -411,11 +411,27 @@ const MemberDetailPage = () => {
 
     try {
       // 获取角色ID和服务器ID
-      const targetServerId = isFromShare ? Number(serverId) : characterData?.info?.profile?.serverId;
-      const targetCharacterId = isFromShare ? characterId : characterData?.info?.profile?.characterId;
+      let targetServerId: number | undefined;
+      let targetCharacterId: string | undefined;
+
+      if (isFromMember) {
+        // 军团成员:从 charInfo 获取
+        targetServerId = charInfo?.profile?.serverId;
+        targetCharacterId = charInfo?.profile?.characterId;
+      } else if (isFromShare) {
+        // 分享链接:从 URL 参数获取
+        targetServerId = Number(serverId);
+        targetCharacterId = characterId;
+      } else if (isFromCharacterBD) {
+        // 角色BD查询:从 characterData 获取
+        targetServerId = characterData?.info?.profile?.serverId;
+        targetCharacterId = characterData?.info?.profile?.characterId;
+      }
 
       if (!targetServerId || !targetCharacterId) {
-        alert('无法获取角色信息');
+        setRefreshDialogTitle('刷新失败');
+        setRefreshDialogMessage('无法获取角色信息');
+        setShowRefreshDialog(true);
         setRefreshing(false);
         return;
       }
@@ -426,51 +442,114 @@ const MemberDetailPage = () => {
       localStorage.removeItem(cacheKey);
       localStorage.removeItem(ratingCacheKey);
 
-      // 重新加载角色数据
-      const infoUrl = `/api/character/info?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`;
-      const equipUrl = `/api/character/equipment?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`;
+      // 根据来源执行不同的刷新逻辑
+      if (isFromMember && id) {
+        // 军团成员:调用后端API同步数据到文件
+        console.log('军团成员刷新:调用同步API保存数据到文件...');
 
-      const [infoResponse, equipmentResponse] = await Promise.all([
-        fetch(infoUrl),
-        fetch(equipUrl)
-      ]);
+        const syncResponse = await fetch('/api/sync/member', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: id,  // 成员ID,用于创建文件夹路径
+            characterId: targetCharacterId,
+            serverId: targetServerId,
+            name: charInfo?.profile?.characterName || id
+          })
+        });
 
-      const [infoData, equipmentData] = await Promise.all([
-        infoResponse.json(),
-        equipmentResponse.json()
-      ]);
+        const syncData = await syncResponse.json();
 
-      setCharInfo(infoData);
-      setCharEquip(equipmentData);
+        if (!syncData.success) {
+          throw new Error(syncData.error || '同步失败');
+        }
 
-      // 重新缓存
-      const cacheData = {
-        info: infoData,
-        equipment: equipmentData,
-        timestamp: Date.now()
-      };
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+        console.log('数据同步成功,重新从文件加载...');
 
-      // 重新加载评分
-      setRatingLoading(true);
-      const ratingResponse = await fetch(
-        `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`
-      );
-      const ratingData = await ratingResponse.json();
+        // 同步成功后,重新从文件加载数据
+        const timestamp = Date.now();
+        const [infoRes, equipRes] = await Promise.all([
+          fetch(`/data/${id}/character_info.json?t=${timestamp}`),
+          fetch(`/data/${id}/equipment_details.json?t=${timestamp}`)  // 修正:使用 equipment_details.json
+        ]);
 
-      if (ratingData.success && ratingData.rating) {
-        setRating(ratingData.rating);
-        localStorage.setItem(ratingCacheKey, JSON.stringify({
-          rating: ratingData.rating,
+        const [infoData, equipmentData] = await Promise.all([
+          infoRes.json(),
+          equipRes.json()
+        ]);
+
+        setCharInfo(infoData);
+        setCharEquip(equipmentData);
+
+        // 重新加载评分
+        setRatingLoading(true);
+        const ratingResponse = await fetch(
+          `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`
+        );
+        const ratingData = await ratingResponse.json();
+
+        if (ratingData.success && ratingData.rating) {
+          setRating(ratingData.rating);
+          localStorage.setItem(ratingCacheKey, JSON.stringify({
+            rating: ratingData.rating,
+            timestamp: Date.now()
+          }));
+        }
+        setRatingLoading(false);
+      } else {
+        // 角色查询/分享链接:仅更新缓存,不保存文件
+        console.log('角色查询刷新:仅更新缓存...');
+
+        const infoUrl = `/api/character/info?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`;
+        const equipUrl = `/api/character/equipment?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`;
+
+        const [infoResponse, equipmentResponse] = await Promise.all([
+          fetch(infoUrl),
+          fetch(equipUrl)
+        ]);
+
+        const [infoData, equipmentData] = await Promise.all([
+          infoResponse.json(),
+          equipmentResponse.json()
+        ]);
+
+        setCharInfo(infoData);
+        setCharEquip(equipmentData);
+
+        // 重新缓存
+        const cacheData = {
+          info: infoData,
+          equipment: equipmentData,
           timestamp: Date.now()
-        }));
-      }
-      setRatingLoading(false);
+        };
+        localStorage.setItem(cacheKey, JSON.stringify(cacheData));
 
-      alert('数据已刷新！');
+        // 重新加载评分
+        setRatingLoading(true);
+        const ratingResponse = await fetch(
+          `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`
+        );
+        const ratingData = await ratingResponse.json();
+
+        if (ratingData.success && ratingData.rating) {
+          setRating(ratingData.rating);
+          localStorage.setItem(ratingCacheKey, JSON.stringify({
+            rating: ratingData.rating,
+            timestamp: Date.now()
+          }));
+        }
+        setRatingLoading(false);
+      }
+
+      // 刷新成功提示
+      setRefreshDialogTitle('刷新成功');
+      setRefreshDialogMessage('角色数据已更新');
+      setShowRefreshDialog(true);
     } catch (error) {
       console.error('刷新失败:', error);
-      alert('刷新失败，请稍后重试');
+      setRefreshDialogTitle('刷新失败');
+      setRefreshDialogMessage(error instanceof Error ? error.message : '请稍后重试');
+      setShowRefreshDialog(true);
     } finally {
       setRefreshing(false);
     }
@@ -572,36 +651,33 @@ const MemberDetailPage = () => {
               {backText}
             </Link>
             <div className="member-hero__actions">
-              {/* 刷新按钮（仅角色BD查询） */}
-              {(isFromCharacterBD || isFromShare) && (
-                <button
-                  onClick={handleRefresh}
-                  className="member-hero__refresh-btn"
-                  disabled={refreshing}
-                  title="刷新角色数据（10分钟冷却）"
+              {/* 刷新按钮 */}
+              <button
+                onClick={handleRefresh}
+                className="member-hero__refresh-btn"
+                disabled={refreshing}
+                title="刷新角色数据（10分钟冷却）"
+                aria-label="刷新角色数据"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  width="18"
+                  height="18"
+                  className={refreshing ? 'spinning' : ''}
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    width="18"
-                    height="18"
-                    className={refreshing ? 'spinning' : ''}
-                  >
-                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
-                  </svg>
-                  <span>{refreshing ? '刷新中...' : '刷新数据'}</span>
-                </button>
-              )}
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                </svg>
+              </button>
               {/* 分享按钮 */}
-              <button onClick={handleShare} className="member-hero__share-btn">
+              <button onClick={handleShare} className="member-hero__share-btn" aria-label="分享角色" title="分享角色">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
                   <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
                   <polyline points="16 6 12 2 8 6"/>
                   <line x1="12" y1="2" x2="12" y2="15"/>
                 </svg>
-                <span>分享角色</span>
               </button>
             </div>
           </div>
@@ -1000,6 +1076,16 @@ const MemberDetailPage = () => {
         cancelText="取消"
         onConfirm={confirmShare}
         onCancel={() => setShowShareDialog(false)}
+      />
+
+      {/* 刷新提示框 */}
+      <ConfirmDialog
+        visible={showRefreshDialog}
+        title={refreshDialogTitle}
+        message={refreshDialogMessage}
+        confirmText="确定"
+        onConfirm={() => setShowRefreshDialog(false)}
+        onCancel={() => setShowRefreshDialog(false)}
       />
     </div>
   );

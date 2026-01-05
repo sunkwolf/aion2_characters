@@ -38,9 +38,15 @@ const Hero = () => {
           >
             了解更多
           </button>
-          <a href="#join" className="hero__btn hero__btn--secondary">
+          <button
+            onClick={() => {
+              const element = document.getElementById('join-form');
+              element?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="hero__btn hero__btn--secondary"
+          >
             加入我们
-          </a>
+          </button>
           <a
             href="https://tw.ncsoft.com/aion2/about/index"
             target="_blank"

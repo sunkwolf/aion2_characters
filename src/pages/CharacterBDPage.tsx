@@ -155,7 +155,13 @@ const CharacterBDPage = () => {
       try {
         // 直接从本地文件加载服务器列表 (添加时间戳防止缓存)
         const localResponse = await fetch(`/data/serverId.json?t=${Date.now()}`);
+        if (!localResponse.ok) {
+          throw new Error(`HTTP错误: ${localResponse.status}`);
+        }
         const localData = await localResponse.json();
+        if (!localData.serverList || !Array.isArray(localData.serverList)) {
+          throw new Error('服务器数据格式错误');
+        }
         const localServers = localData.serverList.map((server: any) => ({
           id: server.serverId,
           name: server.serverName,
@@ -164,6 +170,11 @@ const CharacterBDPage = () => {
         setServers(localServers);
       } catch (error) {
         console.error('加载服务器列表失败:', error);
+        // 设置默认服务器作为后备
+        setServers([
+          { id: 1001, name: '希埃尔', label: '希埃尔' },
+          { id: 1002, name: '伊斯哈拉', label: '伊斯哈拉' }
+        ]);
       }
     };
 
@@ -416,7 +427,7 @@ const CharacterBDPage = () => {
             <circle cx="12" cy="12" r="10" />
             <path d="M12 16v-4M12 8h.01" />
           </svg>
-          <span>💡 建议选择服务器,查询速度更快更精准</span>
+          <span>建议选择服务器,查询速度更快更精准</span>
         </div>
 
         {/* 错误提示 */}
