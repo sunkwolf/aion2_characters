@@ -599,54 +599,6 @@ app.put('/api/config', (req, res) => {
   }
 });
 
-// 3. 获取工具列表
-app.get('/api/tools', (req, res) => {
-  try {
-    const config = readConfigDB();
-    // 如果没有配置工具列表,返回默认工具
-    const tools = config.tools || [
-      {
-        id: 'character-builder',
-        name: '角色BD构筑',
-        description: '在线角色构筑工具,模拟技能、装备搭配',
-        url: 'https://questlog.gg/aion-2/zh/character-builder',
-        icon: '⚔️'
-      }
-    ];
-
-    res.json({
-      success: true,
-      data: tools
-    });
-  } catch (error) {
-    console.error('获取工具列表失败:', error);
-    res.status(500).json({ error: '获取工具列表失败: ' + error.message });
-  }
-});
-
-// 4. 更新工具列表
-app.put('/api/tools', (req, res) => {
-  try {
-    const tools = req.body;
-    const config = readConfigDB();
-    config.tools = tools;
-    const success = writeConfigDB(config);
-
-    if (success) {
-      res.json({
-        success: true,
-        message: '工具列表更新成功',
-        data: tools
-      });
-    } else {
-      res.status(500).json({ error: '更新失败' });
-    }
-  } catch (error) {
-    console.error('更新工具列表失败:', error);
-    res.status(500).json({ error: '更新失败: ' + error.message });
-  }
-});
-
 // ==================== 角色信息代理 API ====================
 
 // 代理角色信息请求(解决CORS问题)
@@ -1602,6 +1554,185 @@ app.get('*', (req, res) => {
   }
 });
 
+// ==================== 游戏通知模块 ====================
+
+// 通知数据存储路径
+const noticesDataPath = path.join(__dirname, '../public/data/new/game_notices.json');
+
+// 通知定时任务状态
+let noticesSyncInterval = null;
+let lastNoticesSyncTime = null;
+const NOTICES_SYNC_INTERVAL = 60 * 60 * 1000; // 1小时
+
+/**
+ * 从官方API获取数据的通用函数
+ */
+function fetchFromAPI(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (apiRes) => {
+      let data = '';
+
+      apiRes.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      apiRes.on('end', () => {
+        try {
+          const jsonData = JSON.parse(data);
+          resolve(jsonData);
+        } catch (error) {
+          reject(new Error('解析API响应失败'));
+        }
+      });
+    }).on('error', (error) => {
+      reject(error);
+    });
+  });
+}
+
+/**
+ * 从官方API获取游戏通知(更新+公告)
+ */
+async function fetchGameNotices() {
+  const updatesUrl = 'https://api-tw-community.ncsoft.com/aion2_tw/board/update_zh/article/search/moreArticle?isVote=true&moreSize=18&moreDirection=BEFORE&previousArticleId=0';
+  const noticesUrl = 'https://api-tw-community.ncsoft.com/aion2_tw/board/notice_zh/article/search/moreArticle?isVote=true&moreSize=18&moreDirection=BEFORE&previousArticleId=0';
+
+  try {
+    const [updatesData, noticesData] = await Promise.all([
+      fetchFromAPI(updatesUrl),
+      fetchFromAPI(noticesUrl)
+    ]);
+
+    // 合并两个列表,并标记类型
+    const updates = (updatesData.contentList || []).map(item => ({
+      ...item,
+      noticeType: 'update'
+    }));
+
+    const notices = (noticesData.contentList || []).map(item => ({
+      ...item,
+      noticeType: 'notice'
+    }));
+
+    return {
+      contentList: [...notices, ...updates] // 公告在前,更新在后
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * 同步游戏通知数据
+ */
+async function syncGameNotices() {
+  console.log('\n========================================');
+  console.log('📰 开始同步游戏通知');
+  console.log(`⏰ 时间: ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}`);
+  console.log('========================================\n');
+
+  try {
+    const noticesData = await fetchGameNotices();
+
+    if (!noticesData || !noticesData.contentList) {
+      console.log('⚠️  通知数据格式错误');
+      return { success: false, message: '数据格式错误' };
+    }
+
+    // 确保目录存在
+    const dir = path.dirname(noticesDataPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    // 保存完整的通知数据
+    const saveData = {
+      lastUpdate: new Date().toISOString(),
+      notices: noticesData.contentList
+    };
+
+    fs.writeFileSync(noticesDataPath, JSON.stringify(saveData, null, 2), 'utf-8');
+
+    lastNoticesSyncTime = new Date().toISOString();
+
+    console.log(`✅ 通知同步成功: ${noticesData.contentList.length}条通知`);
+    console.log('========================================\n');
+
+    return { success: true, count: noticesData.contentList.length };
+  } catch (error) {
+    console.error('❌ 通知同步失败:', error.message);
+    return { success: false, message: error.message };
+  }
+}
+
+/**
+ * 启动通知同步定时任务
+ */
+function startNoticesSyncTask() {
+  console.log('\n⏰ 游戏通知定时任务已启动: 每1小时同步一次');
+
+  // 立即执行一次
+  syncGameNotices().then(result => {
+    console.log('✅ 通知首次同步完成:', result);
+  }).catch(error => {
+    console.error('❌ 通知首次同步失败:', error);
+  });
+
+  // 设置定时器
+  noticesSyncInterval = setInterval(() => {
+    syncGameNotices();
+  }, NOTICES_SYNC_INTERVAL);
+}
+
+// ==================== 通知API端点 ====================
+
+// 获取游戏通知列表
+app.get('/api/notices', (req, res) => {
+  try {
+    if (!fs.existsSync(noticesDataPath)) {
+      return res.json({
+        success: true,
+        data: {
+          lastUpdate: null,
+          notices: []
+        }
+      });
+    }
+
+    const data = fs.readFileSync(noticesDataPath, 'utf-8');
+    const noticesData = JSON.parse(data);
+
+    res.json({
+      success: true,
+      data: noticesData
+    });
+  } catch (error) {
+    console.error('获取通知列表失败:', error);
+    res.status(500).json({ error: '获取通知列表失败: ' + error.message });
+  }
+});
+
+// 手动触发通知同步
+app.post('/api/notices/sync', async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      message: '通知同步已在后台启动'
+    });
+
+    syncGameNotices().then(result => {
+      console.log('✅ 后台通知同步完成:', result);
+    }).catch(error => {
+      console.error('❌ 后台通知同步失败:', error);
+    });
+  } catch (error) {
+    console.error('执行通知同步失败:', error);
+    res.status(500).json({ error: '同步失败: ' + error.message });
+  }
+});
+
+// ==================== 工具和裂缝管理 API ====================
+
 // 启动服务器
 app.listen(PORT, () => {
   console.log(`\n========================================`);
@@ -1612,4 +1743,7 @@ app.listen(PORT, () => {
   console.log(`💾 成员数据库: ${membersDbPath}`);
   console.log(`💾 申请数据库: ${applicationsDbPath}`);
   console.log(`========================================\n`);
+
+  // 启动游戏通知定时任务
+  startNoticesSyncTask();
 });

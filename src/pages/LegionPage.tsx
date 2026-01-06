@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { classIconsSmall } from '../data/memberTypes';
 import type { CharacterInfo, MemberRole } from '../data/memberTypes';
 import './LegionPage.css';
@@ -28,6 +28,7 @@ interface GalleryImage {
 }
 
 const LegionPage = () => {
+  const location = useLocation();
   const [membersData, setMembersData] = useState<MemberWithProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'members' | 'gallery' | 'voice'>('members');
@@ -49,6 +50,17 @@ const LegionPage = () => {
     redeemCodeExpiry: ''
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasScrolled = useRef(false);
+
+  // 从其他页面跳转过来时滚动到顶部,刷新页面时保持滚动位置
+  useEffect(() => {
+    // 使用 location.key 来判断是否是路由切换
+    // 如果没有 key 或者已经滚动过,就不滚动
+    if (location.key && !hasScrolled.current) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      hasScrolled.current = true;
+    }
+  }, [location.key]);
 
   useEffect(() => {
     const loadMembers = async () => {
@@ -326,10 +338,14 @@ const LegionPage = () => {
                 {new Date(voiceConfig.redeemCodeExpiry) < new Date() ? (
                   '已过期'
                 ) : (
-                  `到期：${new Date(voiceConfig.redeemCodeExpiry).toLocaleDateString('zh-CN', {
+                  `到期时间：${new Date(voiceConfig.redeemCodeExpiry).toLocaleString('zh-CN', {
+                    year: 'numeric',
                     month: '2-digit',
-                    day: '2-digit'
-                  })}`
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  }).replace(/\//g, '/').replace(/,/g, '')}`
                 )}
               </span>
             )}

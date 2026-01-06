@@ -350,8 +350,8 @@ const MemberDetailPage = () => {
       <div className="member-detail">
         <div className="member-detail__not-found">
           <h2>未找到该{isFromCharacterBD ? '角色' : '成员'}</h2>
-          <Link to={isFromCharacterBD ? "/character-bd" : "/legion"} className="member-detail__back-btn">
-            返回{isFromCharacterBD ? '角色BD查询' : '军团页面'}
+          <Link to={isFromCharacterBD ? "/" : "/legion"} className="member-detail__back-btn">
+            返回{isFromCharacterBD ? '首页' : '军团页面'}
           </Link>
         </div>
       </div>
@@ -556,8 +556,8 @@ const MemberDetailPage = () => {
   };
 
   // 根据来源确定返回链接和文字
-  const backLink = (isFromCharacterBD || isFromShare) ? "/character-bd" : "/legion";
-  const backText = (isFromCharacterBD || isFromShare) ? "返回查询" : "返回军团";
+  const backLink = (isFromCharacterBD || isFromShare) ? "/" : "/legion";
+  const backText = (isFromCharacterBD || isFromShare) ? "返回首页" : "返回军团";
 
   // 兼容旧数据格式(items对象)和新数据格式(equipment/skill/petwing结构)
   // equipment 已在前面定义

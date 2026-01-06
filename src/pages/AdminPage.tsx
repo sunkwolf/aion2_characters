@@ -37,53 +37,63 @@ const AdminPage: React.FC = () => {
   // 管理后台主界面
   return (
     <div className="admin-page">
-      <div className="admin-header">
-        <h1 className="admin-header__title">管理后台</h1>
-        <button onClick={handleLogout} className="admin-header__logout">
-          退出登录
-        </button>
-      </div>
+      {/* 左侧导航 */}
+      <aside className="admin-sidebar">
+        <div className="admin-sidebar__header">
+          <h1 className="admin-sidebar__title">管理后台</h1>
+        </div>
+        <nav className="admin-nav">
+          <button
+            className={`admin-nav__item ${activeTab === 'members' ? 'admin-nav__item--active' : ''}`}
+            onClick={() => setActiveTab('members')}
+          >
+            <span className="admin-nav__icon">👥</span>
+            <span className="admin-nav__text">成员管理</span>
+          </button>
+          <button
+            className={`admin-nav__item ${activeTab === 'applications' ? 'admin-nav__item--active' : ''}`}
+            onClick={() => setActiveTab('applications')}
+          >
+            <span className="admin-nav__icon">📝</span>
+            <span className="admin-nav__text">申请审批</span>
+          </button>
+          <button
+            className={`admin-nav__item ${activeTab === 'gallery' ? 'admin-nav__item--active' : ''}`}
+            onClick={() => setActiveTab('gallery')}
+          >
+            <span className="admin-nav__icon">🖼️</span>
+            <span className="admin-nav__text">相册管理</span>
+          </button>
+          <button
+            className={`admin-nav__item ${activeTab === 'config' ? 'admin-nav__item--active' : ''}`}
+            onClick={() => setActiveTab('config')}
+          >
+            <span className="admin-nav__icon">⚙️</span>
+            <span className="admin-nav__text">全局配置</span>
+          </button>
+          <button
+            className={`admin-nav__item ${activeTab === 'cache' ? 'admin-nav__item--active' : ''}`}
+            onClick={() => setActiveTab('cache')}
+          >
+            <span className="admin-nav__icon">💾</span>
+            <span className="admin-nav__text">缓存管理</span>
+          </button>
+        </nav>
+        <div className="admin-sidebar__footer">
+          <button onClick={handleLogout} className="admin-sidebar__logout">
+            退出登录
+          </button>
+        </div>
+      </aside>
 
-      <div className="admin-tabs">
-        <button
-          className={`admin-tabs__tab ${activeTab === 'members' ? 'admin-tabs__tab--active' : ''}`}
-          onClick={() => setActiveTab('members')}
-        >
-          成员管理
-        </button>
-        <button
-          className={`admin-tabs__tab ${activeTab === 'applications' ? 'admin-tabs__tab--active' : ''}`}
-          onClick={() => setActiveTab('applications')}
-        >
-          申请审批
-        </button>
-        <button
-          className={`admin-tabs__tab ${activeTab === 'gallery' ? 'admin-tabs__tab--active' : ''}`}
-          onClick={() => setActiveTab('gallery')}
-        >
-          相册管理
-        </button>
-        <button
-          className={`admin-tabs__tab ${activeTab === 'config' ? 'admin-tabs__tab--active' : ''}`}
-          onClick={() => setActiveTab('config')}
-        >
-          全局配置
-        </button>
-        <button
-          className={`admin-tabs__tab ${activeTab === 'cache' ? 'admin-tabs__tab--active' : ''}`}
-          onClick={() => setActiveTab('cache')}
-        >
-          缓存管理
-        </button>
-      </div>
-
-      <div className="admin-content">
+      {/* 右侧内容区 */}
+      <main className="admin-main">
         {activeTab === 'members' && <MemberManager />}
         {activeTab === 'applications' && <ApplicationManager />}
         {activeTab === 'gallery' && <GalleryManager />}
         {activeTab === 'config' && <ConfigManager />}
         {activeTab === 'cache' && <CacheManager />}
-      </div>
+      </main>
     </div>
   );
 };

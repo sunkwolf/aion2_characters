@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import GameNotices from '../components/GameNotices';
+import RiftCountdown from '../components/RiftCountdown';
 import './ToolsPage.css';
 
 interface Tool {
@@ -11,41 +13,18 @@ interface Tool {
 
 const ToolsPage = () => {
   const [tools, setTools] = useState<Tool[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadTools = async () => {
       try {
         const response = await fetch('/api/tools');
         const data = await response.json();
-        if (data.success) {
-          setTools(data.data);
-        } else {
-          // 使用默认工具列表
-          setTools([
-            {
-              id: 'character-builder',
-              name: '角色BD构筑',
-              description: '在线角色构筑工具,模拟技能、装备搭配',
-              url: 'https://questlog.gg/aion-2/zh/character-builder',
-              icon: '⚔️'
-            }
-          ]);
+        if (data.success && data.tools && data.tools.length > 0) {
+          setTools(data.tools);
         }
       } catch (error) {
         console.error('加载工具列表失败:', error);
-        // 使用默认工具列表
-        setTools([
-          {
-            id: 'character-builder',
-            name: '角色BD构筑',
-            description: '在线角色构筑工具,模拟技能、装备搭配',
-            url: 'https://questlog.gg/aion-2/zh/character-builder',
-            icon: '⚔️'
-          }
-        ]);
       }
-      setLoading(false);
     };
 
     loadTools();
@@ -54,17 +33,6 @@ const ToolsPage = () => {
   const handleToolClick = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
-
-  if (loading) {
-    return (
-      <div className="tools-page">
-        <div className="tools-page__loading">
-          <div className="tools-page__spinner"></div>
-          <p>加载工具列表中...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="tools-page">
@@ -78,39 +46,54 @@ const ToolsPage = () => {
         {/* 页面标题 */}
         <div className="tools-page__header">
           <h1 className="tools-page__title">实用工具</h1>
-          <p className="tools-page__subtitle">
-            精选游戏辅助工具,提升游戏体验
-          </p>
         </div>
 
-        {/* 工具列表 */}
-        {tools.length > 0 ? (
-          <div className="tools-grid">
-            {tools.map(tool => (
-              <div
-                key={tool.id}
-                className="tool-card"
-                onClick={() => handleToolClick(tool.url)}
-              >
-                <h3 className="tool-card__title">{tool.name}</h3>
-                <p className="tool-card__description">{tool.description}</p>
-                <div className="tool-card__arrow">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </div>
+        {/* 主内容区 - 单栏布局 */}
+        <div className="tools-page__layout">
+          {/* 左侧主内容 */}
+          <div className="tools-page__main-content">
+            {/* 游戏通知 */}
+            <section className="tools-page__section">
+              <GameNotices />
+            </section>
+
+            {/* 工具卡片 */}
+            <section className="tools-page__section">
+              <div className="tools-section__header">
+                <h2 className="tools-section__title">🔧 工具</h2>
               </div>
-            ))}
+
+              {tools.length > 0 ? (
+                <div className="tools-list">
+                  {tools.map(tool => (
+                    <div
+                      key={tool.id}
+                      className="tool-item"
+                      onClick={() => handleToolClick(tool.url)}
+                    >
+                      <div className="tool-item__content">
+                        <h3 className="tool-item__name">{tool.name}</h3>
+                        <p className="tool-item__description">{tool.description}</p>
+                      </div>
+                      <div className="tool-item__arrow">→</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="tools-page__empty">
+                  <div className="tools-page__empty-icon">🔧</div>
+                  <p>暂无可用工具</p>
+                  <p>请联系管理员在后台添加工具</p>
+                </div>
+              )}
+            </section>
           </div>
-        ) : (
-          <div className="tools-page__empty">
-            <div className="tools-page__empty-icon">🔧</div>
-            <p>暂无可用工具</p>
-            <p>请联系管理员在后台添加工具</p>
-          </div>
-        )}
+
+          {/* 右侧 - 裂缝倒计时(固定) */}
+          <aside className="tools-page__sidebar">
+            <RiftCountdown />
+          </aside>
+        </div>
       </div>
     </div>
   );
