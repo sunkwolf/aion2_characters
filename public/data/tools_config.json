@@ -12,8 +12,19 @@
       "id": "character-builder",
       "name": "角色BD构筑",
       "description": "在线角色构筑工具,模拟技能、装备搭配",
-      "url": "https://questlog.gg/aion-2/zh/character-builder",
-      "icon": "⚔️"
+      "url": "https://questlog.gg/aion-2/zh/character-builder"
+    },
+    {
+      "id": "game-database",
+      "name": "游戏数据库",
+      "description": "查询游戏物品、装备、技能等详细信息",
+      "url": "https://questlog.gg/aion-2/zh/db/items"
+    },
+    {
+      "id": "data-analysis",
+      "name": "数据分析",
+      "description": "查询所有职业数据表现，天魔平衡等",
+      "url": "https://questlog.gg/aion-2/zh/armory/meta?region=tw"
     }
   ]
 }

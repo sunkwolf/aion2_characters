@@ -481,10 +481,10 @@ const MemberDetailPage = () => {
         setCharInfo(infoData);
         setCharEquip(equipmentData);
 
-        // 重新加载评分
+        // 重新加载评分（添加refresh=true强制刷新）
         setRatingLoading(true);
         const ratingResponse = await fetch(
-          `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`
+          `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}&refresh=true`
         );
         const ratingData = await ratingResponse.json();
 
@@ -524,10 +524,10 @@ const MemberDetailPage = () => {
         };
         localStorage.setItem(cacheKey, JSON.stringify(cacheData));
 
-        // 重新加载评分
+        // 重新加载评分（添加refresh=true强制刷新）
         setRatingLoading(true);
         const ratingResponse = await fetch(
-          `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}`
+          `/api/character/rating?characterId=${encodeURIComponent(targetCharacterId)}&serverId=${targetServerId}&refresh=true`
         );
         const ratingData = await ratingResponse.json();
 

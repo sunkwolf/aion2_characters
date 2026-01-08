@@ -75,12 +75,14 @@ const RiftCountdown = () => {
 
   const [riftInfo, setRiftInfo] = useState<RiftInfo>(calculateLocalNextRift());
   const [expanded, setExpanded] = useState(true);
+  const [, setTick] = useState(0); // 用于强制每秒重新渲染
 
   useEffect(() => {
     loadRiftInfo();
 
-    // 每秒更新一次倒计时
+    // 每秒更新一次倒计时 - 强制重新渲染
     const timer = setInterval(() => {
+      setTick(t => t + 1); // 触发重新渲染
       updateCountdown();
     }, 1000);
 
@@ -163,14 +165,26 @@ const RiftCountdown = () => {
 
         if (riftDate > now && nextRifts.length < 4) {
           const diffMs = riftDate.getTime() - now.getTime();
-          const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-          const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+          const diffSeconds = Math.floor(diffMs / 1000);
+          const diffHours = Math.floor(diffSeconds / 3600);
+          const diffMinutes = Math.floor((diffSeconds % 3600) / 60);
+          const remainingSeconds = diffSeconds % 60;
           const isToday = riftDate.getDate() === now.getDate();
+
+          // 格式化倒计时 - 精确到秒
+          let countdown = '';
+          if (diffHours > 0) {
+            countdown = `${diffHours}小时${diffMinutes}分${remainingSeconds}秒`;
+          } else if (diffMinutes > 0) {
+            countdown = `${diffMinutes}分${remainingSeconds}秒`;
+          } else {
+            countdown = `${remainingSeconds}秒`;
+          }
 
           nextRifts.push({
             time: rift.time,
             date: isToday ? '今天' : '明天',
-            countdown: diffHours > 0 ? `${diffHours}小时${diffMinutes}分钟` : `${diffMinutes}分钟`
+            countdown
           });
         }
       }

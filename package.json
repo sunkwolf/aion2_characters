@@ -9,7 +9,7 @@
     "dev:backend": "node server/index.cjs",
     "sync": "node scripts/sync-data.cjs",
     "build": "tsc -b && vite build && npm run postbuild",
-    "postbuild": "node -e \"const fs=require('fs');const path=require('path');['../部署/chunxia-legion/dist/data','../部署/chunxia-legion/dist/images/gallery'].forEach(p=>{const fullPath=path.resolve(p);if(fs.existsSync(fullPath)){fs.rmSync(fullPath,{recursive:true,force:true});console.log('✅ 已删除',fullPath)}})\"",
+    "postbuild": "node -e \"const fs=require('fs');const path=require('path');['../部署/chunxia-legion/dist/data','../部署/chunxia-legion/dist/images/gallery'].forEach(p=>{const fullPath=path.resolve(p);if(fs.existsSync(fullPath)){fs.rmSync(fullPath,{recursive:true,force:true});console.log('✅ 已删除',fullPath)}})\" && node -e \"const fs=require('fs');const path=require('path');const files=[{src:'server/index.cjs',dest:'../部署/chunxia-legion/server/index.cjs'},{src:'public/data/tools_config.json',dest:'../部署/chunxia-legion/public/data/tools_config.json'}];files.forEach(f=>{const srcPath=path.resolve(f.src);const destPath=path.resolve(f.dest);if(fs.existsSync(srcPath)){const destDir=path.dirname(destPath);if(!fs.existsSync(destDir)){fs.mkdirSync(destDir,{recursive:true})}fs.copyFileSync(srcPath,destPath);console.log('✅ 已复制',f.src,'→',f.dest)}})\"",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "node server/index.cjs"

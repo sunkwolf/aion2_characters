@@ -119,7 +119,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  gap: 16px;
+  padding: 16px 20px;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 8px;
@@ -128,36 +129,41 @@
 }
 
 .tool-item:hover {
-  background: #f8f9fa;
-  border-color: rgba(102, 126, 234, 0.3);
+  background: rgba(107, 159, 216, 0.05);
+  border-color: var(--color-primary-light);
   transform: translateX(2px);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 2px 8px rgba(107, 159, 216, 0.15);
 }
 
 .tool-item__content {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .tool-item__name {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0 0 4px 0;
+  margin: 0;
+  min-width: 120px;
 }
 
 .tool-item__description {
-  font-size: 0.85rem;
-  color: #999;
+  font-size: 0.9rem;
+  color: #888;
   margin: 0;
   line-height: 1.4;
 }
 
 .tool-item__arrow {
   font-size: 1.2rem;
-  color: #667eea;
+  color: var(--color-primary);
   font-weight: 600;
   opacity: 0.6;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .tool-item:hover .tool-item__arrow {

@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAdmin } from '../contexts/AdminContext';
-import ConfirmDialog from './ConfirmDialog';
 import './Header.css';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showDatabaseDialog, setShowDatabaseDialog] = useState(false);
   const { isAdmin, setShowLoginModal } = useAdmin();
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +25,6 @@ const Header = () => {
   }, [location]);
 
   return (
-    <>
     <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
       <div className="header__container">
         {/* 左侧：游戏Logo + 导航链接 */}
@@ -51,16 +48,6 @@ const Header = () => {
               className={`header__nav-link ${location.pathname === '/tools' ? 'header__nav-link--active' : ''}`}
             >
               工具
-            </Link>
-            <Link
-              to="/database"
-              className={`header__nav-link header__nav-link--disabled ${location.pathname === '/database' ? 'header__nav-link--active' : ''}`}
-              onClick={(e) => {
-                e.preventDefault();
-                setShowDatabaseDialog(true);
-              }}
-            >
-              数据库
             </Link>
             <Link
               to="/join-legion"
@@ -105,17 +92,6 @@ const Header = () => {
         </button>
       </div>
     </header>
-
-    <ConfirmDialog
-      visible={showDatabaseDialog}
-      title="功能开发中"
-      message="数据库功能正在开发中，敬请期待！"
-      confirmText="知道了"
-      cancelText=""
-      onConfirm={() => setShowDatabaseDialog(false)}
-      onCancel={() => setShowDatabaseDialog(false)}
-    />
-    </>
   );
 };
 

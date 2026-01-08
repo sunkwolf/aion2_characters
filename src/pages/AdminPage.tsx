@@ -8,9 +8,10 @@ import ApplicationManager from '../components/admin/ApplicationManager';
 import GalleryManager from '../components/admin/GalleryManager';
 import ConfigManager from '../components/admin/ConfigManager';
 import CacheManager from '../components/admin/CacheManager';
+import ToolsManager from '../components/admin/ToolsManager';
 import './AdminPage.css';
 
-type TabType = 'members' | 'applications' | 'gallery' | 'config' | 'cache';
+type TabType = 'members' | 'applications' | 'gallery' | 'config' | 'cache' | 'tools';
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,36 +48,37 @@ const AdminPage: React.FC = () => {
             className={`admin-nav__item ${activeTab === 'members' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('members')}
           >
-            <span className="admin-nav__icon">👥</span>
-            <span className="admin-nav__text">成员管理</span>
+            成员管理
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'applications' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('applications')}
           >
-            <span className="admin-nav__icon">📝</span>
-            <span className="admin-nav__text">申请审批</span>
+            申请审批
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'gallery' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('gallery')}
           >
-            <span className="admin-nav__icon">🖼️</span>
-            <span className="admin-nav__text">相册管理</span>
+            相册管理
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'config' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('config')}
           >
-            <span className="admin-nav__icon">⚙️</span>
-            <span className="admin-nav__text">全局配置</span>
+            全局配置
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'cache' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('cache')}
           >
-            <span className="admin-nav__icon">💾</span>
-            <span className="admin-nav__text">缓存管理</span>
+            缓存管理
+          </button>
+          <button
+            className={`admin-nav__item ${activeTab === 'tools' ? 'admin-nav__item--active' : ''}`}
+            onClick={() => setActiveTab('tools')}
+          >
+            工具管理
           </button>
         </nav>
         <div className="admin-sidebar__footer">
@@ -93,6 +95,7 @@ const AdminPage: React.FC = () => {
         {activeTab === 'gallery' && <GalleryManager />}
         {activeTab === 'config' && <ConfigManager />}
         {activeTab === 'cache' && <CacheManager />}
+        {activeTab === 'tools' && <ToolsManager />}
       </main>
     </div>
   );

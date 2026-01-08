@@ -51,14 +51,14 @@
 }
 
 .game-notices__tab:hover {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(107, 159, 216, 0.1);
+  color: var(--color-primary);
 }
 
 .game-notices__tab--active {
-  color: #667eea;
+  color: var(--color-primary);
   font-weight: 600;
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(107, 159, 216, 0.1);
 }
 
 .game-notices__tab--active::after {
@@ -68,7 +68,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
 /* 通知列表 */
@@ -112,7 +112,7 @@
 }
 
 .notice-item__tag--notice {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: #fff;
 }
 
@@ -142,7 +142,7 @@
 .game-notices__more-btn {
   width: 100%;
   padding: 10px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -154,7 +154,7 @@
 
 .game-notices__more-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(107, 159, 216, 0.4);
 }
 
 .game-notices__empty {
@@ -285,7 +285,7 @@
 }
 
 .notice-detail__tag--notice {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: #fff;
 }
 
@@ -325,7 +325,7 @@
 
 .notice-detail__view-btn {
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: #fff;
   border: none;
   border-radius: 8px;

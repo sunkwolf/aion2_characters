@@ -736,7 +736,7 @@ app.get('/api/character/equipment-detail', (req, res) => {
 
 // 获取角色PVE评分 - 代理 aion-api.bnshive.com 的评分API
 app.get('/api/character/rating', (req, res) => {
-  const { characterId, serverId } = req.query;
+  const { characterId, serverId, refresh } = req.query;
 
   if (!characterId || !serverId) {
     return res.status(400).json({ error: '缺少必要参数：characterId 和 serverId' });
@@ -744,7 +744,12 @@ app.get('/api/character/rating', (req, res) => {
 
   // 将 characterId 中的 = 转换为 %3D 进行URL编码
   const encodedCharacterId = characterId.replace(/=/g, '%3D');
-  const url = `https://aion-api.bnshive.com/character/query?serverId=${serverId}&characterId=${encodedCharacterId}`;
+
+  // 构建URL,如果有refresh参数则添加
+  let url = `https://aion-api.bnshive.com/character/query?serverId=${serverId}&characterId=${encodedCharacterId}`;
+  if (refresh === 'true') {
+    url += '&refresh=true';
+  }
 
   console.log(`[PVE评分API] 请求URL: ${url}`);
 
@@ -927,12 +932,20 @@ function fetchCharacterEquipment(characterId, serverId) {
 
 /**
  * 从API获取角色PVE评分
+ * @param {string} characterId - 角色ID
+ * @param {number} serverId - 服务器ID
+ * @param {boolean} forceRefresh - 是否强制刷新(用于同步成员数据时)
  */
-function fetchCharacterRating(characterId, serverId) {
+function fetchCharacterRating(characterId, serverId, forceRefresh = false) {
   return new Promise((resolve, reject) => {
     // 将 characterId 中的 = 转换为 %3D 进行URL编码
     const encodedCharacterId = characterId.replace(/=/g, '%3D');
-    const url = `https://aion-api.bnshive.com/character/query?serverId=${serverId}&characterId=${encodedCharacterId}`;
+    let url = `https://aion-api.bnshive.com/character/query?serverId=${serverId}&characterId=${encodedCharacterId}`;
+
+    // 如果需要强制刷新,添加refresh参数
+    if (forceRefresh) {
+      url += '&refresh=true';
+    }
 
     https.get(url, (apiRes) => {
       let data = '';
@@ -1196,7 +1209,7 @@ async function syncMemberData(member) {
     console.log(`  [${member.name}] 步骤 4/4: 请求PVE评分...`);
     try {
       await delay(300); // 添加延迟避免请求过快
-      const ratingData = await fetchCharacterRating(characterId, serverId);
+      const ratingData = await fetchCharacterRating(characterId, serverId, true); // 传入true强制刷新
 
       if (ratingData) {
         // 保存评分数据到 score.json
@@ -1534,6 +1547,107 @@ app.post('/api/sync/member', async (req, res) => {
     });
   }
 });
+
+// ===== 工具API =====
+// 获取工具列表
+app.get('/api/tools', (req, res) => {
+  try {
+    const configPath = path.join(__dirname, '../public/data/tools_config.json');
+
+    if (!fs.existsSync(configPath)) {
+      return res.json({
+        success: true,
+        tools: []
+      });
+    }
+
+    const configData = fs.readFileSync(configPath, 'utf-8');
+    const config = JSON.parse(configData);
+
+    res.json({
+      success: true,
+      tools: config.tools || []
+    });
+  } catch (error) {
+    console.error('获取工具列表失败:', error);
+    res.status(500).json({
+      success: false,
+      error: '获取工具列表失败: ' + error.message
+    });
+  }
+});
+
+// ===== 工具管理API (管理员) =====
+// 获取完整配置(包含rift和tools)
+app.get('/api/admin/tools-config', (req, res) => {
+  try {
+    const configPath = path.join(__dirname, '../public/data/tools_config.json');
+
+    if (!fs.existsSync(configPath)) {
+      return res.json({
+        success: true,
+        config: {
+          rift: {
+            enabled: true,
+            timezone: 'Asia/Shanghai',
+            intervalHours: 3,
+            durationMinutes: 60,
+            doorOpenMinutes: 5,
+            openTimes: ['02:00', '05:00', '08:00', '11:00', '14:00', '17:00', '20:00', '23:00']
+          },
+          tools: []
+        }
+      });
+    }
+
+    const configData = fs.readFileSync(configPath, 'utf-8');
+    const config = JSON.parse(configData);
+
+    res.json({
+      success: true,
+      config
+    });
+  } catch (error) {
+    console.error('获取工具配置失败:', error);
+    res.status(500).json({
+      success: false,
+      error: '获取工具配置失败: ' + error.message
+    });
+  }
+});
+
+// 更新完整配置(包含rift和tools)
+app.post('/api/admin/tools-config', (req, res) => {
+  try {
+    const { config } = req.body;
+
+    if (!config) {
+      return res.status(400).json({
+        success: false,
+        error: '缺少配置数据'
+      });
+    }
+
+    const configPath = path.join(__dirname, '../public/data/tools_config.json');
+
+    // 写入配置文件
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+
+    console.log('✅ 工具配置已更新');
+
+    res.json({
+      success: true,
+      message: '配置已更新'
+    });
+  } catch (error) {
+    console.error('更新工具配置失败:', error);
+    res.status(500).json({
+      success: false,
+      error: '更新工具配置失败: ' + error.message
+    });
+  }
+});
+
 
 // ===== 静态文件服务配置 =====
 // 1. /uploads 路径映射到用户上传的图片 (public/images/gallery/)
