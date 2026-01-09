@@ -5,6 +5,7 @@ interface Notice {
   id: string;
   title: string;
   summary: string;
+  articleContent?: string; // 添加文章详细内容字段
   timestamps: {
     postDateTime: string;
     postedAt: string;
@@ -206,7 +207,9 @@ const GameNotices = () => {
               <h2 className="notice-detail__title">{selectedNotice.title}</h2>
 
               <div className="notice-detail__content">
-                {selectedNotice.summary}
+                <div dangerouslySetInnerHTML={{
+                  __html: selectedNotice.articleContent || selectedNotice.summary || '暂无内容'
+                }} />
               </div>
 
               <div className="notice-detail__footer">

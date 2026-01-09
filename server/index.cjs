@@ -7,9 +7,13 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
+const OpenCC = require('opencc-js'); // 繁简转换
 
 const app = express();
 const PORT = 3001;
+
+// 初始化繁简转换器（繁体转简体）
+const converter = OpenCC.Converter({ from: 'tw', to: 'cn' });
 
 // ============= 定时任务状态管理 =============
 let syncInterval = null;
@@ -1705,6 +1709,31 @@ function fetchFromAPI(url) {
 }
 
 /**
+ * 递归转换对象中的所有字符串从繁体到简体
+ */
+function convertToSimplified(obj) {
+  if (typeof obj === 'string') {
+    return converter(obj);
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => convertToSimplified(item));
+  }
+
+  if (obj !== null && typeof obj === 'object') {
+    const converted = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        converted[key] = convertToSimplified(obj[key]);
+      }
+    }
+    return converted;
+  }
+
+  return obj;
+}
+
+/**
  * 从官方API获取游戏通知(更新+公告)
  */
 async function fetchGameNotices() {
@@ -1728,8 +1757,41 @@ async function fetchGameNotices() {
       noticeType: 'notice'
     }));
 
+    const allNotices = [...notices, ...updates];
+
+    // 为每篇文章获取详细内容
+    console.log(`📥 开始获取 ${allNotices.length} 篇文章的详细内容...`);
+
+    const noticesWithContent = await Promise.all(
+      allNotices.map(async (notice) => {
+        try {
+          const boardAlias = notice.rootBoard?.board?.boardAlias || '';
+          const articleUrl = `https://api-tw-community.ncsoft.com/aion2_tw/board/${boardAlias}/article/${notice.id}`;
+
+          console.log(`  📄 获取文章: ${notice.title}`);
+          const articleData = await fetchFromAPI(articleUrl);
+
+          // 提取文章内容
+          const content = articleData?.article?.content?.content || '';
+
+          return {
+            ...notice,
+            articleContent: content // 添加文章详细内容
+          };
+        } catch (error) {
+          console.error(`  ❌ 获取文章详情失败 [${notice.id}]:`, error.message);
+          return {
+            ...notice,
+            articleContent: notice.summary || '' // 失败时使用 summary
+          };
+        }
+      })
+    );
+
+    console.log(`✅ 成功获取 ${noticesWithContent.length} 篇文章内容\n`);
+
     return {
-      contentList: [...notices, ...updates] // 公告在前,更新在后
+      contentList: noticesWithContent
     };
   } catch (error) {
     throw error;
@@ -1759,10 +1821,15 @@ async function syncGameNotices() {
       fs.mkdirSync(dir, { recursive: true });
     }
 
+    // 转换繁体为简体
+    console.log('🔄 正在转换繁体为简体...');
+    const simplifiedNotices = convertToSimplified(noticesData.contentList);
+    console.log('✅ 繁简转换完成\n');
+
     // 保存完整的通知数据
     const saveData = {
       lastUpdate: new Date().toISOString(),
-      notices: noticesData.contentList
+      notices: simplifiedNotices
     };
 
     fs.writeFileSync(noticesDataPath, JSON.stringify(saveData, null, 2), 'utf-8');
