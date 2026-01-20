@@ -8,9 +8,11 @@ import EquipmentDetailModal from '../components/EquipmentDetailModal';
 import ExceedLevel from '../components/ExceedLevel';
 import ConfirmDialog from '../components/ConfirmDialog';
 import DaevanionModal from '../components/DaevanionModal';
+import AttackPowerModal from '../components/AttackPowerModal';
 import { useEquipmentTooltip } from '../hooks/useEquipmentTooltip';
 import { loadMemberDaevanion, fetchDaevanionBoards, mergeDaevanionEffects, getClassIdByChineseName } from '../utils/daevanion';
 import type { DaevanionBoards, AggregatedDaevanionEffects } from '../utils/daevanion';
+import { calculateAttackPower, type AttackPowerResult } from '../utils/attackPowerCalculator';
 import './MemberDetailPage.css';
 
 // 成员配置信息
@@ -93,12 +95,17 @@ const MemberDetailPage = () => {
   const [daevanionLoading, setDaevanionLoading] = useState(false);
   const [daevanionEffects, setDaevanionEffects] = useState<AggregatedDaevanionEffects | null>(null);
 
+  // 攻击力相关状态
+  const [attackPower, setAttackPower] = useState<AttackPowerResult | null>(null);
+  const [attackPowerLoading, setAttackPowerLoading] = useState(false);
+  const [showAttackPowerModal, setShowAttackPowerModal] = useState(false);
+
   // 准备装备列表数据
   // 角色BD查询: 直接从 characterData 获取
   // 分享链接/军团成员: 从 state 获取
   const equipment = isFromCharacterBD
     ? (characterData?.equipment?.equipment?.equipmentList || [])
-    : (charEquip?.equipment?.equipmentList || []);
+    : ((charEquip as any)?.details || charEquip?.equipment?.equipmentList || []);
 
   // 装备悬浮提示和详情模态框
   const { tooltipState, modalState, handleMouseEnter, handleMouseMove, handleMouseLeave, handleClick, handleCloseModal } = useEquipmentTooltip(
@@ -306,6 +313,77 @@ const MemberDetailPage = () => {
 
     loadRating();
   }, [charInfo, id, isFromMember, isFromCharacterBD, isFromShare]);
+
+  // 计算攻击力
+  useEffect(() => {
+    const calculatePower = async () => {
+      if (!charInfo || !charEquip) {
+        return;
+      }
+
+      setAttackPowerLoading(true);
+
+      try {
+        // 获取守护力数据(用于攻击力计算)
+        let daevanionBoardsData = null;
+
+        if (isFromMember && id) {
+          // 军团成员: 从本地文件读取
+          try {
+            const timestamp = Date.now();
+            const daevanionRes = await fetch(`/data/${id}/daevanion_boards.json?t=${timestamp}`);
+            if (daevanionRes.ok) {
+              daevanionBoardsData = await daevanionRes.json();
+              console.log('[攻击力计算] 成功加载守护力数据,面板数量:', daevanionBoardsData?.length || 0);
+            } else {
+              console.log('[攻击力计算] 守护力文件不存在');
+            }
+          } catch (error) {
+            console.log('[攻击力计算] 守护力数据读取失败:', error);
+          }
+        } else if (isFromCharacterBD || isFromShare) {
+          // 角色BD查询/分享链接: 从API获取
+          try {
+            const targetCharacterId = isFromShare ? characterId : characterData?.info?.profile?.characterId;
+            const targetServerId = isFromShare ? Number(serverId) : characterData?.info?.profile?.serverId;
+            const className = charInfo?.profile?.className;
+
+            if (targetCharacterId && targetServerId && className) {
+              const classId = await getClassIdByChineseName(className);
+              if (classId) {
+                daevanionBoardsData = await fetchDaevanionBoards(targetCharacterId, targetServerId, classId);
+                console.log('[攻击力计算] 成功获取守护力数据,面板数量:', daevanionBoardsData?.length || 0);
+              }
+            }
+          } catch (error) {
+            console.log('[攻击力计算] 守护力数据获取失败:', error);
+          }
+        }
+
+        console.log('[攻击力计算] 守护力数据:', daevanionBoardsData ? '已加载' : '未加载');
+        console.log('[攻击力计算] 装备数量:', equipment.length);
+        console.log('[攻击力计算] charInfo存在:', !!charInfo);
+
+        // 准备计算数据 - 直接传入equipment数组
+        const equipmentData = {
+          equipment: {
+            equipmentList: equipment
+          }
+        };
+
+        // 计算攻击力
+        const result = calculateAttackPower(equipmentData, charInfo, daevanionBoardsData);
+        console.log('[攻击力计算] 计算结果:', result);
+        setAttackPower(result);
+      } catch (error) {
+        console.error('攻击力计算失败:', error);
+      }
+
+      setAttackPowerLoading(false);
+    };
+
+    calculatePower();
+  }, [charInfo, charEquip, equipment, isFromMember, isFromCharacterBD, isFromShare, id, serverId, characterId, characterData]);
 
   // 保存到查询历史（仅角色BD查询/分享链接）
   useEffect(() => {
@@ -783,18 +861,51 @@ const MemberDetailPage = () => {
                   </>
                 )}
               </div>
-              {/* PVE评分显示 */}
-              {ratingLoading ? (
-                <div className="member-hero__rating-loading">
-                  <span className="member-hero__rating-spinner"></span>
-                  <span>评分计算中...</span>
+
+              {/* 评分和攻击力容器 */}
+              <div className="member-hero__stats-row">
+                {/* PVE评分显示 */}
+                {ratingLoading ? (
+                  <div className="member-hero__rating-loading">
+                    <span className="member-hero__rating-spinner"></span>
+                    <span>评分计算中...</span>
+                  </div>
+                ) : rating ? (
+                  <div className="member-hero__rating">
+                    <span className="member-hero__rating-label">PVE评分:</span>
+                    <span className="member-hero__rating-value">{Math.floor(rating.scores.score)}</span>
+                  </div>
+                ) : null}
+
+                {/* 攻击力显示 */}
+                {attackPowerLoading ? (
+                  <div className="member-hero__attack-loading">
+                    <span className="member-hero__attack-spinner"></span>
+                    <span>计算中...</span>
+                  </div>
+                ) : attackPower ? (
+                  <div className="member-hero__attack">
+                    <span className="member-hero__attack-label">攻击力:</span>
+                    <span className="member-hero__attack-value">{attackPower.finalPower}</span>
+                    <button
+                      className="member-hero__attack-info"
+                      onClick={() => setShowAttackPowerModal(true)}
+                      title="查看攻击力来源统计"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12h-1v-1h1v1zm0-2h-1V4h1v6z"/>
+                      </svg>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+
+              {/* 提示信息 */}
+              {attackPower && (
+                <div className="member-hero__attack-note">
+                  基于算法计算可能存在误差,仅供参考,缺少:宠物加成、服装、翅膀、被动技能
                 </div>
-              ) : rating ? (
-                <div className="member-hero__rating">
-                  <span className="member-hero__rating-label">PVE评分:</span>
-                  <span className="member-hero__rating-value">{Math.floor(rating.scores.score)}</span>
-                </div>
-              ) : null}
+              )}
             </div>
             <div className="member-hero__class-wrapper">
               <img
@@ -1174,6 +1285,13 @@ const MemberDetailPage = () => {
         loading={daevanionLoading}
         effects={daevanionEffects}
         onClose={() => setShowDaevanionModal(false)}
+      />
+
+      {/* 攻击力来源统计弹窗 */}
+      <AttackPowerModal
+        isOpen={showAttackPowerModal}
+        onClose={() => setShowAttackPowerModal(false)}
+        attackPowerData={attackPower}
       />
     </div>
   );
