@@ -1022,6 +1022,7 @@ const MemberDetailPage = () => {
             src={skin.icon}
             alt={skin.name}
             className="equip-card__skin-icon"
+            style={{ borderColor: `color-mix(in srgb, ${gradeColors[skin.grade] || '#9d9d9d'} 50%, transparent)` }}
             title={`外观: ${skin.name}`}
             onMouseEnter={(e) => {
               e.stopPropagation();
@@ -1379,8 +1380,8 @@ const MemberDetailPage = () => {
                         第{rank.rank?.toLocaleString() || '-'}名
                         {/* 名次变化提示 */}
                         {rank.rankChange !== null && rank.rankChange !== undefined && rank.rankChange !== 0 && (
-                          <span className={`ranking-item__change ${rank.rankChange > 0 ? 'ranking-item__change--up' : 'ranking-item__change--down'}`}>
-                            {rank.rankChange > 0 ? '↑' : '↓'}
+                          <span className={`ranking-item__change ${rank.rankChange < 0 ? 'ranking-item__change--up' : 'ranking-item__change--down'}`}>
+                            {rank.rankChange < 0 ? '↑' : '↓'}
                             {Math.abs(rank.rankChange)}
                           </span>
                         )}
