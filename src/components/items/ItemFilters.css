@@ -1,0 +1,248 @@
+/* 筛选面板 - 现代化紧凑布局 */
+
+.item-filters {
+  padding: 20px 24px;
+}
+
+/* 顶部行：搜索框和重置按钮 */
+.item-filters__top-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* 搜索框 */
+.item-filters__search {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.item-filters__search-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  background: #f5f7fa;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #1a1f36;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.item-filters__search-input:focus {
+  outline: none;
+  background: #fff;
+  border-color: #6b9fd8;
+  box-shadow: 0 0 0 3px rgba(107, 159, 216, 0.15);
+}
+
+.item-filters__search-input::placeholder {
+  color: #9ca3af;
+}
+
+.item-filters__search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* 重置按钮 */
+.item-filters__reset {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.item-filters__reset:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+/* 筛选组 */
+.item-filters__groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.item-filters__group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* 标签 */
+.item-filters__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4b5563;
+  white-space: nowrap;
+  padding-top: 6px;
+  min-width: 40px;
+}
+
+/* Chips容器 */
+.item-filters__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 单个Chip */
+.item-filters__chip {
+  padding: 6px 14px;
+  background: #f5f7fa;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  color: #4b5563;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.item-filters__chip:hover {
+  background: #e8eef6;
+  color: #374151;
+}
+
+.item-filters__chip--active {
+  background: #eef4fc;
+  border-color: #6b9fd8;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+/* 带品质颜色的chip */
+.item-filters__chip[style*="--grade-color"].item-filters__chip--active {
+  background: color-mix(in srgb, var(--grade-color) 12%, #fff);
+  border-color: var(--grade-color);
+  color: var(--grade-color);
+}
+
+/* 分隔线 */
+.item-filters__divider {
+  width: 1px;
+  height: 28px;
+  background: #e5e7eb;
+  margin: 0 8px;
+  align-self: center;
+}
+
+/* 分类区域 */
+.item-filters__categories-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.item-filters__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+/* 父分类chip带展开图标 */
+.item-filters__chip--parent {
+  font-weight: 500;
+}
+
+.item-filters__chip--expanded {
+  background: #eef4fc;
+  border-color: #c7d9f0;
+}
+
+.item-filters__expand-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s;
+  margin-left: 2px;
+}
+
+.item-filters__chip--expanded .item-filters__expand-icon {
+  transform: rotate(180deg);
+}
+
+/* 子分类行 */
+.item-filters__row--children {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.item-filters__label--sub {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.item-filters__chip--child {
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+
+.item-filters__chip--child:hover {
+  background: #f5f7fa;
+  border-color: #d1d5db;
+}
+
+.item-filters__chip--child.item-filters__chip--active {
+  background: #eef4fc;
+  border-color: #6b9fd8;
+  color: #2563eb;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .item-filters {
+    padding: 16px;
+  }
+
+  .item-filters__top-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .item-filters__search {
+    max-width: none;
+  }
+
+  .item-filters__groups {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .item-filters__divider {
+    display: none;
+  }
+
+  .item-filters__group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .item-filters__label {
+    padding-top: 0;
+  }
+}

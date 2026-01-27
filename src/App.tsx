@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import AdminLoginModal from './components/AdminLoginModal';
 import CharacterBDPage from './pages/CharacterBDPage';
 import ToolsPage from './pages/ToolsPage';
+import ItemsPage from './pages/ItemsPage';
 import JoinLegionPage from './pages/JoinLegionPage';
 import LegionPage from './pages/LegionPage';
 import MemberDetailPage from './pages/MemberDetailPage';
@@ -18,6 +19,7 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<CharacterBDPage />} />
           <Route path="/tools" element={<ToolsPage />} />
+          <Route path="/items" element={<ItemsPage />} />
           <Route path="/join-legion" element={<JoinLegionPage />} />
           <Route path="/legion" element={<LegionPage />} />
           <Route path="/member/:id" element={<MemberDetailPage />} />

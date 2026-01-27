@@ -9,6 +9,11 @@ const fs = require('fs');
 const https = require('https');
 const OpenCC = require('opencc-js'); // 繁简转换
 
+// 物品数据库模块
+const itemsDb = require('./db/itemsDb.cjs');
+const itemsRouter = require('./routes/items.cjs');
+const syncItems = require('./jobs/syncItems.cjs');
+
 const app = express();
 const PORT = 3001;
 const TOOLS_CONFIG_PATH = path.join(__dirname, '../public/data/tools_config.json');
@@ -181,6 +186,10 @@ function buildRiftPayload(riftConfig = {}) {
 // 初始化繁简转换器（繁体转简体）
 const converter = OpenCC.Converter({ from: 'tw', to: 'cn' });
 
+// 初始化物品数据库
+itemsDb.initDatabase();
+syncItems.setConverter(converter);
+
 // ============= 定时任务状态管理 =============
 let syncInterval = null;
 let syncIntervalHours = 4; // 默认4小时
@@ -191,6 +200,9 @@ let isSyncing = false;
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../public/images/gallery')));
+
+// 注册物品数据库路由
+app.use('/api/items', itemsRouter);
 
 // 确保上传目录存在
 const uploadDir = path.join(__dirname, '../public/images/gallery');
@@ -2531,6 +2543,7 @@ app.listen(PORT, () => {
   console.log(`💾 相册数据库: ${dbPath}`);
   console.log(`💾 成员数据库: ${membersDbPath}`);
   console.log(`💾 申请数据库: ${applicationsDbPath}`);
+  console.log(`💾 物品数据库: ${path.join(__dirname, 'items.db')}`);
   console.log(`========================================\n`);
 
   // 启动游戏通知定时任务

@@ -50,6 +50,12 @@ const Header = () => {
               工具
             </Link>
             <Link
+              to="/items"
+              className={`header__nav-link ${location.pathname === '/items' ? 'header__nav-link--active' : ''}`}
+            >
+              数据库
+            </Link>
+            <Link
               to="/join-legion"
               className={`header__nav-link ${location.pathname === '/join-legion' ? 'header__nav-link--active' : ''}`}
             >

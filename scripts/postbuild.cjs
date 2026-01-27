@@ -22,6 +22,9 @@ dirsToDelete.forEach(dir => {
 // 2. 复制必要文件到部署目录
 const filesToCopy = [
   { src: 'server/index.cjs', dest: '../部署/chunxia-legion/server/index.cjs' },
+  { src: 'server/db/itemsDb.cjs', dest: '../部署/chunxia-legion/server/db/itemsDb.cjs' },
+  { src: 'server/routes/items.cjs', dest: '../部署/chunxia-legion/server/routes/items.cjs' },
+  { src: 'server/jobs/syncItems.cjs', dest: '../部署/chunxia-legion/server/jobs/syncItems.cjs' },
   { src: 'public/data/tools_config.json', dest: '../部署/chunxia-legion/public/data/tools_config.json' },
   { src: 'public/data/class_board_mapping.json', dest: '../部署/chunxia-legion/public/data/class_board_mapping.json' },
   { src: 'package.json', dest: '../部署/chunxia-legion/package.json' }

@@ -1,7 +1,24 @@
 {
-  "voiceChannelUrl": "https://tw.ncsoft.com/aion2/characters/1001/A1pIWbd0UKoTYJ2XbL_Cw0VdSx_UlJ-2sv_dtkIvlnM=",
+  "voiceChannelUrl": "https://www.kookapp.cn/app/channels/4851116459016101/8493636013057086",
   "voiceChannelName": "KOOK语音",
   "voiceChannelDescription": "点击加入我们的语音频道",
-  "redeemCode": "AION2TOGETHER",
-  "redeemCodeExpiry": "2026-01-20T19:00:00.000Z"
+  "redeemCode": "HAPPYDAEVAYEAR",
+  "redeemCodeExpiry": "2026-01-20T21:00:00.000Z",
+  "riftConfig": {
+    "enabled": true,
+    "timezone": "Asia/Shanghai",
+    "intervalHours": 3,
+    "durationMinutes": 60,
+    "doorOpenMinutes": 5,
+    "openTimes": [
+      "02:00",
+      "05:00",
+      "08:00",
+      "11:00",
+      "14:00",
+      "17:00",
+      "20:00",
+      "23:00"
+    ]
+  }
 }

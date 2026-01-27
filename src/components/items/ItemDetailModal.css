@@ -1,0 +1,738 @@
+/* 物品详情弹窗 - 浅色主题，左右布局 */
+
+.item-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.item-detail-modal__content {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.98));
+  border: 1px solid var(--grade-color, rgba(0, 0, 0, 0.1));
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(79, 195, 247, 0.2);
+  animation: modal-fade-in 0.2s ease-out;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 关闭按钮 */
+.item-detail-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  color: #666;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.item-detail-modal__close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* 加载状态 */
+.item-detail-modal__loading,
+.item-detail-modal__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+.item-detail-modal__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #6b9fd8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============= 左右布局 ============= */
+.item-detail-modal__layout {
+  display: flex;
+  gap: 24px;
+}
+
+.item-detail-modal__left {
+  flex: 0 0 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item-detail-modal__right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ============= 头部 ============= */
+.item-detail-modal__header {
+  display: flex;
+  gap: 12px;
+  padding-right: 30px;
+}
+
+.item-detail-modal__icon {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 2px solid var(--grade-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-detail-modal__icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.item-detail-modal__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-detail-modal__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--grade-color);
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* 强化等级标签 */
+.item-detail-modal__enchant {
+  font-size: 12px;
+  padding: 2px 6px;
+  background: rgba(79, 195, 247, 0.2);
+  border: 1px solid rgba(79, 195, 247, 0.4);
+  border-radius: 4px;
+  color: #4fc3f7;
+  font-weight: 700;
+}
+
+/* 品质和来源行 */
+.item-detail-modal__grade-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.item-detail-modal__grade {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.item-detail-modal__source-tag {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+  padding: 1px 6px;
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 3px;
+}
+
+/* meta信息 */
+.item-detail-modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.meta-item {
+  color: #666;
+  padding: 1px 5px;
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ============= 滑块区域 ============= */
+.item-detail-modal__slider-section {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.item-detail-modal__slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.item-detail-modal__slider-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.item-detail-modal__preload-hint {
+  font-size: 0.7rem;
+  color: #999;
+  font-weight: 400;
+}
+
+.item-detail-modal__slider-value {
+  font-size: 0.9rem;
+  color: #6b9fd8;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-detail-modal__exceed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.item-detail-modal__slider-wrapper {
+  position: relative;
+  padding: 8px 0;
+}
+
+.item-detail-modal__slider {
+  width: 100%;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(
+    to right,
+    #6b9fd8 0%,
+    #6b9fd8 var(--progress),
+    rgba(0, 0, 0, 0.1) var(--progress),
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.item-detail-modal__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 3px solid #6b9fd8;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.item-detail-modal__slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+.item-detail-modal__slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 3px solid #6b9fd8;
+  border-radius: 50%;
+  cursor: grab;
+}
+
+/* 突破分界线 - 蓝色 */
+.item-detail-modal__exceed-marker {
+  position: absolute;
+  top: 4px;
+  width: 2px;
+  height: 16px;
+  background: #2196f3;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.item-detail-modal__slider-labels {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: #aaa;
+}
+
+.item-detail-modal__slider-exceed-label {
+  position: absolute;
+  transform: translateX(-50%);
+  color: #2196f3;
+  font-weight: 500;
+  font-size: 0.65rem;
+}
+
+/* ============= 属性区域 ============= */
+.item-detail-modal__section {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.item-detail-modal__section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0277bd;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(79, 195, 247, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.item-detail-modal__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.item-detail-modal__stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+}
+
+.item-detail-modal__stat-name {
+  font-size: 0.82rem;
+  color: #555;
+}
+
+.item-detail-modal__stat-value {
+  font-size: 0.82rem;
+  color: #333;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.stat-range {
+  color: #888;
+}
+
+.stat-base {
+  color: #4caf50;
+}
+
+/* 强化加成 - 浅蓝色 (参考装备弹窗) */
+.stat-enhancement {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+/* 突破属性值 - 蓝色 */
+.stat-exceed {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+/* 主属性行 */
+.item-detail-modal__stat--main {
+  color: #4caf50;
+}
+
+.item-detail-modal__stat--main .item-detail-modal__stat-name {
+  color: #333;
+}
+
+.item-detail-modal__stat--main .item-detail-modal__stat-value {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #4caf50;
+}
+
+/* 突破属性行 - 蓝色样式 (参考装备弹窗) */
+.item-detail-modal__stat--exceed {
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 3px;
+  padding: 3px 6px;
+  margin: 2px 0;
+}
+
+.item-detail-modal__stat--exceed .item-detail-modal__stat-name {
+  color: #4fc3f7;
+}
+
+.item-detail-modal__stat--exceed .item-detail-modal__stat-value {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+/* 副属性grid布局 */
+.item-detail-modal__stats--sub {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.item-detail-modal__stat--sub {
+  padding: 5px 8px;
+}
+
+/* 副属性 - 蓝色文字 */
+.item-detail-modal__stat--sub .item-detail-modal__stat-name {
+  color: #666;
+}
+
+.item-detail-modal__stat--sub .item-detail-modal__stat-value {
+  color: #4caf50;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+/* ============= 外观 ============= */
+.item-detail-modal__costume {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* ============= 物品说明 ============= */
+.item-detail-modal__desc {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.item-detail-modal__desc-highlight {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+/* ============= 冷却/持续时间 ============= */
+.item-detail-modal__time-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.item-detail-modal__time-item {
+  font-size: 0.75rem;
+  color: #666;
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+/* ============= 魔石/神石刻印 ============= */
+.item-detail-modal__slot-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.item-detail-modal__slot-label {
+  font-size: 0.75rem;
+  color: #888;
+  min-width: 60px;
+}
+
+.item-detail-modal__slots {
+  display: flex;
+  gap: 4px;
+}
+
+.item-detail-modal__slot {
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-detail-modal__slot--empty {
+  color: #ccc;
+}
+
+.item-detail-modal__slot--filled {
+  color: #4fc3f7;
+}
+
+.item-detail-modal__slot--god {
+  color: #ccc;
+}
+
+/* ============= 套装效果 ============= */
+.item-detail-modal__set-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ab47bc;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  background: rgba(171, 71, 188, 0.1);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.item-detail-modal__set-bonus {
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: rgba(171, 71, 188, 0.06);
+  border: 1px solid rgba(171, 71, 188, 0.15);
+  margin-bottom: 4px;
+}
+
+.item-detail-modal__set-bonus-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ab47bc;
+  margin-bottom: 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(171, 71, 188, 0.15);
+}
+
+.item-detail-modal__set-bonus-effects {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-detail-modal__set-bonus-effect {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.4;
+  padding-left: 10px;
+  position: relative;
+}
+
+.item-detail-modal__set-bonus-effect::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #ab47bc;
+  font-weight: 700;
+}
+
+.item-detail-modal__set-empty {
+  padding: 8px;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ============= 来源 ============= */
+.item-detail-modal__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.item-detail-modal__source {
+  padding: 4px 8px;
+  background: rgba(107, 159, 216, 0.1);
+  border: 1px solid rgba(107, 159, 216, 0.2);
+  border-radius: 10px;
+  font-size: 0.75rem;
+  color: #6b9fd8;
+}
+
+/* ============= 底部 ============= */
+.item-detail-modal__footer {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: auto;
+}
+
+.item-detail-modal__tag {
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  font-size: 0.7rem;
+  color: #888;
+}
+
+/* ============= 响应式 - 手机端 ============= */
+@media (max-width: 640px) {
+  .item-detail-modal {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .item-detail-modal__content {
+    max-width: 100%;
+    max-height: none;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 60px;
+  }
+
+  /* 手机端改为上下布局 */
+  .item-detail-modal__layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .item-detail-modal__left {
+    flex: none;
+    width: 100%;
+  }
+
+  .item-detail-modal__right {
+    width: 100%;
+  }
+
+  /* 头部调整 */
+  .item-detail-modal__header {
+    padding-right: 30px;
+  }
+
+  .item-detail-modal__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .item-detail-modal__icon img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .item-detail-modal__name {
+    font-size: 1rem;
+  }
+
+  .item-detail-modal__level {
+    font-size: 0.8rem;
+  }
+
+  /* 滑块调整 */
+  .item-detail-modal__slider-section {
+    padding: 12px;
+  }
+
+  .item-detail-modal__slider-header {
+    margin-bottom: 8px;
+  }
+
+  .item-detail-modal__slider-label {
+    font-size: 0.8rem;
+  }
+
+  .item-detail-modal__slider-value {
+    font-size: 0.85rem;
+  }
+
+  /* 属性调整 */
+  .item-detail-modal__section {
+    padding: 10px;
+  }
+
+  .item-detail-modal__section-title {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+  }
+
+  .item-detail-modal__stat {
+    padding: 5px 8px;
+  }
+
+  .item-detail-modal__stat-name,
+  .item-detail-modal__stat-value {
+    font-size: 0.78rem;
+  }
+
+  /* 副属性单列 */
+  .item-detail-modal__stats--sub {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============= 小屏手机 ============= */
+@media (max-width: 380px) {
+  .item-detail-modal__content {
+    padding: 12px;
+  }
+
+  .item-detail-modal__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .item-detail-modal__icon {
+    margin-bottom: 8px;
+  }
+
+  .item-detail-modal__meta {
+    justify-content: center;
+  }
+
+  .item-detail-modal__info-row {
+    justify-content: center;
+  }
+
+  .item-detail-modal__classes {
+    text-align: center;
+  }
+}
