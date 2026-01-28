@@ -28,7 +28,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .member-detail__back-btn {
@@ -53,10 +55,9 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg,
-    var(--color-primary-dark) 0%,
-    var(--color-primary) 50%,
-    var(--color-elyos) 100%
-  );
+      var(--color-primary-dark) 0%,
+      var(--color-primary) 50%,
+      var(--color-elyos) 100%);
   opacity: 0.95;
 }
 
@@ -70,7 +71,7 @@
 .member-hero__content {
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: var(--spacing-lg) var(--spacing-xl);
 }
@@ -256,6 +257,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -482,9 +484,9 @@
    ======================================== */
 .member-content {
   display: grid;
-  grid-template-columns: 280px 1fr 280px;
-  gap: var(--spacing-lg);
-  max-width: 1400px;
+  grid-template-columns: 280px 1fr 350px;
+  gap: var(--spacing-xl);
+  max-width: 1600px;
   margin: 0 auto;
   padding: var(--spacing-xl);
   margin-top: -40px;
@@ -981,8 +983,8 @@
 
 .equip-section__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-xs);
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: var(--spacing-sm);
 }
 
 .equip-section__empty {
@@ -996,12 +998,13 @@
 .equip-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs);
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
   background: var(--color-bg-secondary);
   border-radius: var(--radius-sm);
   border: 1px solid color-mix(in srgb, var(--grade-color, #9d9d9d) 40%, transparent);
   transition: all var(--transition-fast);
+  min-height: 48px;
 }
 
 .equip-card:hover {
@@ -1022,13 +1025,15 @@
 }
 
 .equip-card__name {
-  display: block;
-  font-size: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 0.75rem;
   font-weight: 500;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 1px;
+  line-height: 1.2;
 }
 
 .equip-card__level {

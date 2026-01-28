@@ -1,4 +1,4 @@
-// 全局配置管理组件
+// Global Config Manager component
 
 import React, { useState, useEffect } from 'react';
 import type { ClassBoardConfig, ClassBoardMapping } from '../../utils/daevanion';
@@ -9,7 +9,7 @@ interface GlobalConfig {
   voiceChannelName: string;
   voiceChannelDescription: string;
   redeemCode: string;
-  redeemCodeExpiry: string; // ISO 格式日期
+  redeemCodeExpiry: string; // ISO format date
 }
 
 interface SyncStatus {
@@ -33,8 +33,8 @@ const ConfigManager: React.FC = () => {
 
   const [config, setConfig] = useState<GlobalConfig>({
     voiceChannelUrl: '',
-    voiceChannelName: '军团语音',
-    voiceChannelDescription: '点击加入我们的语音频道',
+    voiceChannelName: 'Legion Voice',
+    voiceChannelDescription: 'Click to join our voice channel',
     redeemCode: '',
     redeemCodeExpiry: '',
   });
@@ -42,10 +42,10 @@ const ConfigManager: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  // 同步日志
+  // Sync logs
   const [syncLogs, setSyncLogs] = useState<SyncLog[]>([]);
 
-  // 定时任务状态
+  // Scheduled task status
   const [syncStatus, setSyncStatus] = useState<SyncStatus>({
     isRunning: false,
     isSyncing: false,
@@ -55,19 +55,19 @@ const ConfigManager: React.FC = () => {
   });
   const [syncIntervalInput, setSyncIntervalInput] = useState(4);
 
-  // 守护力职业配置状态
+  // Daevanion class config state
   const [daevanionConfig, setDaevanionConfig] = useState<ClassBoardConfig | null>(null);
   const [daevanionLoading, setDaevanionLoading] = useState(false);
   const [daevanionSaving, setDaevanionSaving] = useState(false);
   const [editingClass, setEditingClass] = useState<ClassBoardMapping | null>(null);
   const [isAddingClass, setIsAddingClass] = useState(false);
 
-  // 加载配置
+  // Load config
   useEffect(() => {
     loadConfig();
     loadSyncStatus();
 
-    // 每5秒刷新一次同步状态
+    // Refresh sync status every 5 seconds
     const interval = setInterval(loadSyncStatus, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -81,8 +81,8 @@ const ConfigManager: React.FC = () => {
         setConfig(data.data);
       }
     } catch (error) {
-      console.error('加载配置失败:', error);
-      showMessage('error', '加载配置失败');
+      console.error('Failed to load config:', error);
+      showMessage('error', 'Failed to load config');
     } finally {
       setLoading(false);
     }
@@ -103,13 +103,13 @@ const ConfigManager: React.FC = () => {
 
       const data = await response.json();
       if (data.success) {
-        showMessage('success', '配置保存成功！');
+        showMessage('success', 'Config saved successfully!');
       } else {
-        showMessage('error', data.error || '保存失败');
+        showMessage('error', data.error || 'Save failed');
       }
     } catch (error) {
-      console.error('保存配置失败:', error);
-      showMessage('error', '保存失败，请稍后重试');
+      console.error('Failed to save config:', error);
+      showMessage('error', 'Save failed, please try again');
     } finally {
       setSaving(false);
     }
@@ -124,17 +124,17 @@ const ConfigManager: React.FC = () => {
     setConfig(prev => ({ ...prev, [field]: value }));
   };
 
-  // 添加日志
+  // Add log
   const addLog = (type: 'info' | 'success' | 'error', message: string) => {
     const newLog: SyncLog = {
       timestamp: new Date().toISOString(),
       type,
       message
     };
-    setSyncLogs(prev => [newLog, ...prev].slice(0, 100)); // 只保留最近100条
+    setSyncLogs(prev => [newLog, ...prev].slice(0, 100)); // Keep only last 100
   };
 
-  // ========== 定时任务管理 ==========
+  // ========== Scheduled Task Management ==========
 
   const loadSyncStatus = async () => {
     try {
@@ -145,13 +145,13 @@ const ConfigManager: React.FC = () => {
         setSyncIntervalInput(data.data.intervalHours);
       }
     } catch (error) {
-      console.error('加载同步状态失败:', error);
+      console.error('Failed to load sync status:', error);
     }
   };
 
   const handleStartSync = async () => {
     try {
-      addLog('info', `正在启动定时任务，间隔：${syncIntervalInput}小时`);
+      addLog('info', `Starting scheduled task, interval: ${syncIntervalInput} hours`);
       const response = await fetch('/api/sync/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -160,28 +160,28 @@ const ConfigManager: React.FC = () => {
 
       const data = await response.json();
       if (data.success) {
-        showMessage('success', `${data.message}\n首次同步已在后台启动`);
-        addLog('success', '定时任务已启动');
-        addLog('info', '首次同步正在后台执行,可以继续浏览其他页面');
+        showMessage('success', `${data.message}\nFirst sync started in background`);
+        addLog('success', 'Scheduled task started');
+        addLog('info', 'First sync running in background, you can continue browsing');
 
-        // 刷新状态
+        // Refresh status
         setTimeout(() => {
           loadSyncStatus();
         }, 1000);
       } else {
-        showMessage('error', data.error || '启动失败');
-        addLog('error', `启动失败: ${data.error}`);
+        showMessage('error', data.error || 'Start failed');
+        addLog('error', `Start failed: ${data.error}`);
       }
     } catch (error) {
-      console.error('启动同步失败:', error);
-      showMessage('error', '启动失败');
-      addLog('error', '启动失败，网络错误');
+      console.error('Failed to start sync:', error);
+      showMessage('error', 'Start failed');
+      addLog('error', 'Start failed, network error');
     }
   };
 
   const handleStopSync = async () => {
     try {
-      addLog('info', '正在停止定时任务...');
+      addLog('info', 'Stopping scheduled task...');
       const response = await fetch('/api/sync/stop', {
         method: 'POST'
       });
@@ -189,22 +189,22 @@ const ConfigManager: React.FC = () => {
       const data = await response.json();
       if (data.success) {
         showMessage('success', data.message);
-        addLog('success', '定时任务已停止');
+        addLog('success', 'Scheduled task stopped');
         loadSyncStatus();
       } else {
-        showMessage('error', data.message || '停止失败');
-        addLog('error', `停止失败: ${data.message}`);
+        showMessage('error', data.message || 'Stop failed');
+        addLog('error', `Stop failed: ${data.message}`);
       }
     } catch (error) {
-      console.error('停止同步失败:', error);
-      showMessage('error', '停止失败');
-      addLog('error', '停止失败，网络错误');
+      console.error('Failed to stop sync:', error);
+      showMessage('error', 'Stop failed');
+      addLog('error', 'Stop failed, network error');
     }
   };
 
   const handleSyncNow = async () => {
     try {
-      addLog('info', '正在启动后台同步...');
+      addLog('info', 'Starting background sync...');
 
       const response = await fetch('/api/sync/now', {
         method: 'POST'
@@ -212,29 +212,29 @@ const ConfigManager: React.FC = () => {
 
       const data = await response.json();
       if (data.success) {
-        showMessage('success', '数据同步已在后台启动,请稍后查看同步状态');
-        addLog('success', '后台同步已启动,可以继续浏览其他页面');
-        addLog('info', '提示: 同步过程会在服务器后台执行,请耐心等待');
+        showMessage('success', 'Data sync started in background, please check sync status later');
+        addLog('success', 'Background sync started, you can continue browsing');
+        addLog('info', 'Tip: Sync will run on server in background, please wait');
 
-        // 刷新状态显示
+        // Refresh status display
         setTimeout(() => {
           loadSyncStatus();
         }, 1000);
       } else {
-        showMessage('error', data.message || '同步失败');
-        addLog('error', `同步失败: ${data.message}`);
+        showMessage('error', data.message || 'Sync failed');
+        addLog('error', `Sync failed: ${data.message}`);
       }
     } catch (error) {
-      console.error('启动同步失败:', error);
-      showMessage('error', '启动同步失败');
-      addLog('error', '启动同步失败，网络错误');
+      console.error('Failed to start sync:', error);
+      showMessage('error', 'Failed to start sync');
+      addLog('error', 'Failed to start sync, network error');
     }
   };
 
   const formatTime = (isoString: string | null) => {
-    if (!isoString) return '从未同步';
+    if (!isoString) return 'Never synced';
     const date = new Date(isoString);
-    return date.toLocaleString('zh-CN', {
+    return date.toLocaleString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -244,7 +244,7 @@ const ConfigManager: React.FC = () => {
     });
   };
 
-  // ========== 守护力职业配置管理 ==========
+  // ========== Daevanion Class Config Management ==========
 
   const loadDaevanionConfig = async () => {
     setDaevanionLoading(true);
@@ -255,8 +255,8 @@ const ConfigManager: React.FC = () => {
         setDaevanionConfig(data);
       }
     } catch (error) {
-      console.error('加载守护力配置失败:', error);
-      showMessage('error', '加载守护力配置失败');
+      console.error('Failed to load Daevanion config:', error);
+      showMessage('error', 'Failed to load Daevanion config');
     } finally {
       setDaevanionLoading(false);
     }
@@ -275,15 +275,15 @@ const ConfigManager: React.FC = () => {
 
       const data = await response.json();
       if (data.success) {
-        showMessage('success', '守护力配置保存成功！');
-        // 重新加载配置
+        showMessage('success', 'Daevanion config saved successfully!');
+        // Reload config
         await loadDaevanionConfig();
       } else {
-        showMessage('error', data.error || '保存失败');
+        showMessage('error', data.error || 'Save failed');
       }
     } catch (error) {
-      console.error('保存守护力配置失败:', error);
-      showMessage('error', '保存失败，请稍后重试');
+      console.error('Failed to save Daevanion config:', error);
+      showMessage('error', 'Save failed, please try again');
     } finally {
       setDaevanionSaving(false);
     }
@@ -308,7 +308,7 @@ const ConfigManager: React.FC = () => {
   const handleDeleteClass = (classId: number) => {
     if (!daevanionConfig) return;
 
-    if (confirm(`确定要删除职业ID ${classId} 的配置吗？`)) {
+    if (confirm(`Are you sure you want to delete class ID ${classId} config?`)) {
       setDaevanionConfig({
         ...daevanionConfig,
         classes: daevanionConfig.classes.filter(c => c.classId !== classId),
@@ -320,21 +320,21 @@ const ConfigManager: React.FC = () => {
   const handleSaveClass = () => {
     if (!editingClass || !daevanionConfig) return;
 
-    // 验证
+    // Validation
     if (!editingClass.className || !editingClass.classNameEn) {
-      showMessage('error', '请填写职业名称');
+      showMessage('error', 'Please enter class name');
       return;
     }
 
     if (editingClass.boardIds.some(id => id <= 0)) {
-      showMessage('error', '面板ID必须大于0');
+      showMessage('error', 'Board ID must be greater than 0');
       return;
     }
 
     if (isAddingClass) {
-      // 检查ID是否已存在
+      // Check if ID already exists
       if (daevanionConfig.classes.some(c => c.classId === editingClass.classId)) {
-        showMessage('error', '该职业ID已存在');
+        showMessage('error', 'This class ID already exists');
         return;
       }
 
@@ -362,7 +362,7 @@ const ConfigManager: React.FC = () => {
     setIsAddingClass(false);
   };
 
-  // 当切换到守护力配置tab时加载配置
+  // Load Daevanion config when switching to that tab
   useEffect(() => {
     if (activeSubTab === 'daevanion' && !daevanionConfig) {
       loadDaevanionConfig();
@@ -370,83 +370,83 @@ const ConfigManager: React.FC = () => {
   }, [activeSubTab]);
 
   if (loading) {
-    return <div className="config-manager__loading">加载中...</div>;
+    return <div className="config-manager__loading">Loading...</div>;
   }
 
   return (
     <div className="config-manager">
       <div className="config-manager__header">
-        <h2>全局配置</h2>
-        <p>管理军团网站的全局设置</p>
+        <h2>Global Config</h2>
+        <p>Manage legion website global settings</p>
       </div>
 
-      {/* 二级Tab导航 */}
+      {/* Subtab navigation */}
       <div className="config-subtabs">
         <button
           className={`config-subtabs__tab ${activeSubTab === 'timing' ? 'config-subtabs__tab--active' : ''}`}
           onClick={() => setActiveSubTab('timing')}
         >
-          定时任务
+          Scheduled Tasks
         </button>
         <button
           className={`config-subtabs__tab ${activeSubTab === 'voice' ? 'config-subtabs__tab--active' : ''}`}
           onClick={() => setActiveSubTab('voice')}
         >
-          语音配置
+          Voice Config
         </button>
         <button
           className={`config-subtabs__tab ${activeSubTab === 'redeem' ? 'config-subtabs__tab--active' : ''}`}
           onClick={() => setActiveSubTab('redeem')}
         >
-          兑换码管理
+          Redeem Codes
         </button>
         <button
           className={`config-subtabs__tab ${activeSubTab === 'daevanion' ? 'config-subtabs__tab--active' : ''}`}
           onClick={() => setActiveSubTab('daevanion')}
         >
-          守护力配置
+          Daevanion Config
         </button>
       </div>
 
       <div className="config-manager__content">
-        {/* 定时任务Tab */}
+        {/* Scheduled Tasks Tab */}
         {activeSubTab === 'timing' && (
           <>
-            {/* 定时任务配置 */}
+            {/* Scheduled task config */}
             <div className="config-section">
               <h3 className="config-section__title">
                 <span className="config-section__icon">⏰</span>
-                定时数据同步
+                Scheduled Data Sync
               </h3>
               <p className="config-section__desc">
-                自动定期更新所有成员的角色数据（装备、等级、属性等）
+                Automatically update all members' character data periodically (equipment, level, stats, etc.)
               </p>
 
               <div className="sync-status">
                 <div className="sync-status__row">
-                  <span className="sync-status__label">任务状态：</span>
+                  <span className="sync-status__label">Task Status:</span>
                   <span className={`sync-status__value ${syncStatus.isRunning ? 'sync-status__value--running' : ''}`}>
-                    {syncStatus.isRunning ? '⏰ 运行中' : '⏹️ 已停止'}
+                    {syncStatus.isRunning ? '⏰ Running' : '⏹️ Stopped'}
                   </span>
                 </div>
 
                 {syncStatus.isSyncing && (
                   <div className="sync-status__row">
-                    <span className="sync-status__label">当前状态：</span>
+                    <span className="sync-status__label">Current Status:</span>
                     <span className="sync-status__value sync-status__value--syncing">
-                      🔄 正在同步数据...
+                      🔄 Syncing data...
                     </span>
                   </div>
                 )}
 
                 <div className="sync-status__row">
-                  <span className="sync-status__label">上次同步：</span>
+                  <span className="sync-status__label">Last Sync:</span>
                   <span className="sync-status__value">{formatTime(syncStatus.lastSyncTime)}</span>
                 </div>
 
                 {syncStatus.isRunning && syncStatus.nextSyncTime && (
                   <div className="sync-status__row">
-                    <span className="sync-status__label">下次同步：</span>
+                    <span className="sync-status__label">Next Sync:</span>
                     <span className="sync-status__value">{formatTime(syncStatus.nextSyncTime)}</span>
                   </div>
                 )}
@@ -454,8 +454,8 @@ const ConfigManager: React.FC = () => {
 
               <div className="config-field">
                 <label htmlFor="syncInterval">
-                  同步间隔（小时）
-                  <span className="config-field__hint">（建议设置为 2-6 小时）</span>
+                  Sync Interval (hours)
+                  <span className="config-field__hint">(Recommended: 2-6 hours)</span>
                 </label>
                 <input
                   id="syncInterval"
@@ -467,7 +467,7 @@ const ConfigManager: React.FC = () => {
                   disabled={syncStatus.isRunning}
                 />
                 <span className="config-field__help">
-                  间隔范围：1-24小时。过于频繁可能会导致API限流。
+                  Range: 1-24 hours. Too frequent may cause API rate limiting.
                 </span>
               </div>
 
@@ -478,14 +478,14 @@ const ConfigManager: React.FC = () => {
                     className="btn btn--danger"
                     disabled={syncStatus.isSyncing}
                   >
-                    ⏹️ 停止定时任务
+                    ⏹️ Stop Scheduled Task
                   </button>
                 ) : (
                   <button
                     onClick={handleStartSync}
                     className="btn btn--primary"
                   >
-                    ▶️ 启动定时任务
+                    ▶️ Start Scheduled Task
                   </button>
                 )}
 
@@ -494,43 +494,43 @@ const ConfigManager: React.FC = () => {
                   className="btn btn--secondary"
                   disabled={syncStatus.isSyncing}
                 >
-                  🔄 立即同步
+                  🔄 Sync Now
                 </button>
               </div>
 
               <div className="sync-notice">
                 <div className="sync-notice__icon">💡</div>
                 <div className="sync-notice__content">
-                  <p><strong>说明：</strong></p>
+                  <p><strong>Notes:</strong></p>
                   <ul>
-                    <li>定时任务会自动更新所有已配置API的成员数据</li>
-                    <li>同步数据包括：角色信息、装备详情、等级、属性等</li>
-                    <li>启动定时任务后会立即执行一次同步</li>
-                    <li>未配置API的成员会自动跳过</li>
+                    <li>Scheduled task will auto-update all members with API configured</li>
+                    <li>Sync includes: character info, equipment details, level, stats, etc.</li>
+                    <li>First sync runs immediately after starting scheduled task</li>
+                    <li>Members without API config will be skipped</li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            {/* 同步日志 */}
+            {/* Sync log */}
             <div className="config-section">
               <h3 className="config-section__title">
                 <span className="config-section__icon">📋</span>
-                同步日志
+                Sync Log
               </h3>
               <p className="config-section__desc">
-                查看最近的数据同步操作记录
+                View recent data sync operation records
               </p>
 
               <div className="sync-log">
                 {syncLogs.length === 0 ? (
-                  <div className="sync-log__empty">暂无同步日志</div>
+                  <div className="sync-log__empty">No sync logs yet</div>
                 ) : (
                   <div className="sync-log__list">
                     {syncLogs.map((log, index) => (
                       <div key={index} className={`sync-log__item sync-log__item--${log.type}`}>
                         <span className="sync-log__time">
-                          {new Date(log.timestamp).toLocaleString('zh-CN', {
+                          {new Date(log.timestamp).toLocaleString('en-US', {
                             month: '2-digit',
                             day: '2-digit',
                             hour: '2-digit',
@@ -551,72 +551,72 @@ const ConfigManager: React.FC = () => {
           </>
         )}
 
-        {/* 语音配置Tab */}
+        {/* Voice Config Tab */}
         {activeSubTab === 'voice' && (
           <>
-            {/* 语音频道配置 */}
+            {/* Voice channel config */}
             <div className="config-section">
               <h3 className="config-section__title">
                 <span className="config-section__icon">🎤</span>
-                语音频道配置
+                Voice Channel Config
               </h3>
               <p className="config-section__desc">
-                配置军团语音频道链接，支持 Discord、QQ 频道、YY 等任何语音平台的邀请链接
+                Configure legion voice channel link. Supports Discord, QQ Channel, YY, or any voice platform invite link
               </p>
 
               <div className="config-field">
                 <label htmlFor="voiceChannelUrl">
-                  语音频道链接
-                  <span className="config-field__hint">（完整的邀请链接 URL）</span>
+                  Voice Channel Link
+                  <span className="config-field__hint">(Full invite URL)</span>
                 </label>
                 <input
                   id="voiceChannelUrl"
                   type="url"
                   value={config.voiceChannelUrl}
                   onChange={(e) => handleChange('voiceChannelUrl', e.target.value)}
-                  placeholder="https://discord.gg/example 或 https://pd.qq.com/..."
+                  placeholder="https://discord.gg/example or https://pd.qq.com/..."
                 />
                 <span className="config-field__help">
-                  示例：Discord: https://discord.gg/xxxxx，QQ频道: https://pd.qq.com/s/xxxxx
+                  Examples: Discord: https://discord.gg/xxxxx, QQ Channel: https://pd.qq.com/s/xxxxx
                 </span>
               </div>
 
               <div className="config-field">
                 <label htmlFor="voiceChannelName">
-                  显示名称
-                  <span className="config-field__hint">（在军团页面显示的标题）</span>
+                  Display Name
+                  <span className="config-field__hint">(Title shown on legion page)</span>
                 </label>
                 <input
                   id="voiceChannelName"
                   type="text"
                   value={config.voiceChannelName}
                   onChange={(e) => handleChange('voiceChannelName', e.target.value)}
-                  placeholder="军团语音"
+                  placeholder="Legion Voice"
                 />
               </div>
 
               <div className="config-field">
                 <label htmlFor="voiceChannelDescription">
-                  描述信息
-                  <span className="config-field__hint">（引导文字）</span>
+                  Description
+                  <span className="config-field__hint">(Guide text)</span>
                 </label>
                 <textarea
                   id="voiceChannelDescription"
                   value={config.voiceChannelDescription}
                   onChange={(e) => handleChange('voiceChannelDescription', e.target.value)}
-                  placeholder="点击加入我们的语音频道"
+                  placeholder="Click to join our voice channel"
                   rows={3}
                 />
               </div>
             </div>
 
-            {/* 预览区域 */}
+            {/* Preview area */}
             <div className="config-preview">
-              <h4 className="config-preview__title">预览效果</h4>
+              <h4 className="config-preview__title">Preview</h4>
               <div className="config-preview__content">
                 <div className="config-preview__icon">🎤</div>
-                <h3>{config.voiceChannelName || '军团语音'}</h3>
-                <p>{config.voiceChannelDescription || '点击加入我们的语音频道'}</p>
+                <h3>{config.voiceChannelName || 'Legion Voice'}</h3>
+                <p>{config.voiceChannelDescription || 'Click to join our voice channel'}</p>
                 {config.voiceChannelUrl ? (
                   <div className="config-preview__button">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -624,69 +624,69 @@ const ConfigManager: React.FC = () => {
                       <polyline points="15 3 21 3 21 9" />
                       <line x1="10" y1="14" x2="21" y2="3" />
                     </svg>
-                    加入语音频道
+                    Join Voice Channel
                   </div>
                 ) : (
-                  <div className="config-preview__empty">请先配置语音频道链接</div>
+                  <div className="config-preview__empty">Please configure voice channel link first</div>
                 )}
               </div>
             </div>
 
-            {/* 操作按钮 */}
+            {/* Action buttons */}
             <div className="config-manager__actions">
               <button
                 onClick={handleSave}
                 disabled={saving}
                 className="btn btn--primary"
               >
-                {saving ? '保存中...' : '保存配置'}
+                {saving ? 'Saving...' : 'Save Config'}
               </button>
               <button
                 onClick={loadConfig}
                 disabled={saving}
                 className="btn btn--secondary"
               >
-                重置
+                Reset
               </button>
             </div>
           </>
         )}
 
-        {/* 兑换码管理Tab */}
+        {/* Redeem Code Tab */}
         {activeSubTab === 'redeem' && (
           <>
-            {/* 兑换码配置 */}
+            {/* Redeem code config */}
             <div className="config-section">
               <h3 className="config-section__title">
                 <span className="config-section__icon">🎁</span>
-                兑换码管理
+                Redeem Code Management
               </h3>
               <p className="config-section__desc">
-                配置军团兑换码，将在军团页面显示供成员复制使用
+                Configure legion redeem codes to display on legion page for members to copy
               </p>
 
               <div className="config-field">
                 <label htmlFor="redeemCode">
-                  兑换码
-                  <span className="config-field__hint">（游戏内可兑换的礼包码）</span>
+                  Redeem Code
+                  <span className="config-field__hint">(In-game redeemable gift code)</span>
                 </label>
                 <input
                   id="redeemCode"
                   type="text"
                   value={config.redeemCode}
                   onChange={(e) => handleChange('redeemCode', e.target.value)}
-                  placeholder="请输入兑换码"
+                  placeholder="Enter redeem code"
                   maxLength={50}
                 />
                 <span className="config-field__help">
-                  留空表示暂无可用兑换码
+                  Leave empty if no code available
                 </span>
               </div>
 
               <div className="config-field">
                 <label htmlFor="redeemCodeExpiry">
-                  到期时间
-                  <span className="config-field__hint">（兑换码过期日期）</span>
+                  Expiry Time
+                  <span className="config-field__hint">(Code expiration date)</span>
                 </label>
                 <input
                   id="redeemCodeExpiry"
@@ -695,21 +695,21 @@ const ConfigManager: React.FC = () => {
                   onChange={(e) => handleChange('redeemCodeExpiry', e.target.value ? new Date(e.target.value).toISOString() : '')}
                 />
                 <span className="config-field__help">
-                  设置兑换码的有效期，过期后会在军团页面显示"已过期"
+                  Set code validity period. Shows "Expired" on legion page after expiry
                 </span>
               </div>
             </div>
 
-            {/* 预览区域 */}
+            {/* Preview area */}
             <div className="config-preview">
-              <h4 className="config-preview__title">预览效果</h4>
+              <h4 className="config-preview__title">Preview</h4>
               <div className="config-preview__content config-preview__content--redeem">
                 {config.redeemCode ? (
                   <>
                     <div className="redeem-preview">
                       <div className="redeem-preview__header">
                         <span className="redeem-preview__icon">🎁</span>
-                        <span className="redeem-preview__title">军团兑换码</span>
+                        <span className="redeem-preview__title">Legion Redeem Code</span>
                       </div>
                       <div className="redeem-preview__code-wrapper">
                         <code className="redeem-preview__code">{config.redeemCode}</code>
@@ -718,12 +718,12 @@ const ConfigManager: React.FC = () => {
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                           </svg>
-                          复制
+                          Copy
                         </button>
                       </div>
                       {config.redeemCodeExpiry && (
                         <div className="redeem-preview__expiry">
-                          到期时间：{new Date(config.redeemCodeExpiry).toLocaleString('zh-CN', {
+                          Expires: {new Date(config.redeemCodeExpiry).toLocaleString('en-US', {
                             year: 'numeric',
                             month: '2-digit',
                             day: '2-digit',
@@ -735,58 +735,58 @@ const ConfigManager: React.FC = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="config-preview__empty">请先配置兑换码</div>
+                  <div className="config-preview__empty">Please configure redeem code first</div>
                 )}
               </div>
             </div>
 
-            {/* 操作按钮 */}
+            {/* Action buttons */}
             <div className="config-manager__actions">
               <button
                 onClick={handleSave}
                 disabled={saving}
                 className="btn btn--primary"
               >
-                {saving ? '保存中...' : '保存配置'}
+                {saving ? 'Saving...' : 'Save Config'}
               </button>
               <button
                 onClick={loadConfig}
                 disabled={saving}
                 className="btn btn--secondary"
               >
-                重置
+                Reset
               </button>
             </div>
           </>
         )}
 
-        {/* 守护力配置Tab */}
+        {/* Daevanion Config Tab */}
         {activeSubTab === 'daevanion' && (
           <>
-            {/* 守护力职业配置 */}
+            {/* Daevanion class config */}
             <div className="config-section">
               <h3 className="config-section__title">
                 <span className="config-section__icon">🛡️</span>
-                守护力职业配置
+                Daevanion Class Config
               </h3>
               <p className="config-section__desc">
-                配置各职业对应的守护力面板ID（boardId），每个职业有6个面板
+                Configure each class's Daevanion board IDs (boardId). Each class has 6 boards
               </p>
 
               {daevanionLoading ? (
-                <div className="config-manager__loading">加载中...</div>
+                <div className="config-manager__loading">Loading...</div>
               ) : (
                 <>
                   <div className="daevanion-class-list">
                     <table className="daevanion-table">
                       <thead>
                         <tr>
-                          <th>职业ID</th>
-                          <th>职业名称(繁体)</th>
-                          <th>职业名称(简体)</th>
-                          <th>职业名称(英文)</th>
-                          <th>面板ID列表</th>
-                          <th>操作</th>
+                          <th>Class ID</th>
+                          <th>Class Name (Traditional)</th>
+                          <th>Class Name (Simplified)</th>
+                          <th>Class Name (English)</th>
+                          <th>Board ID List</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -806,14 +806,14 @@ const ConfigManager: React.FC = () => {
                                 onClick={() => handleEditClass(classMapping)}
                                 className="btn btn--small btn--secondary"
                               >
-                                编辑
+                                Edit
                               </button>
                               <button
                                 onClick={() => handleDeleteClass(classMapping.classId)}
                                 className="btn btn--small btn--danger"
                                 style={{ marginLeft: '8px' }}
                               >
-                                删除
+                                Delete
                               </button>
                             </td>
                           </tr>
@@ -822,7 +822,7 @@ const ConfigManager: React.FC = () => {
                     </table>
 
                     {(!daevanionConfig || daevanionConfig.classes.length === 0) && (
-                      <div className="daevanion-empty">暂无职业配置</div>
+                      <div className="daevanion-empty">No class config yet</div>
                     )}
                   </div>
 
@@ -831,21 +831,21 @@ const ConfigManager: React.FC = () => {
                       onClick={handleAddClass}
                       className="btn btn--primary"
                     >
-                      + 新增职业
+                      + Add Class
                     </button>
                   </div>
                 </>
               )}
             </div>
 
-            {/* 编辑/新增职业对话框 */}
+            {/* Edit/Add class dialog */}
             {editingClass && (
               <div className="modal-overlay" onClick={handleCancelEdit}>
                 <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-                  <h3>{isAddingClass ? '新增职业' : '编辑职业'}</h3>
+                  <h3>{isAddingClass ? 'Add Class' : 'Edit Class'}</h3>
 
                   <div className="config-field">
-                    <label htmlFor="classId">职业ID</label>
+                    <label htmlFor="classId">Class ID</label>
                     <input
                       id="classId"
                       type="number"
@@ -855,12 +855,12 @@ const ConfigManager: React.FC = () => {
                         classId: parseInt(e.target.value) || 0
                       })}
                       disabled={!isAddingClass}
-                      placeholder="例如: 1"
+                      placeholder="e.g.: 1"
                     />
                   </div>
 
                   <div className="config-field">
-                    <label htmlFor="className">职业名称(繁体)</label>
+                    <label htmlFor="className">Class Name (Traditional)</label>
                     <input
                       id="className"
                       type="text"
@@ -869,12 +869,12 @@ const ConfigManager: React.FC = () => {
                         ...editingClass,
                         className: e.target.value
                       })}
-                      placeholder="例如: 劍星"
+                      placeholder="e.g.: 劍星"
                     />
                   </div>
 
                   <div className="config-field">
-                    <label htmlFor="classNameSimplified">职业名称(简体)</label>
+                    <label htmlFor="classNameSimplified">Class Name (Simplified)</label>
                     <input
                       id="classNameSimplified"
                       type="text"
@@ -883,12 +883,12 @@ const ConfigManager: React.FC = () => {
                         ...editingClass,
                         classNameSimplified: e.target.value
                       })}
-                      placeholder="例如: 剑星"
+                      placeholder="e.g.: 剑星"
                     />
                   </div>
 
                   <div className="config-field">
-                    <label htmlFor="classNameEn">职业名称(英文)</label>
+                    <label htmlFor="classNameEn">Class Name (English)</label>
                     <input
                       id="classNameEn"
                       type="text"
@@ -897,12 +897,12 @@ const ConfigManager: React.FC = () => {
                         ...editingClass,
                         classNameEn: e.target.value
                       })}
-                      placeholder="例如: Gladiator"
+                      placeholder="e.g.: Gladiator"
                     />
                   </div>
 
                   <div className="config-field">
-                    <label>面板ID列表 (6个面板)</label>
+                    <label>Board ID List (6 boards)</label>
                     <div className="board-ids-input">
                       {editingClass.boardIds.map((id, index) => (
                         <input
@@ -917,7 +917,7 @@ const ConfigManager: React.FC = () => {
                               boardIds: newBoardIds
                             });
                           }}
-                          placeholder={`面板${index + 1}`}
+                          placeholder={`Board ${index + 1}`}
                           style={{ width: '80px', marginRight: '8px' }}
                         />
                       ))}
@@ -926,43 +926,43 @@ const ConfigManager: React.FC = () => {
 
                   <div className="modal-actions">
                     <button onClick={handleSaveClass} className="btn btn--primary">
-                      保存
+                      Save
                     </button>
                     <button onClick={handleCancelEdit} className="btn btn--secondary">
-                      取消
+                      Cancel
                     </button>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* 保存按钮 */}
+            {/* Save buttons */}
             <div className="config-manager__actions">
               <button
                 onClick={saveDaevanionConfig}
                 disabled={daevanionSaving}
                 className="btn btn--primary"
               >
-                {daevanionSaving ? '保存中...' : '保存配置到文件'}
+                {daevanionSaving ? 'Saving...' : 'Save Config to File'}
               </button>
               <button
                 onClick={loadDaevanionConfig}
                 disabled={daevanionSaving}
                 className="btn btn--secondary"
               >
-                重新加载
+                Reload
               </button>
             </div>
 
             <div className="sync-notice" style={{ marginTop: '24px' }}>
               <div className="sync-notice__icon">💡</div>
               <div className="sync-notice__content">
-                <p><strong>说明:</strong></p>
+                <p><strong>Notes:</strong></p>
                 <ul>
-                  <li>配置修改后需要点击"保存配置到文件"才会生效</li>
-                  <li>每个职业必须配置6个守护力面板ID</li>
-                  <li>面板ID通常是职业ID*10 + 序号,例如剑星(职业1): [11,12,13,14,15,16]</li>
-                  <li>配置保存后,前端会自动加载新配置,无需重启</li>
+                  <li>Changes require clicking "Save Config to File" to take effect</li>
+                  <li>Each class must have 6 Daevanion board IDs configured</li>
+                  <li>Board ID is usually classId*10 + sequence, e.g. Gladiator (class 1): [11,12,13,14,15,16]</li>
+                  <li>Frontend auto-loads new config after save, no restart needed</li>
                 </ul>
               </div>
             </div>
@@ -970,7 +970,7 @@ const ConfigManager: React.FC = () => {
         )}
       </div>
 
-      {/* 消息提示 */}
+      {/* Message notification */}
       {message && (
         <div className={`config-manager__message config-manager__message--${message.type}`}>
           {message.text}

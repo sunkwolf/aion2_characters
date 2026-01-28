@@ -3,23 +3,23 @@ import './About.css';
 const features = [
   {
     icon: '🏰',
-    title: 'PVE 副本',
-    desc: '组织常规副本开荒，一起挑战 BOSS，共同成长'
+    title: 'PVE Dungeons',
+    desc: 'Organize regular dungeon runs, challenge bosses together, and grow together.'
   },
   {
     icon: '☕',
-    title: '休闲氛围',
-    desc: '没有强制要求，按自己的节奏享受游戏乐趣'
+    title: 'Casual',
+    desc: 'No mandatory requirements, enjoy the game at your own pace.'
   },
   {
     icon: '🤝',
-    title: '互帮互助',
-    desc: '萌新指导、材料分享、组队刷本，不让任何人掉队'
+    title: 'Mutual Help',
+    desc: 'New player guidance, material sharing, and group play so no one is left behind.'
   },
   {
     icon: '💬',
-    title: '友善社区',
-    desc: '尊重包容、禁止喷人，营造舒适的交流环境'
+    title: 'Friendly Community',
+    desc: 'Respect and inclusion, creating a comfortable communication environment.'
   }
 ];
 
@@ -28,11 +28,11 @@ const About = () => {
     <section id="about" className="about">
       <div className="about__container">
         <div className="about__header">
-          <span className="about__label">关于我们</span>
-          <h2 className="about__title">一起走过的亚特雷亚</h2>
+          <span className="about__label">About Us</span>
+          <h2 className="about__title">Journeying through Atreia together</h2>
           <p className="about__subtitle">
-            椿夏是一个以 PVE 副本和休闲娱乐为主的天族军团。<br />
-            我们相信游戏的乐趣在于一起经历、互相帮助，而非追逐极致效率。
+            ChunXia is an Elyos legion focused on PVE dungeons and casual entertainment.<br />
+            We believe the fun of the game lies in experiencing it together and helping each other.
           </p>
         </div>
 
@@ -48,7 +48,7 @@ const About = () => {
 
         <div className="about__quote">
           <blockquote>
-            <p>"在亚特雷亚的世界里，最珍贵的不是装备，而是一起奋战的伙伴。"</p>
+            <p>"In the world of Atreia, the most precious thing is not gear, but the companions you fight with."</p>
           </blockquote>
         </div>
       </div>

@@ -22,7 +22,7 @@ const ToolsPage = () => {
           setTools(data.tools);
         }
       } catch (error) {
-        console.error('加载工具列表失败:', error);
+        console.error('Failed to load tools list:', error);
       }
     };
 
@@ -35,31 +35,31 @@ const ToolsPage = () => {
 
   return (
     <div className="tools-page">
-      {/* 背景图层 */}
+      {/* Background layer */}
       <div className="tools-page__bg">
         <img src="/images/hero-bg.png" alt="" className="tools-page__bg-image" />
         <div className="tools-page__bg-overlay"></div>
       </div>
 
       <div className="tools-page__container">
-        {/* 页面标题 */}
+        {/* Page title */}
         <div className="tools-page__header">
-          <h1 className="tools-page__title">实用工具</h1>
+          <h1 className="tools-page__title">Tools</h1>
         </div>
 
-        {/* 主内容区 - 单栏布局 */}
+        {/* Main content area - single column layout */}
         <div className="tools-page__layout">
-          {/* 左侧主内容 */}
+          {/* Left main content */}
           <div className="tools-page__main-content">
-            {/* 游戏通知 */}
+            {/* Game notices */}
             <section className="tools-page__section">
               <GameNotices />
             </section>
 
-            {/* 工具卡片 */}
+            {/* Tool cards */}
             <section className="tools-page__section">
               <div className="tools-section__header">
-                <h2 className="tools-section__title">🔧 工具</h2>
+                <h2 className="tools-section__title">🔧 Tools</h2>
               </div>
 
               {tools.length > 0 ? (
@@ -81,14 +81,14 @@ const ToolsPage = () => {
               ) : (
                 <div className="tools-page__empty">
                   <div className="tools-page__empty-icon">🔧</div>
-                  <p>暂无可用工具</p>
-                  <p>请联系管理员在后台添加工具</p>
+                  <p>No tools available</p>
+                  <p>Please contact admin to add tools</p>
                 </div>
               )}
             </section>
           </div>
 
-          {/* 右侧 - 裂缝倒计时(固定) */}
+          {/* Right side - Rift countdown (fixed) */}
           <aside className="tools-page__sidebar">
             <RiftCountdown />
           </aside>

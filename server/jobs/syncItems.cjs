@@ -371,8 +371,8 @@ async function syncItemsDetails(progressId, categoryId) {
       const item = items[i];
 
       try {
-        // 使用正确的详情API：/aion2/api/gameconst/item?id=xxx&enchantLevel=0&lang=zh
-        const detailUrl = `${CONFIG.DETAIL_API_BASE}/item?id=${item.id}&enchantLevel=0&lang=zh`;
+        // 使用正确的详情API：/aion2/api/gameconst/item?id=xxx&enchantLevel=0&lang=en
+        const detailUrl = `${CONFIG.DETAIL_API_BASE}/item?id=${item.id}&enchantLevel=0&lang=en`;
         const detail = await fetchWithRetry(detailUrl);
 
         if (detail) {
@@ -419,9 +419,9 @@ async function syncItemsDetails(progressId, categoryId) {
           // 判断是否需要同步强化等级数据
           const gradeOrder = gradeOrderMap[detail.grade] || 0;
           const shouldSyncEnchant = needEnchantSync &&
-                                    gradeOrder >= CONFIG.ENCHANT_MIN_GRADE_ORDER &&
-                                    detail.enchantable &&
-                                    detail.maxEnchantLevel > 0;
+            gradeOrder >= CONFIG.ENCHANT_MIN_GRADE_ORDER &&
+            detail.enchantable &&
+            detail.maxEnchantLevel > 0;
 
           if (shouldSyncEnchant) {
             // 同步各个强化等级的属性（包含突破等级）
@@ -429,7 +429,7 @@ async function syncItemsDetails(progressId, categoryId) {
             const totalMaxLevel = detail.maxEnchantLevel + (detail.maxExceedEnchantLevel || 0);
             for (let enchantLv = 1; enchantLv <= totalMaxLevel; enchantLv++) {
               try {
-                const enchantUrl = `${CONFIG.DETAIL_API_BASE}/item?id=${item.id}&enchantLevel=${enchantLv}&lang=zh`;
+                const enchantUrl = `${CONFIG.DETAIL_API_BASE}/item?id=${item.id}&enchantLevel=${enchantLv}&lang=en`;
                 const enchantDetail = await fetchWithRetry(enchantUrl);
 
                 if (enchantDetail && (enchantDetail.mainStats || enchantDetail.subStats)) {
@@ -739,7 +739,7 @@ function getSyncStatus() {
  */
 async function fetchItemFromApi(itemId, enchantLevel = 0) {
   try {
-    const detailUrl = `${CONFIG.DETAIL_API_BASE}/item?id=${itemId}&enchantLevel=${enchantLevel}&lang=zh`;
+    const detailUrl = `${CONFIG.DETAIL_API_BASE}/item?id=${itemId}&enchantLevel=${enchantLevel}&lang=en`;
     console.log(`[Sync] 从API获取物品详情: ${detailUrl}`);
 
     const detail = await fetchWithRetry(detailUrl);

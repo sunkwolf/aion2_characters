@@ -1,4 +1,4 @@
-// 通用确认对话框组件
+// Generic confirmation dialog component
 
 import React from 'react';
 import './ConfirmDialog.css';
@@ -11,15 +11,15 @@ interface ConfirmDialogProps {
   cancelText?: string;
   onConfirm: () => void;
   onCancel: () => void;
-  danger?: boolean; // 是否为危险操作（删除等）
+  danger?: boolean; // Whether it's a dangerous operation (delete, etc.)
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   visible,
-  title = '确认操作',
+  title = 'Confirm',
   message,
-  confirmText = '确定',
-  cancelText = '取消',
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
   onConfirm,
   onCancel,
   danger = false,
@@ -48,9 +48,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <button
             type="button"
             onClick={onConfirm}
-            className={`confirm-dialog__btn confirm-dialog__btn--confirm ${
-              danger ? 'confirm-dialog__btn--danger' : ''
-            }`}
+            className={`confirm-dialog__btn confirm-dialog__btn--confirm ${danger ? 'confirm-dialog__btn--danger' : ''
+              }`}
           >
             {confirmText}
           </button>

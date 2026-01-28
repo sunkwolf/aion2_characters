@@ -1,4 +1,4 @@
-// 成员数据 - 可根据实际情况修改
+// Member data - can be modified according to actual situation
 export interface Member {
   id: string;
   name: string;
@@ -12,42 +12,42 @@ export interface Member {
 export const members: Member[] = [
   {
     id: '1',
-    name: '团长名字',
+    name: 'Leader Name',
     role: 'leader',
-    class: '职业',
-    title: '军团长',
-    joinDate: '创团成员'
+    class: 'Class',
+    title: 'Legion Leader',
+    joinDate: 'Founding Member'
   },
   {
     id: '2',
-    name: '副团1',
+    name: 'Officer 1',
     role: 'officer',
-    class: '职业',
-    title: '副团长'
+    class: 'Class',
+    title: 'Vice Leader'
   },
   {
     id: '3',
-    name: '副团2',
+    name: 'Officer 2',
     role: 'officer',
-    class: '职业',
-    title: '副团长'
+    class: 'Class',
+    title: 'Vice Leader'
   },
-  // 可以继续添加更多成员...
+  // Can add more members...
 ];
 
-// 职业图标映射（可扩展）
+// Class icon mapping (extensible)
 export const classIcons: Record<string, string> = {
-  '剑星': '⚔️',
-  '守护星': '🛡️',
-  '魔道星': '🔮',
-  '精灵星': '🏹',
-  '治愈星': '💚',
-  '护法星': '📿',
-  '弓星': '🎯',
-  '杀星': '🗡️',
-  '吟游星': '🎵',
-  '枪星': '🔱',
-  '机甲星': '⚙️',
-  '画师': '🎨',
-  '默认': '✨'
+  'Gladiator': '⚔️',
+  'Templar': '🛡️',
+  'Sorcerer': '🔮',
+  'Spiritmaster': '🏹',
+  'Cleric': '💚',
+  'Chanter': '📿',
+  'Ranger': '🎯',
+  'Assassin': '🗡️',
+  'Songweaver': '🎵',
+  'Gunslinger': '🔱',
+  'Aethertech': '⚙️',
+  'Painter': '🎨',
+  'Default': '✨'
 };

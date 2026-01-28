@@ -60,7 +60,7 @@ const GameNotices = () => {
         });
       }
     } catch (error) {
-      console.error('加载通知失败:', error);
+      console.error('Failed to load notices:', error);
     }
   };
 
@@ -70,7 +70,7 @@ const GameNotices = () => {
       if (isNaN(date.getTime())) {
         return dateStr.split(' ')[0] || '';
       }
-      return date.toLocaleString('zh-CN', {
+      return date.toLocaleString('en-US', {
         month: '2-digit',
         day: '2-digit',
         timeZone: 'Asia/Shanghai'
@@ -80,22 +80,22 @@ const GameNotices = () => {
     }
   };
 
-  const getNoticeType = (notice: Notice) => {
+  const getNoticeType = (notice: Notice): string => {
     const boardAlias = notice.rootBoard?.board?.boardAlias || '';
-    return boardAlias.includes('update') ? '更新' : '公告';
+    return boardAlias.includes('update') ? 'Update' : 'Notice';
   };
 
   const getNoticeTypeClass = (notice: Notice) => {
-    return getNoticeType(notice) === '更新' ? 'update' : 'notice';
+    return getNoticeType(notice) === 'Update' ? 'update' : 'notice';
   };
 
   const getFilteredNotices = () => {
     let filtered = noticesData.notices;
 
     if (activeTab === 'notice') {
-      filtered = noticesData.notices.filter(n => getNoticeType(n) === '公告');
+      filtered = noticesData.notices.filter(n => getNoticeType(n) === 'Notice');
     } else if (activeTab === 'update') {
-      filtered = noticesData.notices.filter(n => getNoticeType(n) === '更新');
+      filtered = noticesData.notices.filter(n => getNoticeType(n) === 'Update');
     }
 
     return filtered.slice(0, 5); // 只显示前5条
@@ -125,7 +125,7 @@ const GameNotices = () => {
     <>
       <div className="game-notices">
         <div className="game-notices__header">
-          <h3 className="game-notices__title">游戏通知</h3>
+          <h3 className="game-notices__title">Game Notices</h3>
           {noticesData.lastUpdate && (
             <span className="game-notices__update-time">
               {formatDate(noticesData.lastUpdate)}
@@ -139,19 +139,19 @@ const GameNotices = () => {
             className={`game-notices__tab ${activeTab === 'all' ? 'game-notices__tab--active' : ''}`}
             onClick={() => setActiveTab('all')}
           >
-            全部
+            All
           </button>
           <button
             className={`game-notices__tab ${activeTab === 'notice' ? 'game-notices__tab--active' : ''}`}
             onClick={() => setActiveTab('notice')}
           >
-            公告
+            Notices
           </button>
           <button
             className={`game-notices__tab ${activeTab === 'update' ? 'game-notices__tab--active' : ''}`}
             onClick={() => setActiveTab('update')}
           >
-            更新
+            Updates
           </button>
         </div>
 
@@ -176,12 +176,12 @@ const GameNotices = () => {
             </div>
 
             <button className="game-notices__more-btn" onClick={handleViewMore}>
-              查看更多 →
+              View More →
             </button>
           </>
         ) : (
           <div className="game-notices__empty">
-            <p>暂无通知</p>
+            <p>No notices</p>
           </div>
         )}
       </div>
@@ -208,7 +208,7 @@ const GameNotices = () => {
 
               <div className="notice-detail__content">
                 <div dangerouslySetInnerHTML={{
-                  __html: selectedNotice.articleContent || selectedNotice.summary || '暂无内容'
+                  __html: selectedNotice.articleContent || selectedNotice.summary || 'No content available'
                 }} />
               </div>
 
@@ -217,7 +217,7 @@ const GameNotices = () => {
                   className="notice-detail__view-btn"
                   onClick={() => handleViewOriginal(selectedNotice)}
                 >
-                  查看原文 →
+                  View Original →
                 </button>
               </div>
             </div>

@@ -1,4 +1,4 @@
-// useEquipmentTooltip Hook - 支持点击查看详情
+// useEquipmentTooltip Hook - supports click to view details
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { EquipmentDetail } from '../types/admin';
@@ -35,7 +35,7 @@ interface UseEquipmentTooltipOptions {
 }
 
 export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string): UseEquipmentTooltipReturn {
-  // 兼容旧的调用方式（直接传 memberId 字符串）
+  // Compatible with old calling method (directly passing memberId string)
   const { memberId, equipmentDetails, characterId, serverId, equipmentList } = typeof options === 'string'
     ? { memberId: options, equipmentDetails: undefined, characterId: undefined, serverId: undefined, equipmentList: undefined }
     : options;
@@ -54,64 +54,64 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
   const [equipmentCache, setEquipmentCache] = useState<Map<string, EquipmentDetail>>(new Map());
   const showTimeoutRef = useRef<number | null>(null);
 
-  // 加载装备缓存
+  // Load equipment cache
   useEffect(() => {
-    // 如果直接传入了装备详情数据，直接使用
+    // If equipment details data is passed directly, use it
     if (equipmentDetails) {
-      console.log('[useEquipmentTooltip] 使用传入的装备详情数据');
+      console.log('[useEquipmentTooltip] Using passed equipment details data');
       const cacheMap = new Map<string, EquipmentDetail>();
       Object.entries(equipmentDetails).forEach(([_id, detail]) => {
-        // 使用 slotPos 作为唯一key,因为同一个装备ID可能在不同slotPos有不同属性
+        // Use slotPos as unique key because same equipment ID may have different attributes in different slotPos
         const cacheKey = detail.slotPos ? `${detail.id}_${detail.slotPos}` : String(detail.id);
         cacheMap.set(cacheKey, detail);
       });
-      console.log('[useEquipmentTooltip] 装备详情 Map 大小:', cacheMap.size);
-      console.log('[useEquipmentTooltip] 装备缓存 keys:', Array.from(cacheMap.keys()));
+      console.log('[useEquipmentTooltip] Equipment details Map size:', cacheMap.size);
+      console.log('[useEquipmentTooltip] Equipment cache keys:', Array.from(cacheMap.keys()));
       setEquipmentCache(cacheMap);
       return;
     }
 
-    // 如果 memberId 为空,跳过加载缓存(用于非军团成员的角色查询)
+    // If memberId is empty, skip loading cache (for non-legion member character queries)
     if (!memberId) {
-      console.log('[useEquipmentTooltip] memberId 为空且无装备详情,跳过加载装备缓存');
+      console.log('[useEquipmentTooltip] memberId empty and no equipment details, skipping equipment cache load');
       return;
     }
 
     const loadCache = async () => {
-      console.log('[useEquipmentTooltip] 开始加载成员装备缓存:', memberId);
+      console.log('[useEquipmentTooltip] Starting to load member equipment cache:', memberId);
       const cache = await getEquipmentCache(memberId);
-      console.log('[useEquipmentTooltip] 装备缓存数据:', cache);
+      console.log('[useEquipmentTooltip] Equipment cache data:', cache);
 
       if (cache && cache.details) {
         const cacheMap = new Map<string, EquipmentDetail>();
         cache.details.forEach(detail => {
-          // 使用 slotPos 作为唯一key,确保Ring1/Ring2, Earring1/Earring2等能区分
+          // Use slotPos as unique key to ensure Ring1/Ring2, Earring1/Earring2 etc. can be distinguished
           const cacheKey = detail.slotPos ? `${detail.id}_${detail.slotPos}` : String(detail.id);
           cacheMap.set(cacheKey, detail);
         });
-        console.log('[useEquipmentTooltip] 装备缓存 Map 大小:', cacheMap.size);
-        console.log('[useEquipmentTooltip] 装备缓存 keys:', Array.from(cacheMap.keys()));
+        console.log('[useEquipmentTooltip] Equipment cache Map size:', cacheMap.size);
+        console.log('[useEquipmentTooltip] Equipment cache keys:', Array.from(cacheMap.keys()));
         setEquipmentCache(cacheMap);
       } else {
-        console.warn('[useEquipmentTooltip] 装备缓存为空');
+        console.warn('[useEquipmentTooltip] Equipment cache is empty');
       }
     };
 
     loadCache();
   }, [memberId, equipmentDetails]);
 
-  // 鼠标进入装备 - 显示简单提示
+  // Mouse enter equipment - show simple tooltip
   const handleMouseEnter = useCallback((event: React.MouseEvent, _equipmentId: number) => {
-    // 清除之前的延迟
+    // Clear previous delay
     if (showTimeoutRef.current) {
       clearTimeout(showTimeoutRef.current);
     }
 
-    // 保存当前元素的位置信息
+    // Save current element position info
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
 
-    // 延迟 200ms 显示提示
+    // Delay 200ms to show tooltip
     showTimeoutRef.current = window.setTimeout(() => {
       setTooltipState({
         position: {
@@ -123,7 +123,7 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     }, 200);
   }, []);
 
-  // 鼠标移动时更新位置
+  // Update position on mouse move
   const handleMouseMove = useCallback((event: React.MouseEvent) => {
     setTooltipState(prev => {
       if (!prev.visible) return prev;
@@ -138,9 +138,9 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     });
   }, []);
 
-  // 鼠标离开装备
+  // Mouse leave equipment
   const handleMouseLeave = useCallback(() => {
-    // 清除延迟
+    // Clear delay
     if (showTimeoutRef.current) {
       clearTimeout(showTimeoutRef.current);
       showTimeoutRef.current = null;
@@ -152,16 +152,16 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     });
   }, []);
 
-  // 点击装备 - 打开详情模态框
+  // Click equipment - open details modal
   const handleClick = useCallback(async (event: React.MouseEvent, equipmentId: number, equipmentItem?: any, charId?: string, srvId?: number) => {
-    // 获取点击元素的位置信息 - 传递完整的rect用于智能定位
+    // Get clicked element position info - pass full rect for smart positioning
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
-    // 传递装备元素的完整位置信息，让弹窗组件智能选择显示方向
+    // Pass equipment element's full position info for modal component to smartly choose display direction
     const clickPosition = {
       x: rect.right + 10,
       y: rect.top,
-      // 额外传递装备元素的边界信息
+      // Extra equipment element boundary info
       equipRect: {
         left: rect.left,
         right: rect.right,
@@ -171,17 +171,17 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
         height: rect.height,
       }
     };
-    console.log('[useEquipmentTooltip] handleClick 接收到的参数:', {
+    console.log('[useEquipmentTooltip] handleClick received params:', {
       equipmentId,
       equipmentItem,
       charId,
       srvId,
-      'hook中的characterId': characterId,
-      'hook中的serverId': serverId
+      'hook characterId': characterId,
+      'hook serverId': serverId
     });
 
-    // 先检查缓存中是否已有该装备详情
-    // 对于有slotPos的装备(Ring1/Ring2等),使用复合key: id_slotPos
+    // First check if cache already has this equipment detail
+    // For equipment with slotPos (Ring1/Ring2 etc), use composite key: id_slotPos
     const actualEquipItem = equipmentItem || equipmentList?.find((item: any) => item.id === equipmentId);
     const cacheKeyForMemory = actualEquipItem?.slotPos
       ? `${equipmentId}_${actualEquipItem.slotPos}`
@@ -189,9 +189,9 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     let detail = equipmentCache.get(cacheKeyForMemory);
 
     if (detail) {
-      console.log('[useEquipmentTooltip] 从缓存获取装备详情, ID:', equipmentId);
+      console.log('[useEquipmentTooltip] Got equipment detail from cache, ID:', equipmentId);
     } else {
-      // 显示加载状态
+      // Show loading state
       setModalState({
         equipmentDetail: null,
         visible: true,
@@ -199,13 +199,13 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
         position: clickPosition,
       });
 
-      // 如果没有 memberId，说明是角色BD查询，需要按需请求装备详情
-      // 参数可以从函数参数传入，或者从 hook 配置中获取
+      // If no memberId, this is character BD query, need to request equipment detail on demand
+      // Parameters can be passed from function args or from hook config
       const actualCharId = charId || characterId;
       const actualSrvId = srvId || serverId;
       const actualEquipItem = equipmentItem || equipmentList?.find((item: any) => item.id === equipmentId);
 
-      console.log('[useEquipmentTooltip] 实际使用的参数:', {
+      console.log('[useEquipmentTooltip] Actual params used:', {
         actualCharId,
         actualSrvId,
         actualEquipItem,
@@ -213,16 +213,16 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
       });
 
       if (!memberId && actualCharId && actualSrvId && actualEquipItem) {
-        console.log('[useEquipmentTooltip] 按需请求装备详情, ID:', equipmentId);
-        console.log('[useEquipmentTooltip] 使用参数:', {
+        console.log('[useEquipmentTooltip] On-demand request equipment detail, ID:', equipmentId);
+        console.log('[useEquipmentTooltip] Using params:', {
           characterId: actualCharId,
           serverId: actualSrvId,
           enchantLevel: actualEquipItem.enchantLevel,
           slotPos: actualEquipItem.slotPos
         });
 
-        // 检查浏览器缓存 - 使用包含slotPos的key
-        const CACHE_DURATION = 8 * 60 * 60 * 1000; // 8小时
+        // Check browser cache - use key with slotPos
+        const CACHE_DURATION = 8 * 60 * 60 * 1000; // 8 hours
         const cacheKey = actualEquipItem.slotPos
           ? `equipment_detail_${equipmentId}_${actualEquipItem.slotPos}`
           : `equipment_detail_${equipmentId}`;
@@ -233,9 +233,9 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
           try {
             const cachedData = JSON.parse(cached);
             if (now - cachedData.timestamp < CACHE_DURATION) {
-              console.log('[useEquipmentTooltip] 使用浏览器缓存的装备详情');
+              console.log('[useEquipmentTooltip] Using browser cached equipment detail');
               detail = cachedData.data;
-              // 更新到内存缓存
+              // Update to memory cache
               setEquipmentCache(prev => {
                 const newCache = new Map(prev);
                 newCache.set(cacheKeyForMemory, detail!);
@@ -243,43 +243,43 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
               });
             }
           } catch (e) {
-            console.error('[useEquipmentTooltip] 解析装备详情缓存失败:', e);
+            console.error('[useEquipmentTooltip] Failed to parse equipment detail cache:', e);
           }
         }
 
-        // 如果浏览器缓存也没有，从API请求
+        // If browser cache also empty, request from API
         if (!detail) {
           try {
             const url = `/api/character/equipment-detail?itemId=${equipmentId}&enchantLevel=${actualEquipItem.enchantLevel}&characterId=${encodeURIComponent(actualCharId)}&serverId=${actualSrvId}&slotPos=${actualEquipItem.slotPos}`;
-            console.log('[useEquipmentTooltip] 请求装备详情:', url);
+            console.log('[useEquipmentTooltip] Requesting equipment detail:', url);
 
             const response = await fetch(url);
             if (response.ok) {
               detail = await response.json();
-              console.log('[useEquipmentTooltip] 成功获取装备详情:', detail);
+              console.log('[useEquipmentTooltip] Successfully got equipment detail:', detail);
 
-              // 保存到浏览器缓存
+              // Save to browser cache
               localStorage.setItem(cacheKey, JSON.stringify({
                 data: detail,
                 timestamp: now
               }));
 
-              // 更新到内存缓存
+              // Update to memory cache
               setEquipmentCache(prev => {
                 const newCache = new Map(prev);
                 newCache.set(cacheKeyForMemory, detail!);
                 return newCache;
               });
             } else {
-              console.error('[useEquipmentTooltip] 请求装备详情失败, status:', response.status);
+              console.error('[useEquipmentTooltip] Request equipment detail failed, status:', response.status);
             }
           } catch (e) {
-            console.error('[useEquipmentTooltip] 请求装备详情异常:', e);
+            console.error('[useEquipmentTooltip] Request equipment detail exception:', e);
           }
         }
       } else {
-        console.warn('[useEquipmentTooltip] 未找到装备详情, ID:', equipmentId);
-        console.warn('[useEquipmentTooltip] 参数状态:', {
+        console.warn('[useEquipmentTooltip] Equipment detail not found, ID:', equipmentId);
+        console.warn('[useEquipmentTooltip] Param status:', {
           memberId,
           characterId: actualCharId,
           serverId: actualSrvId,
@@ -289,10 +289,10 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     }
 
     if (detail) {
-      // 隐藏提示
+      // Hide tooltip
       setTooltipState({ position: { x: 0, y: 0 }, visible: false });
 
-      // 显示模态框(加载完成)
+      // Show modal (loading complete)
       setModalState({
         equipmentDetail: detail,
         visible: true,
@@ -300,8 +300,8 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
         position: clickPosition,
       });
     } else {
-      console.warn('[useEquipmentTooltip] 无法获取装备详情, ID:', equipmentId);
-      // 关闭加载状态
+      console.warn('[useEquipmentTooltip] Cannot get equipment detail, ID:', equipmentId);
+      // Close loading state
       setModalState({
         equipmentDetail: null,
         visible: false,
@@ -311,7 +311,7 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     }
   }, [equipmentCache, memberId, characterId, serverId, equipmentList]);
 
-  // 关闭模态框
+  // Close modal
   const handleCloseModal = useCallback(() => {
     setModalState({
       equipmentDetail: null,
@@ -321,7 +321,7 @@ export function useEquipmentTooltip(options: UseEquipmentTooltipOptions | string
     });
   }, []);
 
-  // 清理
+  // Cleanup
   useEffect(() => {
     return () => {
       if (showTimeoutRef.current) {

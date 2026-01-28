@@ -48,8 +48,8 @@ const LegionPage = () => {
     redeemCodeExpiry: string;
   }>({
     voiceChannelUrl: '',
-    voiceChannelName: '军团语音',
-    voiceChannelDescription: '点击加入我们的语音频道',
+    voiceChannelName: 'Legion Voice',
+    voiceChannelDescription: 'Click to join our voice channel',
     redeemCode: '',
     redeemCodeExpiry: ''
   });
@@ -117,7 +117,7 @@ const LegionPage = () => {
       localStorage.setItem(MEMBERS_CACHE_KEY, JSON.stringify(loaded));
       localStorage.setItem(MEMBERS_CACHE_TIME_KEY, Date.now().toString());
     } catch (e) {
-      console.error('加载成员数据失败', e);
+      console.error('Failed to load member data', e);
     } finally {
       setLoading(false);
     }
@@ -152,16 +152,16 @@ const LegionPage = () => {
             setCopySuccess(true);
             setTimeout(() => setCopySuccess(false), 2000);
           } else {
-            console.error('复制命令执行失败');
+            console.error('Copy command failed');
           }
         } catch (err) {
-          console.error('复制失败:', err);
+          console.error('Copy failed:', err);
         } finally {
           document.body.removeChild(textArea);
         }
       }
     } catch (error) {
-      console.error('复制失败:', error);
+      console.error('Copy failed:', error);
     }
   };
 
@@ -175,7 +175,7 @@ const LegionPage = () => {
           setVoiceConfig(data.data);
         }
       } catch (error) {
-        console.error('加载语音配置失败:', error);
+        console.error('Failed to load voice config:', error);
       }
     };
     loadVoiceConfig();
@@ -197,7 +197,7 @@ const LegionPage = () => {
         setGalleryImages(data.data);
       }
     } catch (error) {
-      console.error('加载相册失败:', error);
+      console.error('Failed to load gallery:', error);
     }
   };
 
@@ -224,10 +224,10 @@ const LegionPage = () => {
         if (data.success) {
           console.log('上传成功:', data.data);
         } else {
-          console.error('上传失败:', data.error);
+          console.error('Upload failed:', data.error);
         }
       } catch (error) {
-        console.error('上传错误:', error);
+        console.error('Upload error:', error);
       }
     }
 
@@ -307,27 +307,27 @@ const LegionPage = () => {
       <section className="legion-intro">
         <div className="legion-intro__container">
           <div className="legion-intro__logo">
-            <img src="/images/legion-logo.jpg" alt="椿夏军团" />
+            <img src="/images/legion-logo.jpg" alt="ChunXia Legion" />
           </div>
-          <h1 className="legion-intro__title">椿夏军团</h1>
-          <p className="legion-intro__subtitle">AION2 · 天族 · 希埃尔服务器</p>
+          <h1 className="legion-intro__title">ChunXia Legion</h1>
+          <p className="legion-intro__subtitle">AION2 · Elyos · Siel Server</p>
           <div className="legion-intro__desc">
-            <p>「椿夏」取自椿树与夏日。椿树象征长寿与坚韧，夏日代表温暖与活力。</p>
-            <p>我们是一个以 PVE 副本为主的休闲军团，崇尚团结互助、共同成长。</p>
-            <p>无论你是刚入坑的萌新，还是久经沙场的老手，椿夏都欢迎你的加入。</p>
+            <p>"ChunXia" comes from Tun tree and Summer. The Tun tree symbolizes longevity and resilience, while Summer represents warmth and vitality.</p>
+            <p>We are a casual legion focused on PVE dungeons, advocating Unity and Mutual Growth.</p>
+            <p>Whether you are a new player or a veteran, ChunXia welcomes you.</p>
           </div>
           <div className="legion-intro__values">
             <div className="legion-intro__value">
-              <span>PVE 副本</span>
+              <span>PVE Dungeons</span>
             </div>
             <div className="legion-intro__value">
-              <span>休闲氛围</span>
+              <span>Casual</span>
             </div>
             <div className="legion-intro__value">
-              <span>互帮互助</span>
+              <span>Mutual Help</span>
             </div>
             <div className="legion-intro__value">
-              <span>友善交流</span>
+              <span>Friendly</span>
             </div>
           </div>
         </div>
@@ -337,27 +337,27 @@ const LegionPage = () => {
       {voiceConfig.redeemCode && (
         <section className="legion-redeem">
           <div className="legion-redeem__container">
-            <span className="legion-redeem__label">兑换码：</span>
+            <span className="legion-redeem__label">Code:</span>
             <code className="legion-redeem__code">{voiceConfig.redeemCode}</code>
             <button
               className={`legion-redeem__copy ${copySuccess ? 'legion-redeem__copy--success' : ''}`}
               onClick={handleCopyRedeemCode}
             >
-              {copySuccess ? '已复制' : '复制'}
+              {copySuccess ? 'Copied' : 'Copy'}
             </button>
             {voiceConfig.redeemCodeExpiry && (
               <span className={`legion-redeem__expiry ${new Date(voiceConfig.redeemCodeExpiry) < new Date() ? 'legion-redeem__expiry--expired' : ''}`}>
                 {new Date(voiceConfig.redeemCodeExpiry) < new Date() ? (
-                  '已过期'
+                  'Expired'
                 ) : (
-                  `到期时间：${new Date(voiceConfig.redeemCodeExpiry).toLocaleString('zh-CN', {
+                  `Expiry: ${new Date(voiceConfig.redeemCodeExpiry).toLocaleString('en-US', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: false
-                  }).replace(/\//g, '/').replace(/,/g, '')}`
+                  }).replace(/\//g, '-').replace(/,/g, '')}`
                 )}
               </span>
             )}
@@ -371,19 +371,19 @@ const LegionPage = () => {
           className={`legion-tabs__btn ${activeTab === 'members' ? 'legion-tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('members')}
         >
-          军团成员
+          Members
         </button>
         <button
           className={`legion-tabs__btn ${activeTab === 'gallery' ? 'legion-tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('gallery')}
         >
-          军团相册
+          Gallery
         </button>
         <button
           className={`legion-tabs__btn ${activeTab === 'voice' ? 'legion-tabs__btn--active' : ''}`}
           onClick={() => setActiveTab('voice')}
         >
-          军团语音
+          Voice
         </button>
       </div>
 
@@ -394,9 +394,9 @@ const LegionPage = () => {
             {loading ? (
               // 加载中显示骨架屏
               <>
-                {renderSkeletonSection('军团长', 1, 'legion-members__grid--leader')}
-                {renderSkeletonSection('军团精英', 3, 'legion-members__grid--elite')}
-                {renderSkeletonSection('军团成员', 6, '')}
+                {renderSkeletonSection('Legion Leader', 1, 'legion-members__grid--leader')}
+                {renderSkeletonSection('Legion Elite', 3, 'legion-members__grid--elite')}
+                {renderSkeletonSection('Legion Member', 6, '')}
               </>
             ) : (
               <>
@@ -404,7 +404,7 @@ const LegionPage = () => {
                 {groupByRole('leader').length > 0 && (
                   <div className="legion-members__section">
                     <h3 className="legion-members__section-title">
-                      军团长
+                      Legion Leader
                     </h3>
                     <div className="legion-members__grid legion-members__grid--leader">
                       {groupByRole('leader').map(renderMemberCard)}
@@ -416,7 +416,7 @@ const LegionPage = () => {
                 {groupByRole('elite').length > 0 && (
                   <div className="legion-members__section">
                     <h3 className="legion-members__section-title">
-                      军团精英
+                      Legion Elite
                     </h3>
                     <div className="legion-members__grid legion-members__grid--elite">
                       {groupByRole('elite').map(renderMemberCard)}
@@ -428,7 +428,7 @@ const LegionPage = () => {
                 {groupByRole('member').length > 0 && (
                   <div className="legion-members__section">
                     <h3 className="legion-members__section-title">
-                      军团成员
+                      Legion Member
                     </h3>
                     <div className="legion-members__grid">
                       {groupByRole('member').map(renderMemberCard)}
@@ -438,7 +438,7 @@ const LegionPage = () => {
 
                 {membersData.length === 0 && (
                   <div className="legion-members__empty">
-                    <p>暂无成员数据</p>
+                    <p>No members found</p>
                   </div>
                 )}
               </>
@@ -453,7 +453,7 @@ const LegionPage = () => {
           <div className="legion-gallery__container">
             <div className="legion-gallery__header">
               <p className="legion-gallery__hint">
-                上传军团的精彩瞬间
+                Upload legion moments
               </p>
               <button
                 className="legion-gallery__upload-btn"
@@ -464,7 +464,7 @@ const LegionPage = () => {
                   <polyline points="17,8 12,3 7,8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
-                上传图片
+                Upload Image
               </button>
               <input
                 ref={fileInputRef}
@@ -490,8 +490,8 @@ const LegionPage = () => {
               </div>
             ) : (
               <div className="legion-gallery__empty">
-                <p>📷 还没有上传任何图片</p>
-                <p>点击上方按钮上传军团的精彩瞬间吧！</p>
+                <p>📷 No images uploaded yet</p>
+                <p>Click the button above to share moments!</p>
               </div>
             )}
           </div>
@@ -518,14 +518,14 @@ const LegionPage = () => {
                     <polyline points="15 3 21 3 21 9" />
                     <line x1="10" y1="14" x2="21" y2="3" />
                   </svg>
-                  加入语音频道
+                  Join Voice Channel
                 </a>
               </div>
             ) : (
               <div className="legion-voice__empty">
                 <div className="legion-voice__empty-icon">🎤</div>
-                <p>暂未配置语音频道</p>
-                <p>请联系管理员在后台配置语音频道链接</p>
+                <p>Voice channel not configured</p>
+                <p>Please contact admin to set voice link</p>
               </div>
             )}
           </div>
@@ -535,12 +535,12 @@ const LegionPage = () => {
       {/* 图片预览弹窗 */}
       {selectedImage && (
         <div className="legion-lightbox" onClick={() => setSelectedImage(null)}>
-          <button className="legion-lightbox__close" aria-label="关闭">
+          <button className="legion-lightbox__close" aria-label="Close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
-          <img src={selectedImage} alt="预览" />
+          <img src={selectedImage} alt="Preview" />
         </div>
       )}
 
@@ -550,13 +550,13 @@ const LegionPage = () => {
           <div className="legion-notification__content">
             <div className="legion-notification__icon">⏳</div>
             <div className="legion-notification__text">
-              <strong>上传成功！</strong>
-              <p>上传的图片正在审核，审核通过即可在军团相册查看。如过长时间未通过请联系军团长。</p>
+              <strong>Upload Successful!</strong>
+              <p>Your image is being reviewed. It will appear once approved. If it takes too long, contact the leader.</p>
             </div>
             <button
               className="legion-notification__close"
               onClick={() => setShowNotification(false)}
-              aria-label="关闭"
+              aria-label="Close"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12" />

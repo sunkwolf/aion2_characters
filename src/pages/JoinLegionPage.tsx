@@ -38,12 +38,12 @@ const JoinLegionPage = () => {
         const members = await loadMembers();
         const contactList = [];
         const leader = members.find(m => m.role === 'leader');
-        if (leader) contactList.push({ role: '军团长', name: leader.name });
+        if (leader) contactList.push({ role: 'Legion Leader', name: leader.name });
         const elites = members.filter(m => m.role === 'elite');
-        elites.forEach(elite => contactList.push({ role: '军团精英', name: elite.name }));
+        elites.forEach(elite => contactList.push({ role: 'Legion Elite', name: elite.name }));
         setContacts(contactList);
       } catch (error) {
-        console.error('加载联系人失败:', error);
+        console.error('Failed to load contacts:', error);
       }
     };
     loadContacts();
@@ -59,7 +59,7 @@ const JoinLegionPage = () => {
           setGalleryImages(data.data);
         }
       } catch (error) {
-        console.error('加载相册失败:', error);
+        console.error('Failed to load gallery:', error);
       }
     };
     loadGalleryImages();
@@ -104,8 +104,8 @@ const JoinLegionPage = () => {
       const data = await response.json();
 
       if (!data.success) {
-        const errorMsg = data.error || '未找到该角色';
-        setNameError(`❌ ${errorMsg}\n请核对角色名字和服务器是否正确`);
+        const errorMsg = data.error || 'Character not found';
+        setNameError(`❌ ${errorMsg}\nPlease check name and server`);
         return;
       }
 
@@ -116,10 +116,10 @@ const JoinLegionPage = () => {
       console.error('验证角色失败:', error);
 
       if (error.name === 'AbortError') {
-        setNameError('❌ 验证超时(10秒),请检查网络连接后重试');
+        setNameError('❌ Verification timeout (10s), please check connection');
       } else {
-        const errorMsg = error.message || '网络错误，请稍后重试';
-        setNameError(`❌ 验证失败: ${errorMsg}`);
+        const errorMsg = error.message || 'Network error, please try again';
+        setNameError(`❌ Verification failed: ${errorMsg}`);
       }
     } finally {
       setParsing(false);
@@ -136,7 +136,7 @@ const JoinLegionPage = () => {
     }
 
     if (!parsedCharacter) {
-      alert('请先验证角色信息');
+      alert('Please verify character info first');
       return;
     }
 
@@ -157,8 +157,8 @@ const JoinLegionPage = () => {
       // 滚动到顶部
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      console.error('提交申请失败:', error);
-      alert('提交失败,请稍后重试');
+      console.error('Failed to submit application:', error);
+      alert('Submission failed, please try again');
     }
   };
 
@@ -167,10 +167,10 @@ const JoinLegionPage = () => {
       <div className="join-legion-page">
         <div className="join-legion__success">
           <div className="join-legion__success-icon">✓</div>
-          <h2>申请已提交</h2>
-          <p>感谢你对椿夏军团的关注！</p>
-          <p>如你需加入军团请在游戏内申请军团并联系军团长或军团精英，我们会尽快处理你的申请。</p>
-          <Link to="/" className="join-legion__btn">返回首页</Link>
+          <h2>Application Submitted</h2>
+          <p>Thank you for your interest in ChunXia!</p>
+          <p>If you wish to join, please apply in-game and contact a leader or elite. We will process your application soon.</p>
+          <Link to="/" className="join-legion__btn">Back to Home</Link>
         </div>
       </div>
     );
@@ -193,8 +193,8 @@ const JoinLegionPage = () => {
       {/* 成员风采 Gallery */}
       <section id="gallery" className="join-legion__gallery">
         <div className="join-legion__gallery-container">
-          <h2 className="join-legion__section-title">成员风采</h2>
-          <p className="join-legion__section-subtitle">分享军团的精彩瞬间</p>
+          <h2 className="join-legion__section-title">Legion Gallery</h2>
+          <p className="join-legion__section-subtitle">Moments shared by our members</p>
 
           {galleryImages.length > 0 ? (
             <div className="join-legion__gallery-grid">
@@ -210,7 +210,7 @@ const JoinLegionPage = () => {
             </div>
           ) : (
             <div className="join-legion__gallery-empty">
-              <p>📷 暂无图片</p>
+              <p>📷 No images found</p>
             </div>
           )}
         </div>
@@ -220,7 +220,7 @@ const JoinLegionPage = () => {
       <section className="join-legion__cta">
         <div className="join-legion__cta-container">
           <Link to="/legion" className="join-legion__cta-btn">
-            查看军团
+            View Legion
           </Link>
         </div>
       </section>
@@ -228,34 +228,34 @@ const JoinLegionPage = () => {
       {/* 申请表单 Form */}
       <section id="join-form" className="join-legion__form-section">
         <div className="join-legion__form-container">
-          <h2 className="join-legion__section-title">加入椿夏</h2>
-          <p className="join-legion__section-subtitle">填写申请信息，成为椿夏的一员</p>
+          <h2 className="join-legion__section-title">Join ChunXia</h2>
+          <p className="join-legion__section-subtitle">Fill in the application to become a member</p>
 
           <div className="join-legion__form-content">
             {/* 左侧:提示信息 */}
             <div className="join-legion__info">
               <div className="join-legion__info-card">
-                <h3>重要提示</h3>
+                <h3>Important Notice</h3>
                 <div className="join-legion__notice">
                   <span className="join-legion__notice-icon">ℹ️</span>
                   <div className="join-legion__notice-content">
-                    <p>填写申请表单不代表加入军团，该表单仅用于获取游戏角色信息并展示在本网站。</p>
-                    <p>如需申请加入军团，请在游戏内搜索「椿夏」申请即可。</p>
+                    <p>Filling this form doesn't automatically add you to the legion. It's for character display on this site.</p>
+                    <p>To join officially, search for "ChunXia" in-game.</p>
                   </div>
                 </div>
               </div>
 
               <div className="join-legion__info-card">
-                <h3>联系方式</h3>
+                <h3>Contact</h3>
                 <div className="join-legion__contact">
                   {contacts.map((contact, index) => (
                     <div key={index} className="join-legion__contact-item">
-                      {contact.role}「{contact.name}」
+                      {contact.role} "{contact.name}"
                     </div>
                   ))}
                   {contacts.length === 0 && (
                     <div className="join-legion__contact-item">
-                      军团长或军团精英
+                      Legion Leader or Elite
                     </div>
                   )}
                 </div>
@@ -264,17 +264,17 @@ const JoinLegionPage = () => {
 
             {/* 右侧:申请表单 */}
             <form className="join-legion__form" onSubmit={handleSubmit}>
-              <h3>申请表单</h3>
+              <h3>Application Form</h3>
 
               <div className="join-legion__field">
-                <label htmlFor="characterName">角色名称 *</label>
+                <label htmlFor="characterName">Character Name *</label>
                 <input
                   type="text"
                   id="characterName"
                   name="characterName"
                   value={formData.characterName}
                   onChange={(e) => handleCharacterNameChange(e.target.value)}
-                  placeholder="请输入游戏内角色名称"
+                  placeholder="Enter character name"
                   required
                   disabled={showConfirm}
                 />
@@ -284,30 +284,30 @@ const JoinLegionPage = () => {
               </div>
 
               <div className="join-legion__field">
-                <label htmlFor="serverId">服务器 *</label>
+                <label htmlFor="serverId">Server *</label>
                 <ServerSelect
                   value={formData.serverId.toString()}
                   onChange={handleServerChange}
                   serverList={SERVER_LIST}
-                  placeholder="请选择服务器"
+                  placeholder="Select server"
                   required
                 />
                 <div className="join-legion__hints">
-                  <div className="join-legion__hint-item">✓ 选择角色所在的服务器</div>
-                  <div className="join-legion__hint-item">✓ 验证角色信息后才能提交申请</div>
-                  <div className="join-legion__hint-item">✓ 天族与魔族均可填写并在军团页面展示角色信息</div>
-                  <div className="join-legion__hint-item">✓ 不涉及账号密码，角色信息均为官方数据</div>
+                  <div className="join-legion__hint-item">✓ Select character server</div>
+                  <div className="join-legion__hint-item">✓ Verify character info before submitting</div>
+                  <div className="join-legion__hint-item">✓ Elyos and Asmodian characters are both welcome</div>
+                  <div className="join-legion__hint-item">✓ No passwords involved, data is official</div>
                 </div>
               </div>
 
               {/* 角色信息确认框 */}
               {showConfirm && parsedCharacter && (
                 <div className="join-legion__confirm">
-                  <div className="join-legion__confirm-title">✓ 角色信息验证成功</div>
+                  <div className="join-legion__confirm-title">✓ Info verified</div>
                   <div className="join-legion__confirm-info">
-                    <div><strong>角色名:</strong> {parsedCharacter.characterName}</div>
-                    <div><strong>等级:</strong> Lv.{parsedCharacter.level}</div>
-                    <div><strong>服务器:</strong> {parsedCharacter.serverName}</div>
+                    <div><strong>Name:</strong> {parsedCharacter.characterName}</div>
+                    <div><strong>Level:</strong> Lv.{parsedCharacter.level}</div>
+                    <div><strong>Server:</strong> {parsedCharacter.serverName}</div>
                   </div>
                 </div>
               )}
@@ -319,11 +319,11 @@ const JoinLegionPage = () => {
                   onClick={handleVerifyCharacter}
                   disabled={parsing}
                 >
-                  {parsing ? '验证中...' : '验证角色信息'}
+                  {parsing ? 'Verifying...' : 'Verify Info'}
                 </button>
               ) : (
                 <button type="submit" className="join-legion__submit-btn">
-                  提交申请
+                  Submit Application
                 </button>
               )}
             </form>
@@ -334,12 +334,12 @@ const JoinLegionPage = () => {
       {/* 图片预览弹窗 */}
       {selectedImage && (
         <div className="join-legion__lightbox" onClick={() => setSelectedImage(null)}>
-          <button className="join-legion__lightbox-close" aria-label="关闭">
+          <button className="join-legion__lightbox-close" aria-label="Close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
-          <img src={selectedImage} alt="预览" />
+          <img src={selectedImage} alt="Preview" />
         </div>
       )}
 

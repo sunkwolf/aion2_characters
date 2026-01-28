@@ -1,4 +1,4 @@
-// 申请审批组件
+// Application review component
 
 import React, { useState, useEffect } from 'react';
 import type { JoinApplication, MemberConfig } from '../../types/admin';
@@ -14,7 +14,7 @@ import './ApplicationManager.css';
 
 type FilterType = 'all' | 'pending' | 'approved' | 'rejected';
 
-// 消息对话框状态
+// Message dialog state
 interface MessageDialog {
   visible: boolean;
   title: string;
@@ -45,7 +45,7 @@ const ApplicationManager: React.FC = () => {
     type: 'success'
   });
 
-  // 加载数据
+  // Load data
   useEffect(() => {
     loadData();
   }, []);
@@ -60,37 +60,37 @@ const ApplicationManager: React.FC = () => {
       setApplications(appsData);
       setMembers(membersData);
     } catch (error) {
-      console.error('加载数据失败:', error);
+      console.error('Failed to load data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 通过申请
+  // Approve application
   const handleApprove = async (applicationId: string, createMember: boolean) => {
     const application = applications.find(a => a.id === applicationId);
     if (!application) return;
 
     try {
-      // 更新申请状态
+      // Update application status
       await reviewApplication(
         applicationId,
         'approved',
         reviewNote || undefined
       );
 
-      // 如果选择创建成员
+      // If choosing to create member
       if (createMember) {
-        // 解码 characterId,将 URL 编码的字符解码 (例如 %3D -> =)
+        // Decode characterId, decode URL encoded characters (e.g., %3D -> =)
         const decodedCharacterId = decodeURIComponent(application.characterId);
         const memberId = decodedCharacterId;
 
-        // 检查是否已存在
+        // Check if already exists
         if (members.some(m => m.id === memberId)) {
           setMessageDialog({
             visible: true,
-            title: '成员已存在',
-            message: `该角色已存在于成员列表中\n角色: ${application.characterName}\nID: ${memberId}`,
+            title: 'Member Already Exists',
+            message: `This character already exists in the member list\nCharacter: ${application.characterName}\nID: ${memberId}`,
             type: 'warning'
           });
           loadData();
@@ -98,7 +98,7 @@ const ApplicationManager: React.FC = () => {
         }
 
         const fullMemberData: MemberConfig = {
-          id: memberId,  // 使用解码后的 characterId 作为 ID
+          id: memberId,  // Use decoded characterId as ID
           name: application.characterName,
           role: 'member',
           serverId: application.serverId,
@@ -108,34 +108,34 @@ const ApplicationManager: React.FC = () => {
         try {
           await addMember(members, fullMemberData);
 
-          // 后台异步同步角色数据,不等待结果
+          // Background async sync character data, don't wait for result
           fetch('/api/sync/member', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fullMemberData)
           }).then(response => {
             if (response.ok) {
-              console.log(`成员 ${application.characterName} 的角色数据同步成功`);
+              console.log(`Member ${application.characterName} character data synced successfully`);
             } else {
-              console.warn(`成员 ${application.characterName} 的角色数据同步失败`);
+              console.warn(`Member ${application.characterName} character data sync failed`);
             }
           }).catch(error => {
-            console.error(`成员 ${application.characterName} 的角色数据同步失败:`, error);
+            console.error(`Member ${application.characterName} character data sync failed:`, error);
           });
 
-          // 立即显示成功提示
+          // Show success message immediately
           setMessageDialog({
             visible: true,
-            title: '审批成功',
-            message: `申请已通过，成员 "${application.characterName}" 已创建\n服务器: ${application.serverName}\n\n角色数据正在后台同步中...`,
+            title: 'Approved Successfully',
+            message: `Application approved, member "${application.characterName}" created\nServer: ${application.serverName}\n\nCharacter data syncing in background...`,
             type: 'success'
           });
         } catch (error: any) {
-          if (error.message.includes('已存在')) {
+          if (error.message.includes('already exists') || error.message.includes('已存在')) {
             setMessageDialog({
               visible: true,
-              title: '成员已存在',
-              message: `成员已存在: ${memberId}`,
+              title: 'Member Already Exists',
+              message: `Member already exists: ${memberId}`,
               type: 'warning'
             });
           } else {
@@ -145,8 +145,8 @@ const ApplicationManager: React.FC = () => {
       } else {
         setMessageDialog({
           visible: true,
-          title: '审批成功',
-          message: '申请已通过',
+          title: 'Approved Successfully',
+          message: 'Application approved',
           type: 'success'
         });
       }
@@ -154,19 +154,19 @@ const ApplicationManager: React.FC = () => {
       setReviewingApp(null);
       setReviewNote('');
 
-      // 重新加载数据
+      // Reload data
       loadData();
     } catch (error: any) {
       setMessageDialog({
         visible: true,
-        title: '操作失败',
-        message: error.message || '操作失败',
+        title: 'Operation Failed',
+        message: error.message || 'Operation failed',
         type: 'error'
       });
     }
   };
 
-  // 拒绝申请
+  // Reject application
   const handleReject = async (applicationId: string) => {
     try {
       await reviewApplication(
@@ -176,26 +176,26 @@ const ApplicationManager: React.FC = () => {
       );
       setMessageDialog({
         visible: true,
-        title: '已拒绝',
-        message: '申请已拒绝',
+        title: 'Rejected',
+        message: 'Application rejected',
         type: 'success'
       });
       setReviewingApp(null);
       setReviewNote('');
 
-      // 重新加载数据
+      // Reload data
       loadData();
     } catch (error: any) {
       setMessageDialog({
         visible: true,
-        title: '操作失败',
-        message: error.message || '操作失败',
+        title: 'Operation Failed',
+        message: error.message || 'Operation failed',
         type: 'error'
       });
     }
   };
 
-  // 删除申请
+  // Delete application
   const handleDelete = async (applicationId: string, characterName: string) => {
     setConfirmDialog({
       visible: true,
@@ -204,34 +204,34 @@ const ApplicationManager: React.FC = () => {
     });
   };
 
-  // 确认删除
+  // Confirm delete
   const handleConfirmDelete = async () => {
     const applicationId = confirmDialog.applicationId;
 
-    // 关闭对话框
+    // Close dialog
     setConfirmDialog({ visible: false, applicationId: '', characterName: '' });
 
     try {
       await deleteApplication(applicationId);
-      // 重新加载数据
+      // Reload data
       loadData();
     } catch (error: any) {
-      alert(error.message || '删除失败');
+      alert(error.message || 'Delete failed');
     }
   };
 
-  // 取消删除
+  // Cancel delete
   const handleCancelDelete = () => {
     setConfirmDialog({ visible: false, applicationId: '', characterName: '' });
   };
 
-  // 筛选申请
+  // Filter applications
   const filteredApplications = applications.filter(app => {
     if (filter === 'all') return true;
     return app.status === filter;
   });
 
-  // 统计数据
+  // Statistics
   const stats = {
     total: applications.length,
     pending: applications.filter(a => a.status === 'pending').length,
@@ -239,77 +239,77 @@ const ApplicationManager: React.FC = () => {
     rejected: applications.filter(a => a.status === 'rejected').length,
   };
 
-  // 状态显示
+  // Status display
   const getStatusDisplay = (status: string) => {
     const statusMap: Record<string, string> = {
-      pending: '待审批',
-      approved: '已通过',
-      rejected: '已拒绝',
+      pending: 'Pending',
+      approved: 'Approved',
+      rejected: 'Rejected',
     };
     return statusMap[status] || status;
   };
 
   if (loading) {
-    return <div className="application-manager__loading">加载中...</div>;
+    return <div className="application-manager__loading">Loading...</div>;
   }
 
   return (
     <div className="application-manager">
-      {/* 统计卡片 */}
+      {/* Stats cards */}
       <div className="stats-cards">
         <div className="stats-card">
           <div className="stats-card__value">{stats.pending}</div>
-          <div className="stats-card__label">待审批</div>
+          <div className="stats-card__label">Pending</div>
         </div>
         <div className="stats-card">
           <div className="stats-card__value">{stats.approved}</div>
-          <div className="stats-card__label">已通过</div>
+          <div className="stats-card__label">Approved</div>
         </div>
         <div className="stats-card">
           <div className="stats-card__value">{stats.rejected}</div>
-          <div className="stats-card__label">已拒绝</div>
+          <div className="stats-card__label">Rejected</div>
         </div>
         <div className="stats-card">
           <div className="stats-card__value">{stats.total}</div>
-          <div className="stats-card__label">总计</div>
+          <div className="stats-card__label">Total</div>
         </div>
       </div>
 
-      {/* 工具栏 */}
+      {/* Toolbar */}
       <div className="application-manager__toolbar">
         <div className="filter-buttons">
           <button
             className={`filter-btn ${filter === 'pending' ? 'filter-btn--active' : ''}`}
             onClick={() => setFilter('pending')}
           >
-            待审批 ({stats.pending})
+            Pending ({stats.pending})
           </button>
           <button
             className={`filter-btn ${filter === 'approved' ? 'filter-btn--active' : ''}`}
             onClick={() => setFilter('approved')}
           >
-            已通过 ({stats.approved})
+            Approved ({stats.approved})
           </button>
           <button
             className={`filter-btn ${filter === 'rejected' ? 'filter-btn--active' : ''}`}
             onClick={() => setFilter('rejected')}
           >
-            已拒绝 ({stats.rejected})
+            Rejected ({stats.rejected})
           </button>
           <button
             className={`filter-btn ${filter === 'all' ? 'filter-btn--active' : ''}`}
             onClick={() => setFilter('all')}
           >
-            全部 ({stats.total})
+            All ({stats.total})
           </button>
         </div>
       </div>
 
-      {/* 申请列表 */}
+      {/* Application list */}
       <div className="application-list">
         {filteredApplications.length === 0 ? (
           <div className="application-list__empty">
-            {filter === 'pending' ? '暂无待审批申请' : '暂无申请'}
+            {filter === 'pending' ? 'No pending applications' : 'No applications'}
           </div>
         ) : (
           filteredApplications.map((app) => (
@@ -324,26 +324,26 @@ const ApplicationManager: React.FC = () => {
                   </span>
                 </div>
                 <div className="application-card__meta">
-                  提交于 {new Date(app.submittedAt).toLocaleString('zh-CN')}
+                  Submitted on {new Date(app.submittedAt).toLocaleString('en-US')}
                 </div>
               </div>
 
               <div className="application-card__body">
                 <div className="application-card__info">
-                  {/* 角色信息 */}
+                  {/* Character info */}
                   <div className="info-item">
-                    <span className="info-label">角色名称:</span>
+                    <span className="info-label">Character Name:</span>
                     <span className="info-value">{app.characterName}</span>
                   </div>
                   <div className="info-item">
-                    <span className="info-label">服务器:</span>
+                    <span className="info-label">Server:</span>
                     <span className="info-value">
                       {app.serverName} (ID: {app.serverId})
                     </span>
                   </div>
-                  {/* 角色链接 */}
+                  {/* Character link */}
                   <div className="info-item">
-                    <span className="info-label">角色链接:</span>
+                    <span className="info-label">Character Link:</span>
                     <a
                       href={app.characterUrl}
                       target="_blank"
@@ -355,7 +355,7 @@ const ApplicationManager: React.FC = () => {
                         wordBreak: 'break-all'
                       }}
                     >
-                      查看角色详情
+                      View Character Details
                       <svg
                         style={{ display: 'inline-block', width: '14px', height: '14px', marginLeft: '4px' }}
                         viewBox="0 0 24 24"
@@ -374,11 +374,11 @@ const ApplicationManager: React.FC = () => {
                 {app.status !== 'pending' && app.reviewedAt && (
                   <div className="application-card__review">
                     <div className="review-time">
-                      审批于 {new Date(app.reviewedAt).toLocaleString('zh-CN')}
+                      Reviewed on {new Date(app.reviewedAt).toLocaleString('en-US')}
                     </div>
                     {app.reviewNote && (
                       <div className="review-note">
-                        <span className="info-label">备注:</span> {app.reviewNote}
+                        <span className="info-label">Note:</span> {app.reviewNote}
                       </div>
                     )}
                   </div>
@@ -392,7 +392,7 @@ const ApplicationManager: React.FC = () => {
                       <div className="review-panel">
                         <input
                           type="text"
-                          placeholder="审批备注 (可选)"
+                          placeholder="Review note (optional)"
                           value={reviewNote}
                           onChange={(e) => setReviewNote(e.target.value)}
                           className="review-note-input"
@@ -402,19 +402,19 @@ const ApplicationManager: React.FC = () => {
                             onClick={() => handleApprove(app.id, true)}
                             className="btn btn--success"
                           >
-                            通过并创建成员
+                            Approve & Create Member
                           </button>
                           <button
                             onClick={() => handleApprove(app.id, false)}
                             className="btn btn--secondary"
                           >
-                            仅通过
+                            Approve Only
                           </button>
                           <button
                             onClick={() => handleReject(app.id)}
                             className="btn btn--danger"
                           >
-                            拒绝
+                            Reject
                           </button>
                           <button
                             onClick={() => {
@@ -423,7 +423,7 @@ const ApplicationManager: React.FC = () => {
                             }}
                             className="btn btn--secondary"
                           >
-                            取消
+                            Cancel
                           </button>
                         </div>
                       </div>
@@ -432,7 +432,7 @@ const ApplicationManager: React.FC = () => {
                         onClick={() => setReviewingApp(app.id)}
                         className="btn btn--primary"
                       >
-                        审批
+                        Review
                       </button>
                     )}
                   </>
@@ -441,7 +441,7 @@ const ApplicationManager: React.FC = () => {
                   onClick={() => handleDelete(app.id, app.characterName)}
                   className="btn btn--sm btn--danger"
                 >
-                  删除
+                  Delete
                 </button>
               </div>
             </div>
@@ -449,24 +449,24 @@ const ApplicationManager: React.FC = () => {
         )}
       </div>
 
-      {/* 删除确认对话框 */}
+      {/* Delete confirmation dialog */}
       <ConfirmDialog
         visible={confirmDialog.visible}
-        title="删除申请"
-        message={`确定要删除 "${confirmDialog.characterName}" 的申请吗？`}
-        confirmText="删除"
-        cancelText="取消"
+        title="Delete Application"
+        message={`Are you sure you want to delete "${confirmDialog.characterName}"'s application?`}
+        confirmText="Delete"
+        cancelText="Cancel"
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         danger={true}
       />
 
-      {/* 消息提示对话框 */}
+      {/* Message dialog */}
       <ConfirmDialog
         visible={messageDialog.visible}
         title={messageDialog.title}
         message={messageDialog.message}
-        confirmText="确定"
+        confirmText="OK"
         onConfirm={() => setMessageDialog({ ...messageDialog, visible: false })}
         onCancel={() => setMessageDialog({ ...messageDialog, visible: false })}
         danger={messageDialog.type === 'error'}

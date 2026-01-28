@@ -1,49 +1,49 @@
-// 管理后台类型定义
+// Admin panel type definitions
 
-// ============= 成员管理相关 =============
+// ============= Member Management Related =============
 
-// 成员配置（扩展版，包含API配置）
+// Member config (extended version with API config)
 export interface MemberConfig {
-  id: string;                    // 成员ID（使用 characterId 作为唯一标识）
-  name: string;                  // 显示名称
+  id: string;                    // Member ID (uses characterId as unique identifier)
+  name: string;                  // Display name
   role: 'leader' | 'elite' | 'member';
-  title?: string;                // 称号
-  // 角色标识
-  characterId: string;           // tw.ncsoft.com 角色ID（Base64编码，作为文件夹名）
-  serverId: number;              // 服务器ID（如 1001 = 希埃爾）
-  // 元数据
-  lastSyncTime?: string;         // 最后同步时间 (ISO 格式)
+  title?: string;                // Title
+  // Character identifiers
+  characterId: string;           // tw.ncsoft.com character ID (Base64 encoded, used as folder name)
+  serverId: number;              // Server ID (e.g., 1001 = Siel)
+  // Metadata
+  lastSyncTime?: string;         // Last sync time (ISO format)
 }
 
-// ============= 入团申请相关 =============
+// ============= Join Application Related =============
 
 export interface JoinApplication {
-  id: string;                    // 申请ID (UUID)
-  characterUrl: string;          // 角色页面URL
-  characterId: string;           // 角色ID (提交时已解析)
-  characterName: string;         // 角色名称 (提交时已解析)
-  serverId: number;              // 服务器ID (提交时已解析)
-  serverName: string;            // 服务器名称 (提交时已解析)
-  submittedAt: string;           // 提交时间 (ISO 格式)
+  id: string;                    // Application ID (UUID)
+  characterUrl: string;          // Character page URL
+  characterId: string;           // Character ID (parsed on submit)
+  characterName: string;         // Character name (parsed on submit)
+  serverId: number;              // Server ID (parsed on submit)
+  serverName: string;            // Server name (parsed on submit)
+  submittedAt: string;           // Submit time (ISO format)
   status: 'pending' | 'approved' | 'rejected';
-  reviewedAt?: string;           // 审核时间
-  reviewNote?: string;           // 审核备注
+  reviewedAt?: string;           // Review time
+  reviewNote?: string;           // Review note
 }
 
-// ============= 装备详情相关 =============
+// ============= Equipment Details Related =============
 
-// 装备属性
+// Equipment stat
 export interface EquipmentStat {
   id?: string;
   name: string;
   value: string;
   tooltip?: string;
-  minValue?: string;     // 最小值
-  extra?: string;        // 突破加成
-  exceed?: boolean;      // 是否为突破属性
+  minValue?: string;     // Minimum value
+  extra?: string;        // Exceed bonus
+  exceed?: boolean;      // Is exceed stat
 }
 
-// 魔石属性
+// Magic stone stat
 export interface MagicStoneStat {
   id?: string;
   name: string;
@@ -52,7 +52,7 @@ export interface MagicStoneStat {
   slotPos?: number;
 }
 
-// 神石属性
+// God stone stat
 export interface GodStoneStat {
   name: string;
   desc: string;
@@ -61,7 +61,7 @@ export interface GodStoneStat {
   slotPos?: number;
 }
 
-// 技能信息
+// Skill info
 export interface EquipmentSkill {
   id: number;
   name: string;
@@ -69,22 +69,22 @@ export interface EquipmentSkill {
   icon: string;
 }
 
-// 套装效果
+// Set bonus
 export interface SetBonus {
-  degree: number;           // 件数要求 (2件套、4件套等)
-  descriptions: string[];   // 效果描述列表
+  degree: number;           // Piece requirement (2-piece set, 4-piece set, etc.)
+  descriptions: string[];   // Effect description list
 }
 
-// 套装信息
+// Set info
 export interface SetInfo {
-  id: string;               // 套装ID
-  name: string;             // 套装名称
-  equippedCount: number;    // 已装备数量
-  items?: any[];            // 套装包含的物品
-  bonuses: SetBonus[];      // 套装效果
+  id: string;               // Set ID
+  name: string;             // Set name
+  equippedCount: number;    // Equipped count
+  items?: any[];            // Items in set
+  bonuses: SetBonus[];      // Set effects
 }
 
-// 装备详情数据（来自 tw.ncsoft.com API）
+// Equipment detail data (from tw.ncsoft.com API)
 export interface EquipmentDetail {
   id: number;
   name: string;
@@ -101,61 +101,61 @@ export interface EquipmentDetail {
   equipLevel?: number;
   magicStoneSlotCount?: number;
   godStoneSlotCount?: number;
-  soulBindRate?: string;        // 灵魂刻印进度(百分比)
-  slotPos?: number;              // 装备槽位置,用于区分Ring1/Ring2等相同ID的装备
-  slotPosName?: string;          // 装备槽名称
-  // 属性
+  soulBindRate?: string;        // Soul bind progress (percentage)
+  slotPos?: number;              // Equipment slot position, for distinguishing Ring1/Ring2 etc with same ID
+  slotPosName?: string;          // Equipment slot name
+  // Stats
   mainStats?: EquipmentStat[];
   subStats?: EquipmentStat[];
   subSkills?: EquipmentSkill[];
   magicStoneStat?: MagicStoneStat[];
   godStoneStat?: GodStoneStat[];
-  // 套装信息 (阿尔卡那)
+  // Set info (Arcana)
   set?: SetInfo;
-  // 套装效果 (阿尔卡那) - 兼容旧格式
+  // Set effects (Arcana) - compatible with old format
   bonuses?: SetBonus[];
-  // 来源
+  // Sources
   sources?: string[];
 }
 
-// 装备详情缓存文件结构
+// Equipment details cache file structure
 export interface EquipmentDetailsCache {
   memberId: string;
   lastUpdate: string;  // ISO timestamp
-  details: EquipmentDetail[];  // 装备详情数组
+  details: EquipmentDetail[];  // Equipment details array
 }
 
-// ============= 管理后台状态 =============
+// ============= Admin Panel State =============
 
 export type AdminTab = 'members' | 'applications' | 'sync';
 
-// ============= 工具类型 =============
+// ============= Utility Types =============
 
-// API 配置
+// API Config
 export interface ApiConfig {
   characterId: string;
   serverId: number;
 }
 
-// 导入结果
+// Import result
 export interface ImportResult {
   success: boolean;
   message: string;
   data?: unknown;
 }
 
-// ============= PVE评分相关 =============
+// ============= PVE Rating Related =============
 
-// 评分数据
+// Rating scores
 export interface RatingScores {
-  score: number;  // PVE评分分数
+  score: number;  // PVE rating score
 }
 
-// 评分信息
+// Rating info
 export interface Rating {
   id: string;
   scores: RatingScores;
-  modelType: string;      // 评分模型类型 (如 "PVE")
-  modelVersion: string;   // 评分模型版本 (如 "PvE-1.1")
-  ratedAt: string;        // 评分时间 (ISO格式)
+  modelType: string;      // Rating model type (e.g., "PVE")
+  modelVersion: string;   // Rating model version (e.g., "PvE-1.1")
+  ratedAt: string;        // Rating time (ISO format)
 }

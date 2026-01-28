@@ -20,7 +20,7 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
   value,
   onChange,
   serverList,
-  placeholder = '请选择服务器',
+  placeholder = 'Select server',
   required = false,
   disabled = false,
 }) => {
@@ -28,16 +28,16 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
   const [dropdownAbove, setDropdownAbove] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 获取服务器显示名称
+  // Get server display name
   const getServerDisplayName = (server: Server) => {
-    const raceName = server.raceId === 1 ? '天族' : '魔族';
+    const raceName = server.raceId === 1 ? 'Elyos' : 'Asmodian';
     return `${raceName} · ${server.serverName}`;
   };
 
-  // 获取选中的服务器
+  // Get selected server
   const selectedServer = serverList.find(s => s.serverId === Number(value));
 
-  // 点击外部关闭
+  // Close on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -49,15 +49,15 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 视口检测,防止下拉菜单跑出屏幕
+  // Viewport detection to prevent dropdown from going off screen
   useEffect(() => {
     if (isOpen && containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      const dropdownHeight = 400; // 最大高度
+      const dropdownHeight = 400; // max height
       const spaceBelow = window.innerHeight - rect.bottom;
       const spaceAbove = rect.top;
 
-      // 如果下方空间不足且上方空间更大,则向上展开
+      // If space below is insufficient and space above is larger, expand upward
       setDropdownAbove(spaceBelow < dropdownHeight && spaceAbove > spaceBelow);
     }
   }, [isOpen]);
@@ -84,20 +84,19 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
 
       {isOpen && !disabled && (
         <div className={`server-select__dropdown ${dropdownAbove ? 'server-select__dropdown--above' : ''}`}>
-          {/* 两列布局 */}
+          {/* Two column layout */}
           <div className="server-select__grid">
-            {/* 天族列 */}
+            {/* Elyos column */}
             <div className="server-select__column server-select__column--celestial">
-              <div className="server-select__column-header">天族</div>
+              <div className="server-select__column-header">Elyos</div>
               <div className="server-select__column-list">
                 {serverList
                   .filter(s => s.raceId === 1)
                   .map(server => (
                     <div
                       key={server.serverId}
-                      className={`server-select__option ${
-                        server.serverId === Number(value) ? 'server-select__option--selected' : ''
-                      }`}
+                      className={`server-select__option ${server.serverId === Number(value) ? 'server-select__option--selected' : ''
+                        }`}
                       onClick={() => handleSelect(server)}
                     >
                       {server.serverName}
@@ -111,18 +110,17 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
               </div>
             </div>
 
-            {/* 魔族列 */}
+            {/* Asmodian column */}
             <div className="server-select__column server-select__column--asmodian">
-              <div className="server-select__column-header">魔族</div>
+              <div className="server-select__column-header">Asmodian</div>
               <div className="server-select__column-list">
                 {serverList
                   .filter(s => s.raceId === 2)
                   .map(server => (
                     <div
                       key={server.serverId}
-                      className={`server-select__option ${
-                        server.serverId === Number(value) ? 'server-select__option--selected' : ''
-                      }`}
+                      className={`server-select__option ${server.serverId === Number(value) ? 'server-select__option--selected' : ''
+                        }`}
                       onClick={() => handleSelect(server)}
                     >
                       {server.serverName}
@@ -139,7 +137,7 @@ const ServerSelect: React.FC<ServerSelectProps> = ({
         </div>
       )}
 
-      {/* 隐藏的input用于表单验证 */}
+      {/* Hidden input for form validation */}
       {required && <input type="hidden" required value={value} />}
     </div>
   );

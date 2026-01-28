@@ -19,7 +19,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 关闭移动菜单当路由变化时
+  // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
@@ -27,7 +27,7 @@ const Header = () => {
   return (
     <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
       <div className="header__container">
-        {/* 左侧：游戏Logo + 导航链接 */}
+        {/* Left side: Game Logo + Navigation links */}
         <div className="header__left">
           <img
             src="https://fizz-download.playnccdn.com/download/v2/buckets/conti-upload/files/196c7011305-f0c28862-ef32-4a1f-9d47-529292b0c46b"
@@ -41,44 +41,44 @@ const Header = () => {
               to="/"
               className={`header__nav-link ${location.pathname === '/' ? 'header__nav-link--active' : ''}`}
             >
-              首页
+              Home
             </Link>
             <Link
               to="/tools"
               className={`header__nav-link ${location.pathname === '/tools' ? 'header__nav-link--active' : ''}`}
             >
-              工具
+              Tools
             </Link>
             <Link
               to="/items"
               className={`header__nav-link ${location.pathname === '/items' ? 'header__nav-link--active' : ''}`}
             >
-              数据库
+              Database
             </Link>
             <Link
               to="/join-legion"
               className={`header__nav-link ${location.pathname === '/join-legion' ? 'header__nav-link--active' : ''}`}
             >
-              军团介绍
+              Join Legion
             </Link>
           </nav>
         </div>
 
-        {/* 右侧：军团Logo + 管理员按钮 */}
+        {/* Right side: Legion Logo + Admin button */}
         <div className="header__right">
           <Link to="/legion" className="header__logo">
             <div className="header__logo-icon">
-              <img src="/images/legion-logo.jpg" alt="椿夏军团" />
+              <img src="/images/legion-logo.jpg" alt="ChunXia Legion" />
             </div>
             <div className="header__logo-text">
-              <span className="header__logo-name">椿夏</span>
-              <span className="header__logo-sub">AION2 · 天族希埃尔</span>
+              <span className="header__logo-name">ChunXia</span>
+              <span className="header__logo-sub">AION2 · Elyos Siel</span>
             </div>
           </Link>
           <button
             onClick={() => setShowLoginModal(true)}
             className={`header__admin-btn ${isAdmin ? 'header__admin-btn--active' : ''}`}
-            title={isAdmin ? '管理员已登录' : '管理员登录'}
+            title={isAdmin ? 'Admin Logged In' : 'Admin Login'}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -90,7 +90,7 @@ const Header = () => {
         <button
           className={`header__mobile-toggle ${isMobileMenuOpen ? 'header__mobile-toggle--open' : ''}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="菜单"
+          aria-label="Menu"
         >
           <span></span>
           <span></span>

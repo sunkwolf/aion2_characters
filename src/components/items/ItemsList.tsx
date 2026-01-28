@@ -11,7 +11,7 @@ interface ItemsListProps {
 }
 
 const ItemsList = ({ items, loading, pagination, onItemClick, onPageChange }: ItemsListProps) => {
-  // 生成页码列表
+  // Generate page number list
   const getPageNumbers = () => {
     const { page, lastPage } = pagination;
     const pages: (number | 'ellipsis')[] = [];
@@ -41,7 +41,7 @@ const ItemsList = ({ items, loading, pagination, onItemClick, onPageChange }: It
     return (
       <div className="items-list items-list--loading">
         <div className="items-list__spinner" />
-        <p>加载中...</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -52,7 +52,7 @@ const ItemsList = ({ items, loading, pagination, onItemClick, onPageChange }: It
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <p>未找到匹配的物品</p>
+        <p>No matching items found</p>
       </div>
     );
   }
@@ -73,7 +73,7 @@ const ItemsList = ({ items, loading, pagination, onItemClick, onPageChange }: It
             <div className="item-card__image">
               <img src={item.image} alt={item.name_cn} loading="lazy" />
               {item.enchantable && (
-                <span className="item-card__enchant-badge" title="可强化">
+                <span className="item-card__enchant-badge" title="Enchantable">
                   +{item.max_enchant_level}
                 </span>
               )}

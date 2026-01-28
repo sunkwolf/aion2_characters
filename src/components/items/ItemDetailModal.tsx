@@ -10,7 +10,7 @@ interface ItemDetailModalProps {
   onClose: () => void;
 }
 
-// 缓存类型
+// Cache type
 interface StatsCache {
   [level: number]: {
     mainStats: ItemDetail['mainStats'];
@@ -19,8 +19,8 @@ interface StatsCache {
 }
 
 /**
- * 解析物品描述中的自定义标签
- * 如: <desc_point>300秒</> 转换为高亮显示
+ * Parse custom tags in item description
+ * e.g.: <desc_point>300s</> converts to highlighted display
  */
 function parseDescText(text: string): React.ReactNode[] {
   if (!text) return [];
@@ -33,11 +33,11 @@ function parseDescText(text: string): React.ReactNode[] {
   let key = 0;
 
   while ((match = regex.exec(text)) !== null) {
-    // 添加标签前的普通文本
+    // Add plain text before the tag
     if (match.index > lastIndex) {
       parts.push(text.slice(lastIndex, match.index));
     }
-    // 添加高亮文本
+    // Add highlighted text
     parts.push(
       <span key={key++} className="item-detail-modal__desc-highlight">
         {match[1]}
@@ -46,7 +46,7 @@ function parseDescText(text: string): React.ReactNode[] {
     lastIndex = regex.lastIndex;
   }
 
-  // 添加剩余文本
+  // Add remaining text
   if (lastIndex < text.length) {
     parts.push(text.slice(lastIndex));
   }
@@ -59,19 +59,19 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 等级状态（累加：强化 + 突破）
+  // Level state (cumulative: enchant + exceed)
   const [totalLevel, setTotalLevel] = useState(0);
 
-  // 属性缓存：key是总等级
+  // Stats cache: key is total level
   const [statsCache, setStatsCache] = useState<StatsCache>({});
 
-  // 是否正在预加载
+  // Whether preloading
   const [preloading, setPreloading] = useState(false);
 
-  // 计算最大等级 = 强化上限 + 突破上限
+  // Calculate max level = enchant limit + exceed limit
   const maxLevel = item ? item.max_enchant_level + item.max_exceed_enchant_level : 0;
 
-  // 从总等级计算强化和突破等级
+  // Calculate enchant and exceed levels from total
   const getEnchantAndExceed = useCallback((total: number, maxEnchant: number) => {
     if (total <= maxEnchant) {
       return { enchant: total, exceed: 0 };
@@ -79,29 +79,29 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
     return { enchant: maxEnchant, exceed: total - maxEnchant };
   }, []);
 
-  // 当前等级对应的属性
+  // Stats for current level
   const currentStats = useMemo(() => {
     return statsCache[totalLevel] || { mainStats: item?.mainStats || [], subStats: item?.subStats || [] };
   }, [statsCache, totalLevel, item]);
 
-  // 加载物品基础信息
+  // Load item base info
   const loadBaseInfo = useCallback(async () => {
     try {
       setLoading(true);
       const data = await fetchItemDetail(itemId, 0);
       setItem(data);
-      // 缓存等级0的属性
+      // Cache level 0 stats
       setStatsCache({ 0: { mainStats: data.mainStats || [], subStats: data.subStats || [] } });
       setError(null);
     } catch (err) {
-      console.error('加载物品详情失败:', err);
-      setError('加载失败，请重试');
+      console.error('Failed to load item details:', err);
+      setError('Failed to load, please try again');
     } finally {
       setLoading(false);
     }
   }, [itemId]);
 
-  // 预加载所有强化等级的属性
+  // Preload all enchant level stats
   const preloadAllStats = useCallback(async (baseItem: ItemDetail) => {
     if (!baseItem.enchantable || baseItem.max_enchant_level <= 0) return;
 
@@ -111,20 +111,20 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
     const total = maxEnchant + maxExceed;
     const newCache: StatsCache = { ...statsCache };
 
-    // 逐个请求每个等级的数据（totalLevel 直接传给API）
+    // Request data for each level (totalLevel passed directly to API)
     for (let level = 1; level <= total; level++) {
-      // 如果已缓存，跳过
+      // Skip if already cached
       if (newCache[level]) continue;
 
       try {
-        // 直接传 totalLevel，后端会用这个值请求官方API的 enchantLevel
+        // Pass totalLevel directly, backend uses this for official API's enchantLevel
         const data = await fetchItemDetail(itemId, level);
         newCache[level] = {
           mainStats: data.mainStats || [],
           subStats: data.subStats || [],
         };
       } catch (err) {
-        console.error(`预加载等级 ${level} 失败:`, err);
+        console.error(`Failed to preload level ${level}:`, err);
       }
     }
 
@@ -132,27 +132,27 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
     setPreloading(false);
   }, [itemId, statsCache]);
 
-  // 初始加载
+  // Initial load
   useEffect(() => {
     loadBaseInfo();
   }, [loadBaseInfo]);
 
-  // 基础信息加载完成后预加载所有强化等级
+  // Preload all enchant levels after base info loaded
   useEffect(() => {
     if (item && !loading && item.enchantable && item.max_enchant_level > 0) {
       preloadAllStats(item);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, loading]);
 
-  // 关闭弹窗
+  // Close modal
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
-  // ESC 键关闭
+  // ESC key close
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -167,7 +167,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
         <div className="item-detail-modal__content">
           <div className="item-detail-modal__loading">
             <div className="item-detail-modal__spinner" />
-            <p>加载中...</p>
+            <p>Loading...</p>
           </div>
         </div>
       </div>
@@ -179,8 +179,8 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
       <div className="item-detail-modal" onClick={handleOverlayClick}>
         <div className="item-detail-modal__content">
           <div className="item-detail-modal__error">
-            <p>{error || '加载失败'}</p>
-            <button onClick={onClose}>关闭</button>
+            <p>{error || 'Failed to load'}</p>
+            <button onClick={onClose}>Close</button>
           </div>
         </div>
       </div>
@@ -191,7 +191,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
   const enchant = getEnchantAndExceed(totalLevel, item.max_enchant_level).enchant;
   const gradeColor = GRADE_COLORS[item.grade] || '#9d9d9d';
 
-  // 获取套装信息（优先使用简体）
+  // Get set info (prefer simplified Chinese)
   const setInfo = item.set_cn || item.set;
 
   return (
@@ -200,16 +200,16 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
         className="item-detail-modal__content"
         style={{ '--grade-color': gradeColor } as React.CSSProperties}
       >
-        {/* 关闭按钮 */}
+        {/* Close button */}
         <button className="item-detail-modal__close" onClick={onClose}>
           ×
         </button>
 
-        {/* 左右布局容器 */}
+        {/* Left-right layout container */}
         <div className="item-detail-modal__layout">
-          {/* 左侧：头部 + 滑块 + 来源 */}
+          {/* Left: Header + Slider + Source */}
           <div className="item-detail-modal__left">
-            {/* 头部 - 参考装备弹窗布局 */}
+            {/* Header - reference equipment modal layout */}
             <div className="item-detail-modal__header">
               <div className="item-detail-modal__icon">
                 <img src={item.image} alt={item.name_cn} />
@@ -217,29 +217,29 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               <div className="item-detail-modal__title">
                 <div className="item-detail-modal__name">
                   {item.name_cn}
-                  {/* 强化等级 */}
+                  {/* Enchant level */}
                   {enchant > 0 && (
                     <span className="item-detail-modal__enchant">+{enchant}</span>
                   )}
-                  {/* 突破等级 */}
+                  {/* Exceed level */}
                   {exceed > 0 && (
                     <ExceedLevel level={exceed} variant="compact" />
                   )}
                 </div>
                 <div className="item-detail-modal__grade-row">
                   <span className="item-detail-modal__grade">{item.grade_name_cn}</span>
-                  {/* 来源信息 */}
+                  {/* Source info */}
                   {item.sources_cn && item.sources_cn.length > 0 && (
                     <span className="item-detail-modal__source-tag">
-                      来源: {item.sources_cn.join(', ')}
+                      Source: {item.sources_cn.join(', ')}
                     </span>
                   )}
                 </div>
-                {/* 基础信息紧凑显示 */}
+                {/* Basic info compact display */}
                 <div className="item-detail-modal__meta">
                   {item.category_name_cn && <span className="meta-item">{item.category_name_cn}</span>}
                   {item.level > 0 && <span className="meta-item">Lv.{item.level}</span>}
-                  {item.equip_level > 0 && <span className="meta-item">装备等级 {item.equip_level}</span>}
+                  {item.equip_level > 0 && <span className="meta-item">Equip Level {item.equip_level}</span>}
                   {item.race_name_cn && <span className="meta-item">{item.race_name_cn}</span>}
                   {item.classes_cn && item.classes_cn.length > 0 && (
                     <span className="meta-item">{item.classes_cn.join(' · ')}</span>
@@ -248,13 +248,13 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               </div>
             </div>
 
-            {/* 强化滑块 */}
+            {/* Enchant slider */}
             {item.enchantable && maxLevel > 0 && (
               <div className="item-detail-modal__slider-section">
                 <div className="item-detail-modal__slider-header">
                   <span className="item-detail-modal__slider-label">
-                    强化等级
-                    {preloading && <span className="item-detail-modal__preload-hint">(预加载中...)</span>}
+                    Enchant Level
+                    {preloading && <span className="item-detail-modal__preload-hint">(Preloading...)</span>}
                   </span>
                   <span className="item-detail-modal__slider-value">
                     +{totalLevel}
@@ -277,7 +277,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
                       '--progress': `${(totalLevel / maxLevel) * 100}%`,
                     } as React.CSSProperties}
                   />
-                  {/* 突破分界线 */}
+                  {/* Exceed threshold line */}
                   {item.max_exceed_enchant_level > 0 && (
                     <div
                       className="item-detail-modal__exceed-marker"
@@ -296,7 +296,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
                         left: `${(item.max_enchant_level / maxLevel) * 100}%`,
                       }}
                     >
-                      强化上限
+                      Enchant Limit
                     </span>
                   )}
                   <span>+{maxLevel}</span>
@@ -304,10 +304,10 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               </div>
             )}
 
-            {/* 外观 */}
+            {/* Appearance */}
             {(item.raw_data_cn?.costumes || item.costumes_cn) && (
               <div className="item-detail-modal__section">
-                <h3 className="item-detail-modal__section-title">外观</h3>
+                <h3 className="item-detail-modal__section-title">Appearance</h3>
                 <div className="item-detail-modal__costume">
                   {Array.isArray(item.raw_data_cn?.costumes)
                     ? (item.raw_data_cn.costumes as string[]).join(', ')
@@ -316,47 +316,47 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               </div>
             )}
 
-            {/* 物品说明 (非装备类) */}
+            {/* Item description (non-equipment) */}
             {(item.raw_data_cn?.desc || item.desc_cn) && (
               <div className="item-detail-modal__section">
-                <h3 className="item-detail-modal__section-title">说明</h3>
+                <h3 className="item-detail-modal__section-title">Description</h3>
                 <div className="item-detail-modal__desc">
                   {parseDescText(String(item.raw_data_cn?.desc || item.desc_cn || ''))}
                 </div>
               </div>
             )}
 
-            {/* 冷却/持续时间 (非装备类) */}
+            {/* Cooldown/Duration (non-equipment) */}
             {((item.cool_time != null && item.cool_time > 0) ||
               (item.duration_min != null && item.duration_min > 0) ||
               (item.duration_max != null && item.duration_max > 0)) && (
-              <div className="item-detail-modal__time-info">
-                {item.cool_time != null && item.cool_time > 0 && (
-                  <span className="item-detail-modal__time-item">
-                    冷却时间: {item.cool_time}秒
-                  </span>
-                )}
-                {((item.duration_min != null && item.duration_min > 0) ||
-                  (item.duration_max != null && item.duration_max > 0)) && (
-                  <span className="item-detail-modal__time-item">
-                    持续时间: {item.duration_min === item.duration_max
-                      ? `${item.duration_min}秒`
-                      : `${item.duration_min || 0} ~ ${item.duration_max || 0}秒`}
-                  </span>
-                )}
-              </div>
-            )}
+                <div className="item-detail-modal__time-info">
+                  {item.cool_time != null && item.cool_time > 0 && (
+                    <span className="item-detail-modal__time-item">
+                      Cooldown: {item.cool_time}s
+                    </span>
+                  )}
+                  {((item.duration_min != null && item.duration_min > 0) ||
+                    (item.duration_max != null && item.duration_max > 0)) && (
+                      <span className="item-detail-modal__time-item">
+                        Duration: {item.duration_min === item.duration_max
+                          ? `${item.duration_min}s`
+                          : `${item.duration_min || 0} ~ ${item.duration_max || 0}s`}
+                      </span>
+                    )}
+                </div>
+              )}
 
-            {/* 刻印 - 魔石和神石 */}
+            {/* Socket - Magic and God stones */}
             {(() => {
               const magicSlotCount = (item.raw_data_cn?.magicStoneSlotCount as number) || item.magic_stone_slot_count || 0;
               const godSlotCount = (item.raw_data_cn?.godStoneSlotCount as number) || item.god_stone_slot_count || 0;
               return (magicSlotCount > 0 || godSlotCount > 0) && (
                 <div className="item-detail-modal__section">
-                  <h3 className="item-detail-modal__section-title">刻印</h3>
+                  <h3 className="item-detail-modal__section-title">Sockets</h3>
                   {magicSlotCount > 0 && (
                     <div className="item-detail-modal__slot-section">
-                      <span className="item-detail-modal__slot-label">魔石</span>
+                      <span className="item-detail-modal__slot-label">Magic Stones</span>
                       <div className="item-detail-modal__slots">
                         {Array.from({ length: magicSlotCount }).map((_, i) => (
                           <span key={i} className="item-detail-modal__slot item-detail-modal__slot--empty">◆</span>
@@ -366,7 +366,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
                   )}
                   {godSlotCount > 0 && (
                     <div className="item-detail-modal__slot-section">
-                      <span className="item-detail-modal__slot-label">神石</span>
+                      <span className="item-detail-modal__slot-label">Godstones</span>
                       <div className="item-detail-modal__slots">
                         {Array.from({ length: godSlotCount }).map((_, i) => (
                           <span key={i} className="item-detail-modal__slot item-detail-modal__slot--god">●</span>
@@ -378,33 +378,33 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               );
             })()}
 
-            {/* 底部信息 */}
+            {/* Footer info */}
             <div className="item-detail-modal__footer">
-              {item.tradable && <span className="item-detail-modal__tag">可交易</span>}
-              {item.enchantable && <span className="item-detail-modal__tag">可强化</span>}
+              {item.tradable && <span className="item-detail-modal__tag">Tradable</span>}
+              {item.enchantable && <span className="item-detail-modal__tag">Enchantable</span>}
             </div>
           </div>
 
-          {/* 右侧：属性 + 套装 */}
+          {/* Right: Stats + Set */}
           <div className="item-detail-modal__right">
-            {/* 附加能力（主属性） */}
+            {/* Bonus Abilities (main stats) */}
             {currentStats.mainStats && currentStats.mainStats.length > 0 && (
               <div className="item-detail-modal__section">
-                <h3 className="item-detail-modal__section-title">附加能力</h3>
+                <h3 className="item-detail-modal__section-title">Bonus Abilities</h3>
                 <div className="item-detail-modal__stats">
                   {currentStats.mainStats.map((stat, idx) => {
-                    // 固有附加能力: value 有数值
+                    // Inherent bonus: value has a number
                     const hasValue = stat.value && stat.value !== '0' && stat.value !== '0%';
-                    // 突破附加能力: extra 有数值且 exceed 为 true
+                    // Exceed bonus: extra has a value and exceed is true
                     const hasExceedExtra = stat.extra && stat.extra !== '0' && stat.extra !== '0%' && stat.exceed;
-                    // 强化加成: extra 有数值且 exceed 为 false
+                    // Enhancement bonus: extra has a value and exceed is false
                     const hasEnhancement = stat.extra && stat.extra !== '0' && stat.extra !== '0%' && !stat.exceed;
 
                     if (!hasValue && !hasExceedExtra) return null;
 
                     return (
                       <div key={idx}>
-                        {/* 固有附加能力(带强化加成) */}
+                        {/* Inherent bonus (with enhancement) */}
                         {hasValue && (
                           <div className="item-detail-modal__stat item-detail-modal__stat--main">
                             <span className="item-detail-modal__stat-name">{stat.name}</span>
@@ -415,7 +415,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
                             </span>
                           </div>
                         )}
-                        {/* 突破附加能力 */}
+                        {/* Exceed bonus */}
                         {hasExceedExtra && (
                           <div className="item-detail-modal__stat item-detail-modal__stat--exceed">
                             <span className="item-detail-modal__stat-name">{stat.name}</span>
@@ -429,10 +429,10 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               </div>
             )}
 
-            {/* 灵魂刻印（副属性） */}
+            {/* Soul Binding (sub stats) */}
             {currentStats.subStats && currentStats.subStats.length > 0 && (
               <div className="item-detail-modal__section">
-                <h3 className="item-detail-modal__section-title">灵魂刻印</h3>
+                <h3 className="item-detail-modal__section-title">Soul Binding</h3>
                 <div className="item-detail-modal__stats item-detail-modal__stats--sub">
                   {currentStats.subStats.map((stat, idx) => (
                     <div key={idx} className="item-detail-modal__stat item-detail-modal__stat--sub">
@@ -446,17 +446,17 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
               </div>
             )}
 
-            {/* 套装效果 */}
+            {/* Set Effects */}
             {setInfo && (
               <div className="item-detail-modal__section">
-                <h3 className="item-detail-modal__section-title">套装效果</h3>
+                <h3 className="item-detail-modal__section-title">Set Effects</h3>
                 <div className="item-detail-modal__set-name">
-                  {setInfo.name} ({setInfo.equippedCount || 0}件)
+                  {setInfo.name} ({setInfo.equippedCount || 0} pcs)
                 </div>
                 {setInfo.bonuses && setInfo.bonuses.length > 0 ? (
                   setInfo.bonuses.map((bonus, index) => (
                     <div key={index} className="item-detail-modal__set-bonus">
-                      <div className="item-detail-modal__set-bonus-header">{bonus.degree}件套</div>
+                      <div className="item-detail-modal__set-bonus-header">{bonus.degree}-Piece</div>
                       <div className="item-detail-modal__set-bonus-effects">
                         {bonus.descriptions.map((desc, descIndex) => (
                           <div key={descIndex} className="item-detail-modal__set-bonus-effect">{desc}</div>
@@ -465,7 +465,7 @@ const ItemDetailModal = ({ itemId, onClose }: ItemDetailModalProps) => {
                     </div>
                   ))
                 ) : (
-                  <div className="item-detail-modal__set-empty">无</div>
+                  <div className="item-detail-modal__set-empty">None</div>
                 )}
               </div>
             )}

@@ -1,40 +1,40 @@
-// API 服务 - 生成 AION2 台湾官方 API 请求 URL
+// API Service - Generate AION2 Taiwan official API request URLs
 
 import type { MemberConfig } from '../types/admin';
 
-// ============= 常量 =============
+// ============= Constants =============
 
 const API_BASE_URL = 'https://tw.ncsoft.com/aion2/api';
 
-// ============= API URL 生成 =============
+// ============= API URL Generation =============
 
 /**
- * 生成角色信息 API URL
- * @param characterId - 角色ID (需要 URL 编码)
- * @param serverId - 服务器ID
+ * Generate character info API URL
+ * @param characterId - Character ID (needs URL encoding)
+ * @param serverId - Server ID
  * @returns API URL
  */
 export function getCharacterInfoUrl(characterId: string, serverId: number): string {
-  return `${API_BASE_URL}/character/info?lang=zh&characterId=${characterId}&serverId=${serverId}`;
+  return `${API_BASE_URL}/character/info?lang=en&characterId=${characterId}&serverId=${serverId}`;
 }
 
 /**
- * 生成角色装备列表 API URL
- * @param characterId - 角色ID (需要 URL 编码)
- * @param serverId - 服务器ID
+ * Generate character equipment list API URL
+ * @param characterId - Character ID (needs URL encoding)
+ * @param serverId - Server ID
  * @returns API URL
  */
 export function getCharacterEquipmentUrl(characterId: string, serverId: number): string {
-  return `${API_BASE_URL}/character/equipment?lang=zh&characterId=${characterId}&serverId=${serverId}`;
+  return `${API_BASE_URL}/character/equipment?lang=en&characterId=${characterId}&serverId=${serverId}`;
 }
 
 /**
- * 生成装备详情 API URL
- * @param itemId - 装备ID
- * @param enchantLevel - 总强化等级（enchantLevel + exceedLevel）
- * @param characterId - 角色ID (需要 URL 编码)
- * @param serverId - 服务器ID
- * @param slotPos - 装备槽位
+ * Generate equipment detail API URL
+ * @param itemId - Equipment ID
+ * @param enchantLevel - Total enchant level (enchantLevel + exceedLevel)
+ * @param characterId - Character ID (needs URL encoding)
+ * @param serverId - Server ID
+ * @param slotPos - Equipment slot position
  * @returns API URL
  */
 export function getEquipmentDetailUrl(
@@ -44,11 +44,11 @@ export function getEquipmentDetailUrl(
   serverId: number,
   slotPos: number
 ): string {
-  return `${API_BASE_URL}/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${characterId}&serverId=${serverId}&slotPos=${slotPos}&lang=zh`;
+  return `${API_BASE_URL}/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${characterId}&serverId=${serverId}&slotPos=${slotPos}&lang=en`;
 }
 
 /**
- * 从成员配置生成角色信息 URL
+ * Generate character info URL from member config
  */
 export function getCharacterUrlFromMember(member: MemberConfig): string | null {
   if (member.characterId && member.serverId !== undefined) {
@@ -58,7 +58,7 @@ export function getCharacterUrlFromMember(member: MemberConfig): string | null {
 }
 
 /**
- * 从成员配置生成角色装备 URL
+ * Generate character equipment URL from member config
  */
 export function getCharacterEquipmentUrlFromMember(member: MemberConfig): string | null {
   if (member.characterId && member.serverId !== undefined) {
@@ -68,7 +68,7 @@ export function getCharacterEquipmentUrlFromMember(member: MemberConfig): string
 }
 
 /**
- * 从完整 URL 中提取参数
+ * Extract parameters from full URL
  */
 export function parseApiUrl(url: string): { characterId: string; serverId: number } | null {
   try {
@@ -90,23 +90,23 @@ export function parseApiUrl(url: string): { characterId: string; serverId: numbe
 }
 
 
-// ============= 装备数据处理 =============
+// ============= Equipment Data Processing =============
 
 /**
- * 计算装备的实际强化等级
+ * Calculate equipment actual enchant level
  * enchantLevel = enchantLevel + exceedLevel
- * @param enchantLevel - 基础强化等级
- * @param exceedLevel - 超越强化等级
- * @returns 实际强化等级
+ * @param enchantLevel - Base enchant level
+ * @param exceedLevel - Exceed enchant level
+ * @returns Actual enchant level
  */
 export function calculateTotalEnchantLevel(enchantLevel: number, exceedLevel: number): number {
   return enchantLevel + exceedLevel;
 }
 
 /**
- * 从装备数据中提取需要请求详情的参数
- * @param equipment - 装备基础数据（从角色信息中获取）
- * @returns 装备ID和总强化等级
+ * Extract parameters needed for detail request from equipment data
+ * @param equipment - Equipment basic data (from character info)
+ * @returns Equipment ID and total enchant level
  */
 export function getEquipmentParams(equipment: {
   id: number;
@@ -121,10 +121,10 @@ export function getEquipmentParams(equipment: {
   };
 }
 
-// ============= 数据验证 =============
+// ============= Data Validation =============
 
 /**
- * 验证成员配置是否完整（可以发起 API 请求）
+ * Validate if member config is complete (can make API request)
  */
 export function validateMemberConfig(member: MemberConfig): {
   valid: boolean;
@@ -138,14 +138,14 @@ export function validateMemberConfig(member: MemberConfig): {
   }
 
   if (!hasCharacterId && !hasServerId) {
-    return { valid: false, message: '未配置角色信息' };
+    return { valid: false, message: 'Character info not configured' };
   }
 
-  return { valid: false, message: '角色配置不完整' };
+  return { valid: false, message: 'Character config incomplete' };
 }
 
 /**
- * 检查 API URL 是否有效
+ * Check if API URL is valid
  */
 export function isValidApiUrl(url: string): boolean {
   try {
@@ -156,10 +156,10 @@ export function isValidApiUrl(url: string): boolean {
   }
 }
 
-// ============= 错误处理辅助 =============
+// ============= Error Handling Helpers =============
 
 /**
- * API 错误类型
+ * API Error Types
  */
 export const ApiErrorType = {
   NETWORK_ERROR: 'NETWORK_ERROR',
@@ -172,63 +172,63 @@ export const ApiErrorType = {
 export type ApiErrorType = typeof ApiErrorType[keyof typeof ApiErrorType];
 
 /**
- * 解析 API 错误
+ * Parse API error
  */
 export function parseApiError(error: any): { type: ApiErrorType; message: string } {
   if (error instanceof TypeError && error.message.includes('fetch')) {
     return {
       type: ApiErrorType.NETWORK_ERROR,
-      message: '网络请求失败，请检查网络连接',
+      message: 'Network request failed, please check your connection',
     };
   }
 
   if (error.message?.includes('CORS')) {
     return {
       type: ApiErrorType.CORS_ERROR,
-      message: 'CORS 错误：无法直接从浏览器请求数据，请使用同步脚本',
+      message: 'CORS error: Cannot request data directly from browser, please use sync script',
     };
   }
 
   if (error.status === 404) {
     return {
       type: ApiErrorType.NOT_FOUND,
-      message: '数据不存在或角色ID/装备ID无效',
+      message: 'Data not found or invalid character ID/equipment ID',
     };
   }
 
   return {
     type: ApiErrorType.UNKNOWN,
-    message: error.message || '未知错误',
+    message: error.message || 'Unknown error',
   };
 }
 
-// ============= 本地数据路径生成 =============
+// ============= Local Data Path Generation =============
 
 /**
- * 生成成员角色数据的本地路径
+ * Generate local path for member character data
  */
 export function getMemberDataPath(memberId: string): string {
   return `/data/${memberId}/character.json`;
 }
 
 /**
- * 生成成员装备详情的本地路径
+ * Generate local path for member equipment details
  */
 export function getMemberEquipmentPath(memberId: string): string {
   return `/data/${memberId}/equipment_details.json`;
 }
 
 /**
- * 生成装备图标 URL
- * @param iconPath - 图标路径（从 API 返回）
- * @returns 完整的图标 URL
+ * Generate equipment icon URL
+ * @param iconPath - Icon path (from API response)
+ * @returns Full icon URL
  */
 export function getEquipmentIconUrl(iconPath: string): string {
-  // 如果已经是完整 URL，直接返回
+  // If already full URL, return directly
   if (iconPath.startsWith('http://') || iconPath.startsWith('https://')) {
     return iconPath;
   }
 
-  // 假设图标托管在官方 CDN
+  // Assume icons are hosted on official CDN
   return `https://tw.ncsoft.com${iconPath}`;
 }

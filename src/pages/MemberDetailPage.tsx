@@ -13,6 +13,7 @@ import { useEquipmentTooltip } from '../hooks/useEquipmentTooltip';
 import { loadMemberDaevanion, fetchDaevanionBoards, mergeDaevanionEffects, getClassIdByChineseName } from '../utils/daevanion';
 import type { DaevanionBoards, AggregatedDaevanionEffects } from '../utils/daevanion';
 import { calculateAttackPower, type AttackPowerResult } from '../utils/attackPowerCalculator';
+import { translateStatName, translateStatDescription, translateServerName, translateRankingName } from '../data/statTranslations';
 import './MemberDetailPage.css';
 
 // 成员配置信息
@@ -24,9 +25,9 @@ interface MemberConfig {
 
 // 称号分类映射
 const titleCategoryNames: Record<string, string> = {
-  'Attack': '攻擊系列',
-  'Defense': '防禦系列',
-  'Etc': '其他系列'
+  'Attack': 'Attack',
+  'Defense': 'Defense',
+  'Etc': 'Others'
 };
 
 // 搜索历史记录常量和类型
@@ -592,7 +593,7 @@ const MemberDetailPage = () => {
       <div className="member-detail">
         <div className="member-detail__loading">
           <div className="member-detail__spinner"></div>
-          <p>载入角色数据中...</p>
+          <p>Loading character data...</p>
         </div>
       </div>
     );
@@ -602,9 +603,9 @@ const MemberDetailPage = () => {
     return (
       <div className="member-detail">
         <div className="member-detail__not-found">
-          <h2>未找到该{isFromCharacterBD ? '角色' : '成员'}</h2>
+          <h2>{isFromCharacterBD ? 'Character' : 'Member'} not found</h2>
           <Link to={isFromCharacterBD ? "/" : "/legion"} className="member-detail__back-btn">
-            返回{isFromCharacterBD ? '首页' : '军团页面'}
+            Back to {isFromCharacterBD ? 'Home' : 'Legion Page'}
           </Link>
         </div>
       </div>
@@ -635,11 +636,11 @@ const MemberDetailPage = () => {
   const confirmShare = () => {
     navigator.clipboard.writeText(shareUrl).then(() => {
       setShowShareDialog(false);
-      alert('分享链接已复制到剪贴板！');
+      alert('Link copied to clipboard!');
     }).catch(() => {
       // 降级方案：显示链接让用户手动复制
       setShowShareDialog(false);
-      prompt('复制以下链接分享:', shareUrl);
+      prompt('Copy this link:', shareUrl);
     });
   };
 
@@ -652,8 +653,8 @@ const MemberDetailPage = () => {
       const remainingSeconds = Math.ceil((tenMinutes - (now - lastRefreshTime)) / 1000);
       const minutes = Math.floor(remainingSeconds / 60);
       const seconds = remainingSeconds % 60;
-      setRefreshDialogTitle('刷新冷却中');
-      setRefreshDialogMessage(`请等待 ${minutes}分${seconds}秒 后再试`);
+      setRefreshDialogTitle('Refresh Cooldown');
+      setRefreshDialogMessage(`Please wait ${minutes}m ${seconds}s before trying again`);
       setShowRefreshDialog(true);
       return;
     }
@@ -685,8 +686,8 @@ const MemberDetailPage = () => {
       }
 
       if (!targetServerId || !targetCharacterId) {
-        setRefreshDialogTitle('刷新失败');
-        setRefreshDialogMessage('无法获取角色信息');
+        setRefreshDialogTitle('Refresh Failed');
+        setRefreshDialogMessage('Could not get character info');
         setShowRefreshDialog(true);
         setRefreshing(false);
         return;
@@ -789,13 +790,13 @@ const MemberDetailPage = () => {
       }
 
       // 刷新成功提示
-      setRefreshDialogTitle('刷新成功');
-      setRefreshDialogMessage('角色数据已更新');
+      setRefreshDialogTitle('Success');
+      setRefreshDialogMessage('Character data updated');
       setShowRefreshDialog(true);
     } catch (error) {
-      console.error('刷新失败:', error);
-      setRefreshDialogTitle('刷新失败');
-      setRefreshDialogMessage(error instanceof Error ? error.message : '请稍后重试');
+      console.error('Refresh failed:', error);
+      setRefreshDialogTitle('Refresh Failed');
+      setRefreshDialogMessage(error instanceof Error ? error.message : 'Please try again later');
       setShowRefreshDialog(true);
     } finally {
       setRefreshing(false);
@@ -878,7 +879,7 @@ const MemberDetailPage = () => {
         setDaevanionEffects(effects);
       }
     } catch (error) {
-      console.error('加载守护力数据失败:', error);
+      console.error('Failed to load Daevanion data:', error);
     } finally {
       setDaevanionLoading(false);
     }
@@ -886,7 +887,7 @@ const MemberDetailPage = () => {
 
   // 根据来源确定返回链接和文字
   const backLink = (isFromCharacterBD || isFromShare) ? "/" : "/legion";
-  const backText = (isFromCharacterBD || isFromShare) ? "返回首页" : "返回军团";
+  const backText = (isFromCharacterBD || isFromShare) ? "Home" : "Legion";
 
   // 兼容旧数据格式(items对象)和新数据格式(equipment/skill/petwing结构)
   // equipment 已在前面定义
@@ -1023,7 +1024,7 @@ const MemberDetailPage = () => {
             alt={skin.name}
             className="equip-card__skin-icon"
             style={{ borderColor: `color-mix(in srgb, ${gradeColors[skin.grade] || '#9d9d9d'} 50%, transparent)` }}
-            title={`外观: ${skin.name}`}
+            title={`Skin: ${skin.name}`}
             onMouseEnter={(e) => {
               e.stopPropagation();
               // 清除装备详情的悬浮定时器
@@ -1060,8 +1061,8 @@ const MemberDetailPage = () => {
                 onClick={handleRefresh}
                 className="member-hero__refresh-btn"
                 disabled={refreshing}
-                title="刷新角色数据（10分钟冷却）"
-                aria-label="刷新角色数据"
+                title="Refresh character data (10m cooldown)"
+                aria-label="Refresh character data"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -1072,15 +1073,15 @@ const MemberDetailPage = () => {
                   height="18"
                   className={refreshing ? 'spinning' : ''}
                 >
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
               </button>
               {/* 分享按钮 */}
-              <button onClick={handleShare} className="member-hero__share-btn" aria-label="分享角色" title="分享角色">
+              <button onClick={handleShare} className="member-hero__share-btn" aria-label="Share character" title="Share character">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                  <polyline points="16 6 12 2 8 6"/>
-                  <line x1="12" y1="2" x2="12" y2="15"/>
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                  <polyline points="16 6 12 2 8 6" />
+                  <line x1="12" y1="2" x2="12" y2="15" />
                 </svg>
               </button>
             </div>
@@ -1090,7 +1091,7 @@ const MemberDetailPage = () => {
             <div className="member-hero__avatar">
               <img src={profile.profileImage || '/default-avatar.png'} alt={profile.characterName} />
               <div className="member-hero__item-level">
-                <span className="member-hero__il-label">装备等级</span>
+                <span className="member-hero__il-label">Item Level</span>
                 <span className="member-hero__il-value">{itemLevel}</span>
               </div>
             </div>
@@ -1108,7 +1109,7 @@ const MemberDetailPage = () => {
                 <span className="member-hero__divider">|</span>
                 <span className="member-hero__race">{profile.raceName}</span>
                 <span className="member-hero__divider">|</span>
-                <span className="member-hero__server">{profile.serverName}</span>
+                <span className="member-hero__server">{translateServerName(profile.serverName)}</span>
                 {profile.regionName && (
                   <>
                     <span className="member-hero__divider">|</span>
@@ -1123,11 +1124,11 @@ const MemberDetailPage = () => {
                 {ratingLoading ? (
                   <div className="member-hero__rating-loading">
                     <span className="member-hero__rating-spinner"></span>
-                    <span>评分计算中...</span>
+                    <span>Calculating Rating...</span>
                   </div>
                 ) : rating ? (
                   <div className="member-hero__rating">
-                    <span className="member-hero__rating-label">PVE评分:</span>
+                    <span className="member-hero__rating-label">PVE Rating:</span>
                     <span className="member-hero__rating-value">{Math.floor(rating.scores.score)}</span>
                   </div>
                 ) : null}
@@ -1135,29 +1136,29 @@ const MemberDetailPage = () => {
                 {/* 攻击力显示 */}
                 {attackPowerLoading ? (
                   <div className="member-hero__attack-loading">
-                    <span className="member-hero__attack-label">攻击力:</span>
+                    <span className="member-hero__attack-label">Attack:</span>
                     <span className="member-hero__attack-spinner"></span>
-                    <span>计算中,请耐心等待</span>
+                    <span>Calculating, please wait...</span>
                   </div>
                 ) : attackPower ? (
                   <div className="member-hero__attack">
-                    <span className="member-hero__attack-label">攻击力:</span>
+                    <span className="member-hero__attack-label">Attack:</span>
                     <span className="member-hero__attack-value">{attackPower.finalPower}</span>
                     <button
                       className="member-hero__attack-info"
                       onClick={() => setShowAttackPowerModal(true)}
-                      title="查看攻击力来源统计"
+                      title="View attack power sources"
                     >
                       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12h-1v-1h1v1zm0-2h-1V4h1v6z"/>
+                        <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 12h-1v-1h1v1zm0-2h-1V4h1v6z" />
                       </svg>
                     </button>
                   </div>
                 ) : (isFromShare || isFromCharacterBD) ? (
                   <div className="member-hero__attack-loading">
-                    <span className="member-hero__attack-label">攻击力:</span>
+                    <span className="member-hero__attack-label">Attack:</span>
                     <span className="member-hero__attack-spinner"></span>
-                    <span>计算中,请耐心等待</span>
+                    <span>Calculating, please wait...</span>
                   </div>
                 ) : null}
               </div>
@@ -1165,7 +1166,7 @@ const MemberDetailPage = () => {
               {/* 提示信息 */}
               {attackPower && (
                 <div className="member-hero__attack-note">
-                  基于算法计算可能存在误差,仅供参考,缺少:宠物加成、服装、翅膀、被动技能
+                  Calculated values may vary. Excludes: Pets, Costumes, Wings, Passives.
                 </div>
               )}
             </div>
@@ -1185,20 +1186,20 @@ const MemberDetailPage = () => {
         {/* 左侧边栏 - 属性 + 阿尔卡那 */}
         <aside className="member-sidebar member-sidebar--left">
           <div className="stat-panel">
-            <h3 className="stat-panel__title">基础属性</h3>
+            <h3 className="stat-panel__title">Base Stats</h3>
             <div className="stat-panel__grid">
               {baseStats.map((stat, idx) => (
                 <div
                   key={idx}
                   className="stat-item"
-                  title={stat.statSecondList?.join('\n') || ''}
+                  title={stat.statSecondList?.map(s => translateStatDescription(s)).join('\n') || ''}
                 >
-                  <span className="stat-item__name">{stat.name}</span>
+                  <span className="stat-item__name">{translateStatName(stat.name)}</span>
                   <span className="stat-item__value">{stat.value}</span>
                   {stat.statSecondList && stat.statSecondList.length > 0 && (
                     <div className="stat-item__tooltip">
                       {stat.statSecondList.map((desc, i) => (
-                        <div key={i}>{desc}</div>
+                        <div key={i}>{translateStatDescription(desc)}</div>
                       ))}
                     </div>
                   )}
@@ -1208,12 +1209,12 @@ const MemberDetailPage = () => {
           </div>
 
           <div className="stat-panel">
-            <h3 className="stat-panel__title">主要能力值</h3>
+            <h3 className="stat-panel__title">Divine Stats</h3>
             <div className="stat-panel__list">
               {divineStats.map((stat, idx) => (
                 <div key={idx} className="divine-stat">
                   <div className="divine-stat__header">
-                    <span className="divine-stat__name">{stat.name}</span>
+                    <span className="divine-stat__name">{translateStatName(stat.name)}</span>
                     <span className="divine-stat__value">{stat.value}</span>
                   </div>
                   <div className="divine-stat__bar">
@@ -1225,7 +1226,7 @@ const MemberDetailPage = () => {
                   {stat.statSecondList && stat.statSecondList.length > 0 && (
                     <div className="divine-stat__desc">
                       {stat.statSecondList.map((desc, i) => (
-                        <span key={i}>{desc}</span>
+                        <span key={i}>{translateStatDescription(desc)}</span>
                       ))}
                     </div>
                   )}
@@ -1238,13 +1239,13 @@ const MemberDetailPage = () => {
           {daevanionBoards.length > 0 && (
             <div className="stat-panel">
               <div className="stat-panel__header">
-                <h3 className="stat-panel__title">守护力</h3>
+                <h3 className="stat-panel__title">Daevanion</h3>
                 <button
                   className="stat-panel__action-btn"
                   onClick={handleShowDaevanion}
-                  title="查看面板效果"
+                  title="View board effects"
                 >
-                  查看面板效果
+                  View Effects
                 </button>
               </div>
               <div className="daevanion-list">
@@ -1282,7 +1283,7 @@ const MemberDetailPage = () => {
           <div className="equipment-panel">
             {/* 主装备 */}
             <section className="equip-section">
-              <h4 className="equip-section__title">武器/防具/首饰</h4>
+              <h4 className="equip-section__title">Armor / Weapon / Accessory</h4>
               <div className="equip-section__grid">
                 {gearEquipment.map(renderEquipItem)}
               </div>
@@ -1294,7 +1295,7 @@ const MemberDetailPage = () => {
             {/* 主动技能 */}
             {activeSkills.length > 0 && (
               <section className="skill-section">
-                <h4 className="skill-section__title">主动技能</h4>
+                <h4 className="skill-section__title">Active Skills</h4>
                 <div className="skill-section__grid">
                   {activeSkills.map((skill, idx) => (
                     <div key={idx} className="skill-card">
@@ -1312,7 +1313,7 @@ const MemberDetailPage = () => {
             {/* 被动技能 */}
             {passiveSkills.length > 0 && (
               <section className="skill-section">
-                <h4 className="skill-section__title">被动技能</h4>
+                <h4 className="skill-section__title">Passive Skills</h4>
                 <div className="skill-section__grid">
                   {passiveSkills.map((skill, idx) => (
                     <div key={idx} className="skill-card skill-card--passive">
@@ -1330,7 +1331,7 @@ const MemberDetailPage = () => {
             {/* 烙印技能 */}
             {brandSkills.length > 0 && (
               <section className="skill-section">
-                <h4 className="skill-section__title">烙印技能</h4>
+                <h4 className="skill-section__title">Stigma Skills</h4>
                 <div className="skill-section__grid">
                   {brandSkills.map((skill, idx) => (
                     <div
@@ -1351,7 +1352,7 @@ const MemberDetailPage = () => {
             {/* 阿尔卡那 - 放在烙印技能下面 */}
             {arcanaEquipment.length > 0 && (
               <section className="equip-section">
-                <h4 className="equip-section__title">阿尔卡那</h4>
+                <h4 className="equip-section__title">Arcana</h4>
                 <div className="equip-section__grid">
                   {arcanaEquipment.map(renderEquipItem)}
                 </div>
@@ -1364,7 +1365,7 @@ const MemberDetailPage = () => {
         <aside className="member-sidebar member-sidebar--right">
           {rankings.length > 0 && (
             <div className="ranking-panel">
-              <h3 className="ranking-panel__title">排行榜</h3>
+              <h3 className="ranking-panel__title">Rankings</h3>
               <div className="ranking-panel__list">
                 {rankings.map((rank, idx) => (
                   <div key={idx} className="ranking-item">
@@ -1372,12 +1373,12 @@ const MemberDetailPage = () => {
                       <img src={rank.gradeIcon} alt={rank.gradeName || ''} className="ranking-item__icon" />
                     )}
                     <div className="ranking-item__info">
-                      <span className="ranking-item__name">{rank.rankingContentsName}</span>
-                      <span className="ranking-item__grade">{rank.gradeName}</span>
+                      <span className="ranking-item__name">{translateRankingName(rank.rankingContentsName)}</span>
+                      <span className="ranking-item__grade">{translateRankingName(rank.gradeName || '')}</span>
                     </div>
                     <div className="ranking-item__stats">
                       <div className="ranking-item__rank">
-                        第{rank.rank?.toLocaleString() || '-'}名
+                        Rank #{rank.rank?.toLocaleString() || '-'}
                         {/* 名次变化提示 */}
                         {rank.rankChange !== null && rank.rankChange !== undefined && rank.rankChange !== 0 && (
                           <span className={`ranking-item__change ${rank.rankChange < 0 ? 'ranking-item__change--up' : 'ranking-item__change--down'}`}>
@@ -1402,7 +1403,7 @@ const MemberDetailPage = () => {
           {charInfo.title?.titleList && charInfo.title.titleList.length > 0 && (
             <div className="title-panel">
               <h3 className="title-panel__header">
-                <span className="title-panel__title">称号</span>
+                <span className="title-panel__title">Titles</span>
                 <span className="title-panel__count">{charInfo.title.ownedCount}/{charInfo.title.totalCount}</span>
               </h3>
               <div className="title-panel__categories">
@@ -1441,13 +1442,13 @@ const MemberDetailPage = () => {
           {/* 宠物/翅膀 */}
           {(pet || wing) && (
             <div className="sidebar-panel">
-              <h3 className="sidebar-panel__title">宠物 / 翅膀</h3>
+              <h3 className="sidebar-panel__title">Pet / Wings</h3>
               <div className="sidebar-panel__content">
                 {pet && (
                   <div className="sidebar-petwing">
                     <img src={pet.icon} alt={pet.name} className="sidebar-petwing__icon" />
                     <div className="sidebar-petwing__info">
-                      <span className="sidebar-petwing__type">宠物</span>
+                      <span className="sidebar-petwing__type">Pet</span>
                       <span className="sidebar-petwing__name">{pet.name}</span>
                       <span className="sidebar-petwing__level">Lv.{pet.level}</span>
                     </div>
@@ -1457,7 +1458,7 @@ const MemberDetailPage = () => {
                   <div className="sidebar-petwing" style={{ '--grade-color': gradeColors[wing.grade] || '#9d9d9d' } as React.CSSProperties}>
                     <img src={wing.icon} alt={wing.name} className="sidebar-petwing__icon" />
                     <div className="sidebar-petwing__info">
-                      <span className="sidebar-petwing__type">翅膀</span>
+                      <span className="sidebar-petwing__type">Wings</span>
                       <span className="sidebar-petwing__name" style={{ color: gradeColors[wing.grade] }}>
                         {wing.name}
                       </span>
@@ -1489,10 +1490,10 @@ const MemberDetailPage = () => {
       {/* 分享确认框 */}
       <ConfirmDialog
         visible={showShareDialog}
-        title="分享角色"
-        message="确认复制分享链接到剪贴板？"
-        confirmText="复制链接"
-        cancelText="取消"
+        title="Share Character"
+        message="Are you sure you want to copy the share link?"
+        confirmText="Copy Link"
+        cancelText="Cancel"
         onConfirm={confirmShare}
         onCancel={() => setShowShareDialog(false)}
       />
@@ -1502,7 +1503,7 @@ const MemberDetailPage = () => {
         visible={showRefreshDialog}
         title={refreshDialogTitle}
         message={refreshDialogMessage}
-        confirmText="确定"
+        confirmText="OK"
         onConfirm={() => setShowRefreshDialog(false)}
         onCancel={() => setShowRefreshDialog(false)}
       />

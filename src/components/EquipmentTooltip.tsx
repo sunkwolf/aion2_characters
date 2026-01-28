@@ -1,4 +1,4 @@
-// 装备悬浮提示组件 - 简化版 (已弃用,保留空组件兼容性)
+// Equipment hover tooltip component - Simplified version (deprecated, keeping empty component for compatibility)
 
 import React from 'react';
 
@@ -7,7 +7,7 @@ interface EquipmentTooltipProps {
   visible: boolean;
 }
 
-// 不再显示任何提示文字,直接返回null
+// No longer displays any tooltip text, directly returns null
 const EquipmentTooltip: React.FC<EquipmentTooltipProps> = () => {
   return null;
 };

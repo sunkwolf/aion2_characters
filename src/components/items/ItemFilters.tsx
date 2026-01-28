@@ -10,7 +10,7 @@ interface ItemFiltersProps {
 }
 
 const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
-  // 展开的父分类ID
+  // Expanded parent category ID
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   const handleReset = () => {
@@ -27,13 +27,13 @@ const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
   const hasActiveFilters =
     filters.grade || filters.categoryId || filters.classId || filters.keyword;
 
-  // 点击父分类：选中并展开/收起子分类
+  // Click parent category: select and expand/collapse subcategories
   const handleParentClick = (parentId: string) => {
     onChange({ categoryId: parentId });
     setExpandedCategory(expandedCategory === parentId ? null : parentId);
   };
 
-  // 检查当前选中的分类是否属于某个父分类
+  // Check if the currently selected category belongs to a parent category
   const isChildOfParent = (parentId: string) => {
     const parent = options.categories.find(c => c.id === parentId);
     return parent?.children?.some(child => child.id === filters.categoryId);
@@ -41,12 +41,12 @@ const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
 
   return (
     <div className="item-filters">
-      {/* 顶部行：搜索框和重置按钮 */}
+      {/* Top row: search box and reset button */}
       <div className="item-filters__top-row">
         <div className="item-filters__search">
           <input
             type="text"
-            placeholder="搜索物品名称..."
+            placeholder="Search item name..."
             value={filters.keyword || ''}
             onChange={e => onChange({ keyword: e.target.value || undefined })}
             className="item-filters__search-input"
@@ -58,21 +58,21 @@ const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
         </div>
         {hasActiveFilters && (
           <button className="item-filters__reset" onClick={handleReset}>
-            清除筛选
+            Clear Filters
           </button>
         )}
       </div>
 
-      {/* 职业和品质筛选 */}
+      {/* Class and quality filters */}
       <div className="item-filters__groups">
         <div className="item-filters__group">
-          <span className="item-filters__label">职业</span>
+          <span className="item-filters__label">Class</span>
           <div className="item-filters__chips">
             <button
               className={`item-filters__chip ${!filters.classId ? 'item-filters__chip--active' : ''}`}
               onClick={() => onChange({ classId: undefined })}
             >
-              全部
+              All
             </button>
             {options.classes.map(cls => (
               <button
@@ -87,13 +87,13 @@ const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
         </div>
         <div className="item-filters__divider" />
         <div className="item-filters__group">
-          <span className="item-filters__label">品质</span>
+          <span className="item-filters__label">Quality</span>
           <div className="item-filters__chips">
             <button
               className={`item-filters__chip ${!filters.grade ? 'item-filters__chip--active' : ''}`}
               onClick={() => onChange({ grade: undefined })}
             >
-              全部
+              All
             </button>
             {options.grades.map(grade => (
               <button
@@ -111,25 +111,24 @@ const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
         </div>
       </div>
 
-      {/* 分类筛选 */}
+      {/* Category filter */}
       <div className="item-filters__categories-section">
         <div className="item-filters__group">
-          <span className="item-filters__label">分类</span>
+          <span className="item-filters__label">Category</span>
           <div className="item-filters__categories">
             <button
               className={`item-filters__chip ${!filters.categoryId ? 'item-filters__chip--active' : ''}`}
               onClick={() => { onChange({ categoryId: undefined }); setExpandedCategory(null); }}
             >
-              全部
+              All
             </button>
             {options.categories.map(parent => (
               <button
                 key={parent.id}
-                className={`item-filters__chip item-filters__chip--parent ${
-                  filters.categoryId === parent.id || isChildOfParent(parent.id)
+                className={`item-filters__chip item-filters__chip--parent ${filters.categoryId === parent.id || isChildOfParent(parent.id)
                     ? 'item-filters__chip--active'
                     : ''
-                } ${expandedCategory === parent.id ? 'item-filters__chip--expanded' : ''}`}
+                  } ${expandedCategory === parent.id ? 'item-filters__chip--expanded' : ''}`}
                 onClick={() => handleParentClick(parent.id)}
               >
                 {parent.name_cn}
@@ -143,19 +142,18 @@ const ItemFilters = ({ filters, options, onChange }: ItemFiltersProps) => {
           </div>
         </div>
 
-        {/* 展开的子分类 */}
+        {/* Expanded subcategories */}
         {expandedCategory && (
           <div className="item-filters__row--children">
-            <span className="item-filters__label item-filters__label--sub">子分类</span>
+            <span className="item-filters__label item-filters__label--sub">Subcategory</span>
             <div className="item-filters__chips">
               {options.categories
                 .find(c => c.id === expandedCategory)
                 ?.children?.map(child => (
                   <button
                     key={child.id}
-                    className={`item-filters__chip item-filters__chip--child ${
-                      filters.categoryId === child.id ? 'item-filters__chip--active' : ''
-                    }`}
+                    className={`item-filters__chip item-filters__chip--child ${filters.categoryId === child.id ? 'item-filters__chip--active' : ''
+                      }`}
                     onClick={() => onChange({ categoryId: child.id })}
                   >
                     {child.name_cn}

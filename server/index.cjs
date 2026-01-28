@@ -792,7 +792,7 @@ app.get('/api/character/info', (req, res) => {
   }
 
   // characterId 已经是编码过的,直接使用
-  const url = `https://tw.ncsoft.com/aion2/api/character/info?lang=zh&characterId=${characterId}&serverId=${serverId}`;
+  const url = `https://tw.ncsoft.com/aion2/api/character/info?lang=en&characterId=${characterId}&serverId=${serverId}`;
 
   https.get(url, (apiRes) => {
     let data = '';
@@ -827,7 +827,7 @@ app.get('/api/character/equipment', (req, res) => {
   }
 
   // characterId 已经是编码过的,直接使用
-  const url = `https://tw.ncsoft.com/aion2/api/character/equipment?lang=zh&characterId=${characterId}&serverId=${serverId}`;
+  const url = `https://tw.ncsoft.com/aion2/api/character/equipment?lang=en&characterId=${characterId}&serverId=${serverId}`;
 
   https.get(url, (apiRes) => {
     let data = '';
@@ -892,8 +892,8 @@ app.get('/api/character/equipment-detail', (req, res) => {
 
   // 构建装备详情API的URL - 必须提供完整参数
   const url = enchantLevel && characterId && serverId && slotPos
-    ? `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=zh`
-    : `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&lang=zh`;
+    ? `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=en`
+    : `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&lang=en`;
 
   console.log(`[装备详情API] 请求URL: ${url}`);
 
@@ -1003,7 +1003,7 @@ app.get('/api/character/daevanion', (req, res) => {
   }
 
   // 官方API地址
-  const url = `https://tw.ncsoft.com/aion2/api/character/daevanion/detail?lang=zh&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&boardId=${boardId}`;
+  const url = `https://tw.ncsoft.com/aion2/api/character/daevanion/detail?lang=en&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&boardId=${boardId}`;
 
   console.log(`[守护力API] 请求面板 ${boardId}: ${url.substring(0, 100)}...`);
 
@@ -1163,7 +1163,7 @@ function parseCharacterUrl(url) {
  */
 function fetchCharacterInfo(characterId, serverId) {
   return new Promise((resolve, reject) => {
-    const url = `https://tw.ncsoft.com/aion2/api/character/info?lang=zh&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
+    const url = `https://tw.ncsoft.com/aion2/api/character/info?lang=en&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
 
     https.get(url, (apiRes) => {
       let data = '';
@@ -1193,7 +1193,7 @@ function fetchCharacterInfo(characterId, serverId) {
  */
 function fetchCharacterEquipment(characterId, serverId) {
   return new Promise((resolve, reject) => {
-    const url = `https://tw.ncsoft.com/aion2/api/character/equipment?lang=zh&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
+    const url = `https://tw.ncsoft.com/aion2/api/character/equipment?lang=en&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}`;
 
     https.get(url, (apiRes) => {
       let data = '';
@@ -1355,7 +1355,7 @@ function fetchEquipmentDetail(itemId, enchantLevel, characterId, serverId, slotP
   return new Promise((resolve, reject) => {
     // 添加时间戳防止API缓存,确保相同装备ID但不同slotPos时能获取到不同数据
     const timestamp = Date.now();
-    const url = `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=zh&_t=${timestamp}`;
+    const url = `https://tw.ncsoft.com/aion2/api/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&slotPos=${slotPos}&lang=en&_t=${timestamp}`;
 
     https.get(url, (apiRes) => {
       let data = '';
@@ -1447,7 +1447,7 @@ function getBoardIdsByClassId(classId) {
  */
 function fetchDaevanionBoard(characterId, serverId, boardId) {
   return new Promise((resolve, reject) => {
-    const url = `https://tw.ncsoft.com/aion2/api/character/daevanion/detail?lang=zh&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&boardId=${boardId}`;
+    const url = `https://tw.ncsoft.com/aion2/api/character/daevanion/detail?lang=en&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&boardId=${boardId}`;
 
     https.get(url, (apiRes) => {
       let data = '';
@@ -1703,7 +1703,7 @@ async function syncServerList() {
   return new Promise((resolve, reject) => {
     console.log('🌐 正在同步服务器列表...');
 
-    const url = 'https://tw.ncsoft.com/aion2/api/gameinfo/servers?lang=zh';
+    const url = 'https://tw.ncsoft.com/aion2/api/gameinfo/servers?lang=en';
 
     https.get(url, (res) => {
       let data = '';

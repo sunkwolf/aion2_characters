@@ -1,4 +1,4 @@
-// 数据同步面板组件
+// Data Sync Panel component
 
 import React, { useState } from 'react';
 import type { MemberConfig, EquipmentDetailsCache } from '../../types/admin';
@@ -22,7 +22,7 @@ const DataSyncPanel: React.FC = () => {
   const [syncLog, setSyncLog] = useState<string[]>([]);
   const [manualJson, setManualJson] = useState('');
 
-  // 加载成员列表
+  // Load member list
   React.useEffect(() => {
     loadMembersData();
   }, []);
@@ -32,46 +32,46 @@ const DataSyncPanel: React.FC = () => {
       const data = await loadMembers();
       setMembers(data);
     } catch (error) {
-      console.error('加载成员列表失败:', error);
+      console.error('Failed to load member list:', error);
     }
   };
 
-  // 添加日志
+  // Add log
   const addLog = (message: string, type: 'info' | 'success' | 'error' = 'info') => {
-    const timestamp = new Date().toLocaleTimeString('zh-CN');
+    const timestamp = new Date().toLocaleTimeString('en-US');
     const logMessage = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
     setSyncLog((prev) => [...prev, logMessage]);
   };
 
-  // 清空日志
+  // Clear log
   const clearLog = () => {
     setSyncLog([]);
   };
 
-  // ============= 新增: 自动同步功能 =============
+  // ============= Auto sync features =============
 
-  // 同步单个成员
+  // Sync single member
   const handleSyncMember = async () => {
     if (!selectedMember) {
-      alert('请选择成员');
+      alert('Please select a member');
       return;
     }
 
     const member = members.find(m => m.id === selectedMember);
     if (!member) {
-      alert('未找到成员');
+      alert('Member not found');
       return;
     }
 
     const validation = validateMemberConfig(member);
     if (!validation.valid) {
-      alert(`该成员未配置 API: ${validation.message}`);
+      alert(`This member has no API configured: ${validation.message}`);
       return;
     }
 
     setLoading(true);
     clearLog();
-    addLog(`开始同步成员: ${member.name}`, 'info');
+    addLog(`Starting sync for member: ${member.name}`, 'info');
 
     try {
       const result = await syncMemberData(member, (message, type) => {
@@ -79,15 +79,15 @@ const DataSyncPanel: React.FC = () => {
       });
 
       if (result.success) {
-        addLog(`✓ 同步成功: ${member.name}`, 'success');
+        addLog(`✓ Sync successful: ${member.name}`, 'success');
 
-        // 保存到 localStorage
+        // Save to localStorage
         if (result.characterInfo) {
           localStorage.setItem(
             `aion2_character_${member.id}`,
             JSON.stringify(result.characterInfo)
           );
-          addLog('✓ 角色信息已保存到 localStorage', 'success');
+          addLog('✓ Character info saved to localStorage', 'success');
         }
 
         if (result.equipmentDetails && result.equipmentDetails.length > 0) {
@@ -97,36 +97,36 @@ const DataSyncPanel: React.FC = () => {
             details: result.equipmentDetails,
           };
           saveEquipmentCache(cache);
-          addLog(`✓ 装备详情已保存 (${result.equipmentDetails.length} 件装备)`, 'success');
+          addLog(`✓ Equipment details saved (${result.equipmentDetails.length} items)`, 'success');
         }
 
-        alert('同步成功!数据已保存到本地存储');
+        alert('Sync successful! Data saved to local storage');
       } else {
-        addLog(`✗ 同步失败: ${result.error}`, 'error');
-        alert(`同步失败: ${result.error}`);
+        addLog(`✗ Sync failed: ${result.error}`, 'error');
+        alert(`Sync failed: ${result.error}`);
       }
     } catch (error: any) {
-      addLog(`✗ 同步失败: ${error.message}`, 'error');
-      alert(`同步失败: ${error.message}`);
+      addLog(`✗ Sync failed: ${error.message}`, 'error');
+      alert(`Sync failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // 批量同步所有成员
+  // Batch sync all members
   const handleSyncAll = async () => {
     if (configuredMembers.length === 0) {
-      alert('没有已配置 API 的成员');
+      alert('No members with API configured');
       return;
     }
 
-    if (!confirm(`确定要同步所有 ${configuredMembers.length} 名成员的数据吗?`)) {
+    if (!confirm(`Are you sure you want to sync all ${configuredMembers.length} members?`)) {
       return;
     }
 
     setLoading(true);
     clearLog();
-    addLog(`开始批量同步 ${configuredMembers.length} 名成员...`, 'info');
+    addLog(`Starting batch sync for ${configuredMembers.length} members...`, 'info');
 
     try {
       const result = await syncAllMembers(configuredMembers, (message, type) => {
@@ -134,21 +134,21 @@ const DataSyncPanel: React.FC = () => {
       });
 
       const successRate = ((result.success / result.total) * 100).toFixed(0);
-      addLog(`同步完成: 成功 ${result.success}/${result.total} (${successRate}%)`, 'success');
+      addLog(`Sync complete: ${result.success}/${result.total} successful (${successRate}%)`, 'success');
 
-      alert(`同步完成!\n成功: ${result.success} 名\n失败: ${result.failed} 名\n总计: ${result.total} 名`);
+      alert(`Sync complete!\nSuccessful: ${result.success}\nFailed: ${result.failed}\nTotal: ${result.total}`);
     } catch (error: any) {
-      addLog(`✗ 批量同步失败: ${error.message}`, 'error');
-      alert(`批量同步失败: ${error.message}`);
+      addLog(`✗ Batch sync failed: ${error.message}`, 'error');
+      alert(`Batch sync failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // 导出当前成员数据为文件
+  // Export current member data to file
   const handleExportMemberData = () => {
     if (!selectedMember) {
-      alert('请选择成员');
+      alert('Please select a member');
       return;
     }
 
@@ -156,13 +156,13 @@ const DataSyncPanel: React.FC = () => {
     const equipmentData = localStorage.getItem(`aion2_equipment_${selectedMember}`);
 
     if (!characterData && !equipmentData) {
-      alert('该成员暂无同步数据,请先点击"同步数据"按钮');
+      alert('No sync data for this member. Please click "Sync Data" button first');
       return;
     }
 
-    addLog(`正在导出 ${selectedMember} 的数据...`, 'info');
+    addLog(`Exporting data for ${selectedMember}...`, 'info');
 
-    // 导出角色信息
+    // Export character info
     if (characterData) {
       const blob = new Blob([characterData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -173,10 +173,10 @@ const DataSyncPanel: React.FC = () => {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      addLog(`✓ 已导出: ${selectedMember}_character_info.json`, 'success');
+      addLog(`✓ Exported: ${selectedMember}_character_info.json`, 'success');
     }
 
-    // 导出装备详情
+    // Export equipment details
     if (equipmentData) {
       const blob = new Blob([equipmentData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -187,36 +187,36 @@ const DataSyncPanel: React.FC = () => {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      addLog(`✓ 已导出: ${selectedMember}_equipment_details.json`, 'success');
+      addLog(`✓ Exported: ${selectedMember}_equipment_details.json`, 'success');
     }
 
-    addLog(`✓ 导出完成,请将文件放到 public/data/${selectedMember}/ 文件夹`, 'success');
-    alert(`导出成功!\n\n请将下载的文件放到项目的以下目录:\npublic/data/${selectedMember}/\n\n文件名:\n- ${selectedMember}_character_info.json → character_info.json\n- ${selectedMember}_equipment_details.json → equipment_details.json`);
+    addLog(`✓ Export complete. Place files in public/data/${selectedMember}/ folder`, 'success');
+    alert(`Export successful!\n\nPlace downloaded files in:\npublic/data/${selectedMember}/\n\nFiles:\n- ${selectedMember}_character_info.json → character_info.json\n- ${selectedMember}_equipment_details.json → equipment_details.json`);
   };
 
-  // 手动导入 JSON 数据
+  // Manual JSON import
   const handleManualImport = () => {
     if (!manualJson.trim()) {
-      alert('请粘贴 JSON 数据');
+      alert('Please paste JSON data');
       return;
     }
 
     if (!selectedMember) {
-      alert('请选择成员');
+      alert('Please select a member');
       return;
     }
 
     try {
-      // 尝试解析 JSON
+      // Try to parse JSON
       const data = JSON.parse(manualJson);
 
-      // 判断是角色数据还是装备详情数据
+      // Determine if character data or equipment details
       if (data.equipment || data.character) {
-        // 角色数据
-        addLog(`成功解析角色数据`, 'success');
-        addLog(`提示: 请将数据保存为 public/data/${selectedMember}/character.json`, 'info');
+        // Character data
+        addLog(`Successfully parsed character data`, 'success');
+        addLog(`Tip: Save data as public/data/${selectedMember}/character.json`, 'info');
 
-        // 下载为文件
+        // Download as file
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -227,9 +227,9 @@ const DataSyncPanel: React.FC = () => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        addLog(`已下载文件: ${selectedMember}_character.json`, 'success');
+        addLog(`Downloaded file: ${selectedMember}_character.json`, 'success');
       } else if (data.details || Array.isArray(data)) {
-        // 装备详情缓存
+        // Equipment details cache
         const cache: EquipmentDetailsCache = {
           memberId: selectedMember,
           lastUpdate: new Date().toISOString(),
@@ -237,29 +237,29 @@ const DataSyncPanel: React.FC = () => {
         };
 
         saveEquipmentCache(cache);
-        addLog(`装备详情已保存到 localStorage`, 'success');
-        addLog(`共 ${cache.details.length} 件装备`, 'info');
+        addLog(`Equipment details saved to localStorage`, 'success');
+        addLog(`Total ${cache.details.length} equipment items`, 'info');
 
-        // 同时下载为文件
+        // Also download as file
         exportEquipmentCacheToFile(cache);
-        addLog(`已下载文件: ${selectedMember}_equipment_details.json`, 'success');
+        addLog(`Downloaded file: ${selectedMember}_equipment_details.json`, 'success');
       } else {
-        addLog('无法识别 JSON 数据格式', 'error');
+        addLog('Unable to recognize JSON data format', 'error');
       }
 
       setManualJson('');
     } catch (error: any) {
-      addLog(`JSON 解析失败: ${error.message}`, 'error');
+      addLog(`JSON parse failed: ${error.message}`, 'error');
     }
   };
 
-  // 从文件导入装备详情
+  // Import equipment details from file
   const handleFileImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     if (!selectedMember) {
-      alert('请先选择成员');
+      alert('Please select a member first');
       event.target.value = '';
       return;
     }
@@ -267,45 +267,45 @@ const DataSyncPanel: React.FC = () => {
     try {
       const data = await importJsonFile<any>(file);
 
-      // 如果数据包含 memberId,使用文件中的 memberId
+      // If data contains memberId, use file's memberId
       if (data.memberId) {
         saveEquipmentCache(data as EquipmentDetailsCache);
-        addLog(`导入成功: ${data.memberId}`, 'success');
+        addLog(`Import successful: ${data.memberId}`, 'success');
       } else {
-        // 否则创建新的缓存对象
+        // Otherwise create new cache object
         const cache: EquipmentDetailsCache = {
           memberId: selectedMember,
           lastUpdate: new Date().toISOString(),
           details: Array.isArray(data) ? data : data.details || [],
         };
         saveEquipmentCache(cache);
-        addLog(`导入成功: ${selectedMember}`, 'success');
+        addLog(`Import successful: ${selectedMember}`, 'success');
       }
 
-      addLog(`装备详情已保存`, 'success');
+      addLog(`Equipment details saved`, 'success');
     } catch (error: any) {
-      addLog(`导入失败: ${error.message}`, 'error');
+      addLog(`Import failed: ${error.message}`, 'error');
     }
 
     event.target.value = '';
   };
 
-  // 复制 API URL
+  // Copy API URL
   const copyApiUrl = (member: MemberConfig) => {
     const url = getCharacterUrlFromMember(member);
     if (!url) {
-      alert('该成员未配置 API 参数');
+      alert('This member has no API configured');
       return;
     }
 
-    // 兼容 HTTP 和 HTTPS 环境的复制方案
+    // Clipboard copy compatible with HTTP and HTTPS
     const copyToClipboard = (text: string): Promise<void> => {
       return new Promise((resolve, reject) => {
-        // 优先使用现代 Clipboard API (需要 HTTPS)
+        // Prefer modern Clipboard API (requires HTTPS)
         if (navigator.clipboard && window.isSecureContext) {
           navigator.clipboard.writeText(text).then(resolve, reject);
         } else {
-          // HTTP 环境降级方案: 使用传统 document.execCommand
+          // HTTP fallback: use legacy document.execCommand
           const textArea = document.createElement('textarea');
           textArea.value = text;
           textArea.style.position = 'fixed';
@@ -321,7 +321,7 @@ const DataSyncPanel: React.FC = () => {
             if (successful) {
               resolve();
             } else {
-              reject(new Error('复制命令执行失败'));
+              reject(new Error('Copy command failed'));
             }
           } catch (err) {
             document.body.removeChild(textArea);
@@ -333,57 +333,57 @@ const DataSyncPanel: React.FC = () => {
 
     copyToClipboard(url).then(
       () => {
-        addLog(`已复制 ${member.name} 的 API URL`, 'success');
+        addLog(`Copied ${member.name}'s API URL`, 'success');
       },
       () => {
-        alert('复制失败,请手动复制');
+        alert('Copy failed, please copy manually');
       }
     );
   };
 
-  // 获取已配置 API 的成员
+  // Get members with configured API
   const configuredMembers = members.filter(m => validateMemberConfig(m).valid);
 
   return (
     <div className="data-sync-panel">
-      {/* 说明文档 */}
+      {/* Documentation */}
       <div className="sync-panel__intro">
-        <h3>数据同步说明</h3>
+        <h3>Data Sync Guide</h3>
         <div className="intro-content">
           <p>
-            现在支持<strong>一键自动同步</strong>!点击下方按钮即可自动获取所有成员数据。
+            Now supports <strong>one-click auto sync</strong>! Click the buttons below to automatically fetch all member data.
           </p>
           <ul>
             <li>
-              <strong>自动同步 (推荐)</strong>: 选择成员后点击"同步数据"按钮,自动完成 3 步同步流程
+              <strong>Auto Sync (Recommended)</strong>: Select a member and click "Sync Data" to complete the 3-step sync process
             </li>
             <li>
-              <strong>批量同步</strong>: 点击"同步所有成员"按钮,自动同步所有已配置 API 的成员
+              <strong>Batch Sync</strong>: Click "Sync All Members" to sync all members with API configured
             </li>
             <li>
-              <strong>手动导入</strong>: 如果自动同步失败,可以手动复制粘贴 JSON 数据
+              <strong>Manual Import</strong>: If auto sync fails, you can manually paste JSON data
             </li>
           </ul>
           <p className="hint-text">
-            注意: 开发环境下使用代理绕过 CORS,生产环境需要配置后端代理
+            Note: Development uses proxy to bypass CORS, production requires backend proxy configuration
           </p>
         </div>
       </div>
 
-      {/* 自动同步区域 */}
+      {/* Auto sync section */}
       <div className="sync-panel__auto">
-        <h3>自动同步</h3>
+        <h3>Auto Sync</h3>
 
-        {/* 成员选择 */}
+        {/* Member selector */}
         <div className="sync-panel__selector">
-          <label htmlFor="member-select">选择成员:</label>
+          <label htmlFor="member-select">Select Member:</label>
           <select
             id="member-select"
             value={selectedMember}
             onChange={(e) => setSelectedMember(e.target.value)}
             disabled={loading}
           >
-            <option value="">-- 请选择 --</option>
+            <option value="">-- Please Select --</option>
             {configuredMembers.map(member => (
               <option key={member.id} value={member.id}>
                 {member.name} ({member.id})
@@ -399,19 +399,19 @@ const DataSyncPanel: React.FC = () => {
               }}
               className="btn btn--secondary"
             >
-              复制 API URL
+              Copy API URL
             </button>
           )}
         </div>
 
-        {/* 同步按钮 */}
+        {/* Sync buttons */}
         <div className="sync-panel__actions">
           <button
             onClick={handleSyncMember}
             disabled={!selectedMember || loading}
             className="btn btn--primary btn--large"
           >
-            {loading ? '同步中...' : '同步数据'}
+            {loading ? 'Syncing...' : 'Sync Data'}
           </button>
 
           <button
@@ -419,7 +419,7 @@ const DataSyncPanel: React.FC = () => {
             disabled={!selectedMember || loading}
             className="btn btn--secondary btn--large"
           >
-            导出为文件
+            Export to File
           </button>
 
           <button
@@ -427,24 +427,24 @@ const DataSyncPanel: React.FC = () => {
             disabled={configuredMembers.length === 0 || loading}
             className="btn btn--primary btn--large"
           >
-            {loading ? '同步中...' : `同步所有成员 (${configuredMembers.length})`}
+            {loading ? 'Syncing...' : `Sync All Members (${configuredMembers.length})`}
           </button>
         </div>
 
         {configuredMembers.length === 0 && (
           <p className="hint-text">
-            暂无已配置 API 的成员,请先在"成员管理"中配置成员的 API URL
+            No members with API configured. Please configure member API URLs in "Members" first
           </p>
         )}
       </div>
 
-      {/* 手动输入 JSON */}
+      {/* Manual JSON input */}
       <div className="sync-panel__manual">
-        <h3>手动粘贴 JSON 数据</h3>
+        <h3>Manual Paste JSON Data</h3>
         <textarea
           value={manualJson}
           onChange={(e) => setManualJson(e.target.value)}
-          placeholder="在此粘贴从 API 返回的 JSON 数据..."
+          placeholder="Paste JSON data returned from API here..."
           rows={12}
         />
         <div className="sync-panel__actions">
@@ -453,22 +453,22 @@ const DataSyncPanel: React.FC = () => {
             disabled={!selectedMember || !manualJson.trim()}
             className="btn btn--primary"
           >
-            导入数据
+            Import Data
           </button>
           <button
             onClick={() => setManualJson('')}
             className="btn btn--secondary"
           >
-            清空
+            Clear
           </button>
         </div>
       </div>
 
-      {/* 文件导入 */}
+      {/* File import */}
       <div className="sync-panel__file">
-        <h3>从文件导入</h3>
+        <h3>Import from File</h3>
         <label className="btn btn--secondary">
-          选择 JSON 文件
+          Select JSON File
           <input
             type="file"
             accept=".json"
@@ -478,32 +478,31 @@ const DataSyncPanel: React.FC = () => {
           />
         </label>
         {!selectedMember && (
-          <span className="hint-text">请先选择成员</span>
+          <span className="hint-text">Please select a member first</span>
         )}
       </div>
 
-      {/* 同步日志 */}
+      {/* Sync log */}
       <div className="sync-panel__log">
         <div className="log-header">
-          <h3>同步日志</h3>
+          <h3>Sync Log</h3>
           <button onClick={clearLog} className="btn btn--sm btn--secondary">
-            清空日志
+            Clear Log
           </button>
         </div>
         <div className="log-content">
           {syncLog.length === 0 ? (
-            <div className="log-empty">暂无日志</div>
+            <div className="log-empty">No logs yet</div>
           ) : (
             syncLog.map((log, index) => (
               <div
                 key={index}
-                className={`log-item ${
-                  log.includes('ERROR')
+                className={`log-item ${log.includes('ERROR')
                     ? 'log-item--error'
                     : log.includes('SUCCESS')
-                    ? 'log-item--success'
-                    : ''
-                }`}
+                      ? 'log-item--success'
+                      : ''
+                  }`}
               >
                 {log}
               </div>
@@ -512,18 +511,18 @@ const DataSyncPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Node.js 脚本说明 */}
+      {/* Node.js script info */}
       <div className="sync-panel__script-info">
-        <h3>使用 Node.js 同步脚本</h3>
+        <h3>Using Node.js Sync Script</h3>
         <div className="script-info-content">
-          <p>在项目根目录运行以下命令:</p>
+          <p>Run the following command in project root:</p>
           <pre><code>node scripts/sync-data.js</code></pre>
-          <p>脚本会自动:</p>
+          <p>The script will automatically:</p>
           <ul>
-            <li>读取成员配置 (public/data/members.json)</li>
-            <li>批量请求所有成员的角色数据</li>
-            <li>批量请求所有装备详情数据</li>
-            <li>保存到对应的文件夹 (public/data/成员ID/)</li>
+            <li>Read member config (public/data/members.json)</li>
+            <li>Batch fetch all member character data</li>
+            <li>Batch fetch all equipment detail data</li>
+            <li>Save to corresponding folders (public/data/memberId/)</li>
           </ul>
         </div>
       </div>

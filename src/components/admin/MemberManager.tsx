@@ -1,4 +1,4 @@
-// 成员管理组件
+// Member Manager component
 
 import React, { useState, useEffect } from 'react';
 import type { MemberConfig } from '../../types/admin';
@@ -29,7 +29,7 @@ const MemberManager: React.FC = () => {
     memberName: '',
   });
 
-  // 加载成员列表
+  // Load member list
   useEffect(() => {
     loadMembersData();
   }, []);
@@ -40,13 +40,13 @@ const MemberManager: React.FC = () => {
       const data = await loadMembers();
       setMembers(data);
     } catch (error) {
-      console.error('加载成员列表失败:', error);
+      console.error('Failed to load member list:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 创建新成员
+  // Create new member
   const handleCreate = () => {
     setIsCreating(true);
     setEditingMember({
@@ -58,32 +58,32 @@ const MemberManager: React.FC = () => {
     });
   };
 
-  // 编辑成员
+  // Edit member
   const handleEdit = (member: MemberConfig) => {
     setIsCreating(false);
     setEditingMember(member);
   };
 
-  // 保存成员
+  // Save member
   const handleSave = async (memberData: MemberConfig) => {
     try {
       if (isCreating) {
         const updated = await addMember(members, memberData);
         setMembers(updated);
 
-        // 后台异步同步新成员的角色数据
+        // Async sync new member's character data in background
         fetch('/api/sync/member', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(memberData)
         }).then(response => {
           if (response.ok) {
-            console.log(`成员 ${memberData.name} 的角色数据同步成功`);
+            console.log(`Member ${memberData.name}'s character data synced successfully`);
           } else {
-            console.warn(`成员 ${memberData.name} 的角色数据同步失败`);
+            console.warn(`Member ${memberData.name}'s character data sync failed`);
           }
         }).catch(error => {
-          console.error(`成员 ${memberData.name} 的角色数据同步失败:`, error);
+          console.error(`Member ${memberData.name}'s character data sync failed:`, error);
         });
       } else {
         const updated = await updateMember(members, memberData);
@@ -92,16 +92,16 @@ const MemberManager: React.FC = () => {
       setEditingMember(null);
       setIsCreating(false);
     } catch (error: any) {
-      alert(error.message || '保存失败');
+      alert(error.message || 'Save failed');
     }
   };
 
-  // 删除成员
+  // Delete member
   const handleDelete = async (memberId: string) => {
     const member = members.find(m => m.id === memberId);
     if (!member) return;
 
-    // 显示确认对话框
+    // Show confirm dialog
     setConfirmDialog({
       visible: true,
       memberId: member.id,
@@ -109,27 +109,27 @@ const MemberManager: React.FC = () => {
     });
   };
 
-  // 确认删除
+  // Confirm delete
   const handleConfirmDelete = async () => {
     const memberId = confirmDialog.memberId;
 
-    // 关闭对话框
+    // Close dialog
     setConfirmDialog({ visible: false, memberId: '', memberName: '' });
 
     try {
       const updated = await deleteMember(members, memberId);
       setMembers(updated);
     } catch (error: any) {
-      alert(`删除失败: ${error.message || '未知错误'}`);
+      alert(`Delete failed: ${error.message || 'Unknown error'}`);
     }
   };
 
-  // 取消删除
+  // Cancel delete
   const handleCancelDelete = () => {
     setConfirmDialog({ visible: false, memberId: '', memberName: '' });
   };
 
-  // 筛选成员
+  // Filter members
   const filteredMembers = members.filter(member => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -139,56 +139,56 @@ const MemberManager: React.FC = () => {
     );
   });
 
-  // 角色显示名称
+  // Role display names
   const getRoleDisplay = (role: string) => {
     const roleMap: Record<string, string> = {
-      leader: '团长',
-      elite: '精英',
-      member: '成员',
+      leader: 'Legion Leader',
+      elite: 'Elite',
+      member: 'Member',
     };
     return roleMap[role] || role;
   };
 
   if (loading) {
-    return <div className="member-manager__loading">加载中...</div>;
+    return <div className="member-manager__loading">Loading...</div>;
   }
 
   return (
     <div className="member-manager">
-      {/* 工具栏 */}
+      {/* Toolbar */}
       <div className="member-manager__toolbar">
         <div className="member-manager__search">
           <input
             type="text"
-            placeholder="搜索成员名称或ID..."
+            placeholder="Search member name or ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="member-manager__actions">
           <button onClick={handleCreate} className="btn btn--primary">
-            添加成员
+            Add Member
           </button>
         </div>
       </div>
 
-      {/* 成员列表 */}
+      {/* Member list */}
       <div className="member-manager__list">
         <table className="member-table">
           <thead>
             <tr>
-              <th>名称</th>
-              <th>职位</th>
-              <th>称号</th>
-              <th>API配置</th>
-              <th>操作</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Title</th>
+              <th>API Config</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredMembers.length === 0 ? (
               <tr>
                 <td colSpan={5} className="member-table__empty">
-                  {searchQuery ? '没有找到匹配的成员' : '暂无成员数据'}
+                  {searchQuery ? 'No matching members found' : 'No member data'}
                 </td>
               </tr>
             ) : (
@@ -208,14 +208,14 @@ const MemberManager: React.FC = () => {
                     <td>
                       {validation.valid ? (
                         <span className="status-badge status-badge--success" title={`${member.characterId} / ${member.serverId}`}>
-                          已配置
+                          Configured
                         </span>
                       ) : (
                         <span
                           className="status-badge status-badge--warning"
                           title={validation.message}
                         >
-                          未配置
+                          Not Configured
                         </span>
                       )}
                     </td>
@@ -224,7 +224,7 @@ const MemberManager: React.FC = () => {
                         onClick={() => handleEdit(member)}
                         className="btn btn--sm btn--secondary"
                       >
-                        编辑
+                        Edit
                       </button>
                       {apiUrl && (
                         <a
@@ -232,7 +232,7 @@ const MemberManager: React.FC = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn btn--sm btn--secondary"
-                          title="打开 API URL"
+                          title="Open API URL"
                         >
                           API
                         </a>
@@ -241,7 +241,7 @@ const MemberManager: React.FC = () => {
                         onClick={() => handleDelete(member.id)}
                         className="btn btn--sm btn--danger"
                       >
-                        删除
+                        Delete
                       </button>
                     </td>
                   </tr>
@@ -252,13 +252,13 @@ const MemberManager: React.FC = () => {
         </table>
       </div>
 
-      {/* 统计信息 */}
+      {/* Stats */}
       <div className="member-manager__stats">
-        <span>总计: {members.length} 名成员</span>
-        {searchQuery && <span>筛选结果: {filteredMembers.length} 名</span>}
+        <span>Total: {members.length} members</span>
+        {searchQuery && <span>Filtered: {filteredMembers.length}</span>}
       </div>
 
-      {/* 编辑弹窗 */}
+      {/* Edit modal */}
       {editingMember && (
         <MemberEditModal
           member={editingMember}
@@ -271,13 +271,13 @@ const MemberManager: React.FC = () => {
         />
       )}
 
-      {/* 删除确认对话框 */}
+      {/* Delete confirm dialog */}
       <ConfirmDialog
         visible={confirmDialog.visible}
-        title="删除成员"
-        message={`确定要删除成员 "${confirmDialog.memberName}" 吗？此操作将删除该成员的所有数据,且无法恢复。`}
-        confirmText="删除"
-        cancelText="取消"
+        title="Delete Member"
+        message={`Are you sure you want to delete member "${confirmDialog.memberName}"? This will delete all data for this member and cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         danger={true}

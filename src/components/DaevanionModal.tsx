@@ -12,7 +12,7 @@ interface DaevanionModalProps {
 const DaevanionModal = ({ visible, loading, effects, onClose }: DaevanionModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // 点击外部关闭
+  // Click outside to close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -31,7 +31,7 @@ const DaevanionModal = ({ visible, loading, effects, onClose }: DaevanionModalPr
     };
   }, [visible, onClose]);
 
-  // ESC键关闭
+  // ESC key to close
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -54,11 +54,11 @@ const DaevanionModal = ({ visible, loading, effects, onClose }: DaevanionModalPr
     <div className="daevanion-modal-overlay">
       <div className="daevanion-modal" ref={modalRef}>
         <div className="daevanion-modal__header">
-          <h3 className="daevanion-modal__title">守护力面板效果</h3>
+          <h3 className="daevanion-modal__title">Daevanion Panel Effects</h3>
           <button
             className="daevanion-modal__close"
             onClick={onClose}
-            aria-label="关闭"
+            aria-label="Close"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
@@ -70,15 +70,15 @@ const DaevanionModal = ({ visible, loading, effects, onClose }: DaevanionModalPr
           {loading ? (
             <div className="daevanion-modal__loading">
               <div className="daevanion-modal__spinner"></div>
-              <p>加载守护力数据中...</p>
+              <p>Loading Daevanion data...</p>
             </div>
           ) : effects ? (
             <div className="daevanion-modal__split">
-              {/* 左侧：属性效果 */}
+              {/* Left: Stat effects */}
               <div className="daevanion-modal__column daevanion-modal__column--left">
                 <div className="daevanion-section">
                   <h4 className="daevanion-section__title">
-                    属性效果
+                    Stat Effects
                     <span className="daevanion-section__count">({effects.totalStats})</span>
                   </h4>
                   {effects.statEffects.length > 0 ? (
@@ -91,16 +91,16 @@ const DaevanionModal = ({ visible, loading, effects, onClose }: DaevanionModalPr
                       ))}
                     </div>
                   ) : (
-                    <div className="daevanion-section__empty">暂无属性效果</div>
+                    <div className="daevanion-section__empty">No stat effects</div>
                   )}
                 </div>
               </div>
 
-              {/* 右侧：技能效果 */}
+              {/* Right: Skill effects */}
               <div className="daevanion-modal__column daevanion-modal__column--right">
                 <div className="daevanion-section">
                   <h4 className="daevanion-section__title">
-                    技能效果
+                    Skill Effects
                     <span className="daevanion-section__count">({effects.totalSkills})</span>
                   </h4>
                   {effects.skillEffects.length > 0 ? (
@@ -113,14 +113,14 @@ const DaevanionModal = ({ visible, loading, effects, onClose }: DaevanionModalPr
                       ))}
                     </div>
                   ) : (
-                    <div className="daevanion-section__empty">暂无技能效果</div>
+                    <div className="daevanion-section__empty">No skill effects</div>
                   )}
                 </div>
               </div>
             </div>
           ) : (
             <div className="daevanion-modal__empty">
-              <p>加载守护力数据失败</p>
+              <p>Failed to load Daevanion data</p>
             </div>
           )}
         </div>

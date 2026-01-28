@@ -6,9 +6,9 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer__container">
-        <div className="footer__title">椿夏</div>
-        <div className="footer__subtitle">AION2 · 天族 · 希埃尔</div>
-        <div className="footer__copy">© {currentYear} 椿夏. 游戏素材版权归 NCSOFT 所有</div>
+        <div className="footer__title">ChunXia</div>
+        <div className="footer__subtitle">AION2 · Elyos · Siel</div>
+        <div className="footer__copy">© {currentYear} ChunXia. Game assets copyright by NCSOFT</div>
       </div>
     </footer>
   );

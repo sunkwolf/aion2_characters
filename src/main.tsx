@@ -3,7 +3,7 @@ import './index.css'
 import App from './App.tsx'
 import { registerServiceWorker } from './utils/serviceWorker'
 
-// 注册 Service Worker 用于图片缓存
+// Register Service Worker for image caching
 registerServiceWorker()
 
 createRoot(document.getElementById('root')!).render(<App />)

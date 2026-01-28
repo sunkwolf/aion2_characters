@@ -17,38 +17,38 @@ const ItemsSyncManager = () => {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  // 展开的父分类ID（用于显示子分类）
+  // Expanded parent category ID (for showing subcategories)
   const [expandedParent, setExpandedParent] = useState<string | null>(null);
 
-  // 加载同步状态
+  // Load sync status
   const loadStatus = useCallback(async () => {
     try {
       const data = await fetchSyncStatus();
       setStatus(data);
     } catch (error) {
-      console.error('获取同步状态失败:', error);
+      console.error('Failed to get sync status:', error);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // 加载分类数据（带子分类）
+  // Load category data (with subcategories)
   const loadCategories = useCallback(async () => {
     try {
       const filters = await fetchFilters();
       setCategories(filters.categories);
     } catch (error) {
-      console.error('获取分类数据失败:', error);
+      console.error('Failed to get category data:', error);
     }
   }, []);
 
-  // 初始加载
+  // Initial load
   useEffect(() => {
     loadStatus();
     loadCategories();
   }, [loadStatus, loadCategories]);
 
-  // 定时刷新（同步进行中时）
+  // Refresh periodically (when sync is running)
   useEffect(() => {
     if (!status?.isRunning) return;
 
@@ -56,13 +56,13 @@ const ItemsSyncManager = () => {
     return () => clearInterval(interval);
   }, [status?.isRunning, loadStatus]);
 
-  // 显示消息
+  // Show message
   const showMessage = (type: 'success' | 'error', text: string) => {
     setMessage({ type, text });
     setTimeout(() => setMessage(null), 5000);
   };
 
-  // 启动同步（继续或新开始）
+  // Start sync (continue or new start)
   const handleStartSync = async (force = false) => {
     setActionLoading(true);
     try {
@@ -70,13 +70,13 @@ const ItemsSyncManager = () => {
       showMessage(result.success ? 'success' : 'error', result.message);
       await loadStatus();
     } catch (error) {
-      showMessage('error', '启动同步失败');
+      showMessage('error', 'Failed to start sync');
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 停止同步
+  // Stop sync
   const handleStopSync = async () => {
     setActionLoading(true);
     try {
@@ -84,28 +84,28 @@ const ItemsSyncManager = () => {
       showMessage(result.success ? 'success' : 'error', result.message);
       await loadStatus();
     } catch (error) {
-      showMessage('error', '停止同步失败');
+      showMessage('error', 'Failed to stop sync');
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 同步基础数据
+  // Sync base data
   const handleSyncBase = async () => {
     setActionLoading(true);
     try {
       const result = await syncBaseData();
       showMessage(result.success ? 'success' : 'error', result.message);
       await loadStatus();
-      await loadCategories(); // 刷新分类
+      await loadCategories(); // Refresh categories
     } catch (error) {
-      showMessage('error', '同步基础数据失败');
+      showMessage('error', 'Failed to sync base data');
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 同步指定父分类
+  // Sync specific parent category
   const handleSyncCategory = async (categoryId: string) => {
     setActionLoading(true);
     try {
@@ -113,13 +113,13 @@ const ItemsSyncManager = () => {
       showMessage(result.success ? 'success' : 'error', result.message);
       await loadStatus();
     } catch (error) {
-      showMessage('error', '同步分类失败');
+      showMessage('error', 'Failed to sync category');
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 同步子分类
+  // Sync subcategory
   const handleSyncSubCategory = async (subCategoryId: string, subCategoryName: string) => {
     setActionLoading(true);
     try {
@@ -127,13 +127,13 @@ const ItemsSyncManager = () => {
       showMessage(result.success ? 'success' : 'error', `${subCategoryName}: ${result.message}`);
       await loadStatus();
     } catch (error) {
-      showMessage('error', `同步子分类 ${subCategoryName} 失败`);
+      showMessage('error', `Failed to sync subcategory ${subCategoryName}`);
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 切换父分类展开状态
+  // Toggle parent category expansion
   const toggleParent = (parentId: string) => {
     setExpandedParent(expandedParent === parentId ? null : parentId);
   };
@@ -141,7 +141,7 @@ const ItemsSyncManager = () => {
   if (loading) {
     return (
       <div className="items-sync-manager">
-        <div className="items-sync-manager__loading">加载中...</div>
+        <div className="items-sync-manager__loading">Loading...</div>
       </div>
     );
   }
@@ -149,53 +149,53 @@ const ItemsSyncManager = () => {
   return (
     <div className="items-sync-manager">
       <div className="items-sync-manager__header">
-        <h2 className="items-sync-manager__title">物品数据同步</h2>
+        <h2 className="items-sync-manager__title">Item Data Sync</h2>
         <button
           className="items-sync-manager__refresh"
           onClick={() => { loadStatus(); loadCategories(); }}
           disabled={actionLoading}
         >
-          刷新状态
+          Refresh Status
         </button>
       </div>
 
-      {/* 消息提示 */}
+      {/* Message notification */}
       {message && (
         <div className={`items-sync-manager__message items-sync-manager__message--${message.type}`}>
           {message.text}
         </div>
       )}
 
-      {/* 统计信息 */}
+      {/* Statistics */}
       <div className="items-sync-manager__stats">
         <div className="items-sync-manager__stat">
-          <span className="items-sync-manager__stat-label">物品总数</span>
+          <span className="items-sync-manager__stat-label">Total Items</span>
           <span className="items-sync-manager__stat-value">
             {status?.stats.itemCount.toLocaleString() || 0}
           </span>
         </div>
         <div className="items-sync-manager__stat">
-          <span className="items-sync-manager__stat-label">属性记录</span>
+          <span className="items-sync-manager__stat-label">Stat Records</span>
           <span className="items-sync-manager__stat-value">
             {status?.stats.statsCount.toLocaleString() || 0}
           </span>
         </div>
         <div className="items-sync-manager__stat">
-          <span className="items-sync-manager__stat-label">上次同步</span>
+          <span className="items-sync-manager__stat-label">Last Sync</span>
           <span className="items-sync-manager__stat-value">
             {status?.stats.lastSync?.completedAt
               ? new Date(status.stats.lastSync.completedAt).toLocaleString()
-              : '从未同步'}
+              : 'Never synced'}
           </span>
         </div>
       </div>
 
-      {/* 同步状态 */}
+      {/* Sync status */}
       {status?.isRunning && (
         <div className="items-sync-manager__progress">
           <div className="items-sync-manager__progress-header">
             <span className="items-sync-manager__progress-status">
-              正在同步: {status.phase === 'list' ? '物品列表' : `分类详情 (${status.currentCategory})`}
+              Syncing: {status.phase === 'list' ? 'Item List' : `Category Details (${status.currentCategory})`}
             </span>
             <span className="items-sync-manager__progress-spinner" />
           </div>
@@ -203,11 +203,11 @@ const ItemsSyncManager = () => {
             <div className="items-sync-manager__progress-detail">
               {status.phase === 'list' ? (
                 <span>
-                  页码: {status.progress.currentPage} / {status.progress.totalPages}
+                  Page: {status.progress.currentPage} / {status.progress.totalPages}
                 </span>
               ) : (
                 <span>
-                  物品: {status.progress.currentItemIndex} / {status.progress.totalItems}
+                  Items: {status.progress.currentItemIndex} / {status.progress.totalItems}
                 </span>
               )}
             </div>
@@ -215,18 +215,18 @@ const ItemsSyncManager = () => {
         </div>
       )}
 
-      {/* 操作按钮 */}
+      {/* Action buttons */}
       <div className="items-sync-manager__actions">
         {!status?.isRunning ? (
           <>
-            {/* 有未完成的任务时显示继续按钮 */}
+            {/* Show continue button when there's an incomplete task */}
             {status?.progress && status.progress.status === 'running' && (
               <button
                 className="items-sync-manager__btn items-sync-manager__btn--secondary"
                 onClick={() => handleStartSync(false)}
                 disabled={actionLoading}
               >
-                继续同步
+                Continue Sync
               </button>
             )}
             <button
@@ -234,14 +234,14 @@ const ItemsSyncManager = () => {
               onClick={() => handleStartSync(true)}
               disabled={actionLoading}
             >
-              {(status?.stats?.itemCount ?? 0) > 0 ? '重新完整同步' : '开始完整同步'}
+              {(status?.stats?.itemCount ?? 0) > 0 ? 'Restart Full Sync' : 'Start Full Sync'}
             </button>
             <button
               className="items-sync-manager__btn"
               onClick={handleSyncBase}
               disabled={actionLoading}
             >
-              仅同步基础数据
+              Sync Base Data Only
             </button>
           </>
         ) : (
@@ -250,17 +250,17 @@ const ItemsSyncManager = () => {
             onClick={handleStopSync}
             disabled={actionLoading}
           >
-            停止同步
+            Stop Sync
           </button>
         )}
       </div>
 
-      {/* 分类同步（带子分类） */}
+      {/* Category sync (with subcategories) */}
       {!status?.isRunning && categories.length > 0 && (
         <div className="items-sync-manager__categories">
-          <h3 className="items-sync-manager__section-title">按分类同步详情</h3>
+          <h3 className="items-sync-manager__section-title">Sync by Category</h3>
           <p className="items-sync-manager__section-desc">
-            点击父分类同步整个分类，或展开后点击子分类单独同步
+            Click parent category to sync entire category, or expand to sync individual subcategories
           </p>
           <div className="items-sync-manager__category-tree">
             {categories.map(parent => (
@@ -277,7 +277,7 @@ const ItemsSyncManager = () => {
                     <button
                       className={`items-sync-manager__expand-btn ${expandedParent === parent.id ? 'items-sync-manager__expand-btn--expanded' : ''}`}
                       onClick={() => toggleParent(parent.id)}
-                      title="展开/收起子分类"
+                      title="Expand/Collapse subcategories"
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M6 9l6 6 6-6" />
@@ -285,7 +285,7 @@ const ItemsSyncManager = () => {
                     </button>
                   )}
                 </div>
-                {/* 子分类列表 */}
+                {/* Subcategory list */}
                 {expandedParent === parent.id && parent.children && parent.children.length > 0 && (
                   <div className="items-sync-manager__subcategories">
                     {parent.children.map(child => (
@@ -306,16 +306,16 @@ const ItemsSyncManager = () => {
         </div>
       )}
 
-      {/* 说明 */}
+      {/* Info */}
       <div className="items-sync-manager__info">
-        <h3>同步说明</h3>
+        <h3>Sync Guide</h3>
         <ul>
-          <li><strong>完整同步</strong>：先同步物品列表（约80页），然后每4小时自动同步一个分类的详情</li>
-          <li><strong>基础数据</strong>：同步品质、职业、分类等筛选选项</li>
-          <li><strong>父分类同步</strong>：同步该分类下所有物品的详情（包含强化/突破属性）</li>
-          <li><strong>子分类同步</strong>：仅同步该子分类下的物品详情</li>
-          <li>同步过程支持断点续存，中断后可继续</li>
-          <li>查看物品详情时，如果本地没有强化数据会自动从官方API获取</li>
+          <li><strong>Full Sync</strong>: First syncs item list (~80 pages), then auto-syncs one category's details every 4 hours</li>
+          <li><strong>Base Data</strong>: Syncs quality, class, category and other filter options</li>
+          <li><strong>Parent Category Sync</strong>: Syncs all item details in that category (including enchant/exceed stats)</li>
+          <li><strong>Subcategory Sync</strong>: Only syncs item details in that subcategory</li>
+          <li>Sync process supports resume from interruption</li>
+          <li>When viewing item details, if local enchant data is missing it will auto-fetch from official API</li>
         </ul>
       </div>
     </div>

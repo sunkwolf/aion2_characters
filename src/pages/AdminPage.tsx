@@ -1,4 +1,4 @@
-// 管理后台主页面
+// Admin panel main page
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ const AdminPage: React.FC = () => {
   const { isAdmin, logout } = useAdmin();
   const [activeTab, setActiveTab] = useState<TabType>('members');
 
-  // 未登录时重定向到首页
+  // Redirect to home if not logged in
   useEffect(() => {
     if (!isAdmin) {
       navigate('/');
@@ -30,65 +30,65 @@ const AdminPage: React.FC = () => {
     navigate('/');
   };
 
-  // 未登录不显示任何内容(会自动重定向)
+  // Don't show content if not logged in (will auto redirect)
   if (!isAdmin) {
     return null;
   }
 
-  // 管理后台主界面
+  // Admin panel main interface
   return (
     <div className="admin-page">
-      {/* 左侧导航 */}
+      {/* Left sidebar navigation */}
       <aside className="admin-sidebar">
         <div className="admin-sidebar__header">
-          <h1 className="admin-sidebar__title">管理后台</h1>
+          <h1 className="admin-sidebar__title">Admin Panel</h1>
         </div>
         <nav className="admin-nav">
           <button
             className={`admin-nav__item ${activeTab === 'members' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('members')}
           >
-            成员管理
+            Members
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'applications' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('applications')}
           >
-            申请审批
+            Applications
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'gallery' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('gallery')}
           >
-            相册管理
+            Gallery
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'config' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('config')}
           >
-            全局配置
+            Config
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'tools' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('tools')}
           >
-            工具管理
+            Tools
           </button>
           <button
             className={`admin-nav__item ${activeTab === 'items' ? 'admin-nav__item--active' : ''}`}
             onClick={() => setActiveTab('items')}
           >
-            数据库
+            Database
           </button>
         </nav>
         <div className="admin-sidebar__footer">
           <button onClick={handleLogout} className="admin-sidebar__logout">
-            退出登录
+            Logout
           </button>
         </div>
       </aside>
 
-      {/* 右侧内容区 */}
+      {/* Right content area */}
       <main className="admin-main">
         {activeTab === 'members' && <MemberManager />}
         {activeTab === 'applications' && <ApplicationManager />}

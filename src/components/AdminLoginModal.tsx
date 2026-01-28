@@ -14,7 +14,7 @@ const AdminLoginModal = () => {
       setPassword('');
       setError('');
     } else {
-      setError('密码错误');
+      setError('Incorrect password');
     }
   };
 
@@ -24,7 +24,7 @@ const AdminLoginModal = () => {
     setError('');
   };
 
-  // 如果已登录，显示管理员状态
+  // If logged in, show admin status
   if (isAdmin && !showLoginModal) {
     return null;
   }
@@ -48,18 +48,18 @@ const AdminLoginModal = () => {
                 <circle cx="12" cy="12" r="10" />
               </svg>
             </div>
-            <h2>管理员已登录</h2>
-            <p>你现在可以管理军团相册和成员</p>
+            <h2>Admin Logged In</h2>
+            <p>You can now manage the legion gallery and members</p>
             <div className="admin-modal__actions">
               <Link
                 to="/admin"
                 className="admin-modal__btn admin-modal__btn--primary"
                 onClick={handleClose}
               >
-                进入管理后台
+                Go to Admin Panel
               </Link>
               <button className="admin-modal__btn admin-modal__btn--logout" onClick={logout}>
-                退出登录
+                Logout
               </button>
             </div>
           </div>
@@ -71,8 +71,8 @@ const AdminLoginModal = () => {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <h2>管理员登录</h2>
-            <p>请输入管理员密码</p>
+            <h2>Admin Login</h2>
+            <p>Please enter the admin password</p>
             <div className="admin-modal__input-group">
               <input
                 type="password"
@@ -81,13 +81,13 @@ const AdminLoginModal = () => {
                   setPassword(e.target.value);
                   setError('');
                 }}
-                placeholder="输入密码"
+                placeholder="Enter password"
                 autoFocus
               />
               {error && <span className="admin-modal__error">{error}</span>}
             </div>
             <button type="submit" className="admin-modal__btn">
-              登录
+              Login
             </button>
           </form>
         )}

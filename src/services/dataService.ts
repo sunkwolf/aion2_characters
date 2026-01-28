@@ -1,8 +1,8 @@
-// 数据服务 - 处理成员和申请数据的加载、保存、导出
+// Data service - handles member and application data loading, saving, exporting
 
 import type { MemberConfig, JoinApplication, EquipmentDetailsCache } from '../types/admin';
 
-// ============= 常量 =============
+// ============= Constants =============
 
 const STORAGE_KEYS = {
   MEMBERS: 'chunxia_members',
@@ -11,32 +11,32 @@ const STORAGE_KEYS = {
   ADMIN_LOGIN: 'chunxia_admin_login',
 };
 
-// ============= 成员管理 =============
+// ============= Member Management =============
 
 /**
- * 加载成员列表
- * 从后端 API 加载，实现跨设备同步
+ * Load member list
+ * Load from backend API for cross-device sync
  */
 export async function loadMembers(): Promise<MemberConfig[]> {
   try {
-    console.log('从后端 API 加载成员列表...');
+    console.log('Loading member list from backend API...');
     const response = await fetch('/api/members');
     if (response.ok) {
       const result = await response.json();
       if (result.success) {
-        console.log('成功加载成员列表:', result.data.length, '名成员');
+        console.log('Successfully loaded member list:', result.data.length, 'members');
         return result.data;
       }
     }
   } catch (e) {
-    console.error('从后端加载成员列表失败:', e);
+    console.error('Failed to load member list from backend:', e);
   }
 
   return [];
 }
 
 /**
- * 保存成员列表到后端
+ * Save member list to backend
  */
 export async function saveMembers(members: MemberConfig[]): Promise<boolean> {
   try {
@@ -50,25 +50,25 @@ export async function saveMembers(members: MemberConfig[]): Promise<boolean> {
 
     const result = await response.json();
     if (result.success) {
-      console.log('成员列表保存成功');
+      console.log('Member list saved successfully');
       return true;
     } else {
-      console.error('保存失败:', result.error);
+      console.error('Save failed:', result.error);
       return false;
     }
   } catch (e) {
-    console.error('保存成员列表失败:', e);
+    console.error('Failed to save member list:', e);
     return false;
   }
 }
 
 /**
- * 添加成员
+ * Add member
  */
 export async function addMember(members: MemberConfig[], newMember: MemberConfig): Promise<MemberConfig[]> {
-  // 检查 ID 是否重复
+  // Check if ID already exists
   if (members.some(m => m.id === newMember.id)) {
-    throw new Error(`成员 ID "${newMember.id}" 已存在`);
+    throw new Error(`Member ID "${newMember.id}" already exists`);
   }
   const updated = [...members, newMember];
   await saveMembers(updated);
@@ -76,12 +76,12 @@ export async function addMember(members: MemberConfig[], newMember: MemberConfig
 }
 
 /**
- * 更新成员
+ * Update member
  */
 export async function updateMember(members: MemberConfig[], updatedMember: MemberConfig): Promise<MemberConfig[]> {
   const index = members.findIndex(m => m.id === updatedMember.id);
   if (index === -1) {
-    throw new Error(`成员 "${updatedMember.id}" 不存在`);
+    throw new Error(`Member "${updatedMember.id}" does not exist`);
   }
   const updated = [...members];
   updated[index] = updatedMember;
@@ -90,76 +90,76 @@ export async function updateMember(members: MemberConfig[], updatedMember: Membe
 }
 
 /**
- * 删除成员
- * 先调用后端 DELETE API 删除成员数据文件夹,然后更新 members.json
+ * Delete member
+ * First call backend DELETE API to delete member data folder, then update members.json
  */
 export async function deleteMember(members: MemberConfig[], memberId: string): Promise<MemberConfig[]> {
   try {
-    // 1. 调用后端 DELETE API 删除成员数据文件夹
-    console.log(`正在删除成员: ${memberId}`);
+    // 1. Call backend DELETE API to delete member data folder
+    console.log(`Deleting member: ${memberId}`);
     const response = await fetch(`/api/members/${encodeURIComponent(memberId)}`, {
       method: 'DELETE',
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: '未知错误' }));
+      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
       throw new Error(errorData.error || `HTTP ${response.status}`);
     }
 
     const result = await response.json();
     if (!result.success) {
-      throw new Error(result.error || '删除失败');
+      throw new Error(result.error || 'Delete failed');
     }
 
-    console.log(`✓ 成员 ${memberId} 删除成功`);
+    console.log(`✓ Member ${memberId} deleted successfully`);
 
-    // 2. 更新本地成员列表(从数组中移除)
+    // 2. Update local member list (remove from array)
     const updated = members.filter(m => m.id !== memberId);
 
-    // 3. 保存更新后的列表到后端
+    // 3. Save updated list to backend
     await saveMembers(updated);
 
     return updated;
   } catch (error: any) {
-    console.error(`删除成员 ${memberId} 失败:`, error);
-    throw new Error(`删除失败: ${error.message}`);
+    console.error(`Failed to delete member ${memberId}:`, error);
+    throw new Error(`Delete failed: ${error.message}`);
   }
 }
 
 /**
- * 导出成员列表为 JSON 文件
+ * Export member list as JSON file
  */
 export function exportMembersToFile(members: MemberConfig[]): void {
   const json = JSON.stringify(members, null, 2);
   downloadFile(json, 'members.json', 'application/json');
 }
 
-// ============= 申请管理 =============
+// ============= Application Management =============
 
 /**
- * 加载申请列表
- * 从后端 API 加载，实现跨设备同步
+ * Load application list
+ * Load from backend API for cross-device sync
  */
 export async function loadApplications(): Promise<JoinApplication[]> {
   try {
-    console.log('从后端 API 加载申请列表...');
+    console.log('Loading application list from backend API...');
     const response = await fetch('/api/applications');
     if (response.ok) {
       const result = await response.json();
       if (result.success) {
-        console.log('成功加载申请列表:', result.data.length, '条申请');
+        console.log('Successfully loaded application list:', result.data.length, 'applications');
         return result.data;
       }
     }
   } catch (e) {
-    console.error('从后端加载申请列表失败:', e);
+    console.error('Failed to load application list from backend:', e);
   }
 
   return [];
 }
 
 /**
- * 添加新申请
+ * Add new application
  */
 export async function addApplication(
   newApp: Omit<JoinApplication, 'id' | 'submittedAt' | 'status'>
@@ -175,19 +175,19 @@ export async function addApplication(
 
     const result = await response.json();
     if (result.success) {
-      console.log('申请提交成功');
+      console.log('Application submitted successfully');
       return result.data;
     } else {
-      throw new Error(result.error || '提交失败');
+      throw new Error(result.error || 'Submit failed');
     }
   } catch (e) {
-    console.error('提交申请失败:', e);
+    console.error('Failed to submit application:', e);
     throw e;
   }
 }
 
 /**
- * 审批申请
+ * Review application
  */
 export async function reviewApplication(
   applicationId: string,
@@ -205,19 +205,19 @@ export async function reviewApplication(
 
     const result = await response.json();
     if (result.success) {
-      console.log('申请审核成功');
+      console.log('Application reviewed successfully');
       return result.data;
     } else {
-      throw new Error(result.error || '审核失败');
+      throw new Error(result.error || 'Review failed');
     }
   } catch (e) {
-    console.error('审核申请失败:', e);
+    console.error('Failed to review application:', e);
     throw e;
   }
 }
 
 /**
- * 删除申请
+ * Delete application
  */
 export async function deleteApplication(applicationId: string): Promise<boolean> {
   try {
@@ -227,48 +227,48 @@ export async function deleteApplication(applicationId: string): Promise<boolean>
 
     const result = await response.json();
     if (result.success) {
-      console.log('申请删除成功');
+      console.log('Application deleted successfully');
       return true;
     } else {
-      throw new Error(result.error || '删除失败');
+      throw new Error(result.error || 'Delete failed');
     }
   } catch (e) {
-    console.error('删除申请失败:', e);
+    console.error('Failed to delete application:', e);
     throw e;
   }
 }
 
 /**
- * 生成安全的成员 ID
- * 处理中文、特殊字符、数字等情况
+ * Generate safe member ID
+ * Handle Chinese, special characters, numbers, etc.
  */
 function generateSafeMemberId(name: string): string {
-  // 移除所有空格
+  // Remove all spaces
   let id = name.trim().replace(/\s+/g, '');
 
-  // 如果是纯数字，添加前缀
+  // If pure numbers, add prefix
   if (/^\d+$/.test(id)) {
     id = 'member_' + id;
   }
 
-  // 如果包含中文或特殊字符，转换为拼音或使用时间戳
-  // 这里使用简单的方案：保留字母数字，其他字符用下划线替换
+  // If contains Chinese or special characters, convert to pinyin or use timestamp
+  // Using simple approach: keep letters and numbers, replace other chars with underscore
   id = id.replace(/[^a-zA-Z0-9]/g, '_');
 
-  // 转为小写
+  // Convert to lowercase
   id = id.toLowerCase();
 
-  // 如果 ID 为空或只有下划线，使用时间戳
+  // If ID is empty or only underscores, use timestamp
   if (!id || /^_+$/.test(id)) {
     id = 'member_' + Date.now();
   }
 
-  // 确保 ID 不以数字开头（某些系统可能有此要求）
+  // Ensure ID doesn't start with number (some systems may have this requirement)
   if (/^\d/.test(id)) {
     id = 'm_' + id;
   }
 
-  // 限制长度
+  // Limit length
   if (id.length > 50) {
     id = id.substring(0, 50);
   }
@@ -277,7 +277,7 @@ function generateSafeMemberId(name: string): string {
 }
 
 /**
- * 从审批通过的申请创建成员配置
+ * Create member config from approved application
  */
 export function createMemberFromApplication(application: JoinApplication): Omit<MemberConfig, 'characterId' | 'serverId'> {
   return {
@@ -288,17 +288,17 @@ export function createMemberFromApplication(application: JoinApplication): Omit<
 }
 
 /**
- * 导出申请列表为 JSON 文件
+ * Export application list as JSON file
  */
 export function exportApplicationsToFile(applications: JoinApplication[]): void {
   const json = JSON.stringify(applications, null, 2);
   downloadFile(json, 'applications.json', 'application/json');
 }
 
-// ============= 装备缓存 =============
+// ============= Equipment Cache =============
 
 /**
- * 获取成员的装备详情缓存
+ * Get member's equipment details cache
  */
 export async function getEquipmentCache(memberId: string): Promise<EquipmentDetailsCache | null> {
   try {
@@ -306,12 +306,12 @@ export async function getEquipmentCache(memberId: string): Promise<EquipmentDeta
     if (response.ok) {
       const data = await response.json();
 
-      // 检查数据格式:
-      // 新格式: {equipment: {...}, skill: {...}, petwing: {...}} (API原始格式)
-      // 旧格式: {memberId, lastUpdate, details: [...]} (缓存格式)
+      // Check data format:
+      // New format: {equipment: {...}, skill: {...}, petwing: {...}} (API raw format)
+      // Old format: {memberId, lastUpdate, details: [...]} (cache format)
 
       if (data.equipment && data.equipment.equipmentList) {
-        // 新格式(API原始格式) - 转换为缓存格式
+        // New format (API raw format) - convert to cache format
         const cache: EquipmentDetailsCache = {
           memberId,
           lastUpdate: new Date().toISOString(),
@@ -319,22 +319,22 @@ export async function getEquipmentCache(memberId: string): Promise<EquipmentDeta
         };
         return cache;
       } else if (data.details && Array.isArray(data.details)) {
-        // 旧格式(缓存格式) - 直接返回
+        // Old format (cache format) - return directly
         return data;
       }
     }
   } catch (e) {
-    console.warn(`加载成员 ${memberId} 的装备缓存失败`, e);
+    console.warn(`Failed to load equipment cache for member ${memberId}`, e);
   }
 
-  // 尝试从 localStorage
+  // Try from localStorage
   const key = `${STORAGE_KEYS.EQUIPMENT_CACHE}_${memberId}`;
   const stored = localStorage.getItem(key);
   if (stored) {
     try {
       return JSON.parse(stored);
     } catch {
-      console.error('解析装备缓存失败');
+      console.error('Failed to parse equipment cache');
     }
   }
 
@@ -342,7 +342,7 @@ export async function getEquipmentCache(memberId: string): Promise<EquipmentDeta
 }
 
 /**
- * 保存装备详情缓存到 localStorage
+ * Save equipment details cache to localStorage
  */
 export function saveEquipmentCache(cache: EquipmentDetailsCache): void {
   const key = `${STORAGE_KEYS.EQUIPMENT_CACHE}_${cache.memberId}`;
@@ -350,33 +350,33 @@ export function saveEquipmentCache(cache: EquipmentDetailsCache): void {
 }
 
 /**
- * 导出装备缓存为 JSON 文件
+ * Export equipment cache as JSON file
  */
 export function exportEquipmentCacheToFile(cache: EquipmentDetailsCache): void {
   const json = JSON.stringify(cache, null, 2);
   downloadFile(json, `${cache.memberId}_equipment_details.json`, 'application/json');
 }
 
-// ============= 管理员认证 =============
+// ============= Admin Authentication =============
 
 const ADMIN_PASSWORD = 'chunxia2025';
 
 /**
- * 验证管理员密码
+ * Verify admin password
  */
 export function verifyAdminPassword(password: string): boolean {
   return password === ADMIN_PASSWORD;
 }
 
 /**
- * 检查是否已登录
+ * Check if logged in
  */
 export function isAdminLoggedIn(): boolean {
   return localStorage.getItem(STORAGE_KEYS.ADMIN_LOGIN) === 'true';
 }
 
 /**
- * 管理员登录
+ * Admin login
  */
 export function adminLogin(password: string): boolean {
   if (verifyAdminPassword(password)) {
@@ -387,16 +387,16 @@ export function adminLogin(password: string): boolean {
 }
 
 /**
- * 管理员登出
+ * Admin logout
  */
 export function adminLogout(): void {
   localStorage.removeItem(STORAGE_KEYS.ADMIN_LOGIN);
 }
 
-// ============= 工具函数 =============
+// ============= Utility Functions =============
 
 /**
- * 下载文件
+ * Download file
  */
 function downloadFile(content: string, filename: string, mimeType: string): void {
   const blob = new Blob([content], { type: mimeType });
@@ -411,7 +411,7 @@ function downloadFile(content: string, filename: string, mimeType: string): void
 }
 
 /**
- * 导入 JSON 文件
+ * Import JSON file
  */
 export function importJsonFile<T>(file: File): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -422,10 +422,10 @@ export function importJsonFile<T>(file: File): Promise<T> {
         const data = JSON.parse(content);
         resolve(data);
       } catch (err) {
-        reject(new Error('JSON 解析失败'));
+        reject(new Error('JSON parse failed'));
       }
     };
-    reader.onerror = () => reject(new Error('文件读取失败'));
+    reader.onerror = () => reject(new Error('File read failed'));
     reader.readAsText(file, 'utf-8');
   });
 }

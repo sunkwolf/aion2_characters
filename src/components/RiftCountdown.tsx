@@ -28,9 +28,9 @@ interface RiftInfo {
 }
 
 const RiftCountdown = () => {
-  // 本地计算下一次裂缝时间
+  // Calculate next rift time locally
   const calculateLocalNextRift = (configOpenTimes?: string[]) => {
-    // 从配置文件或默认值获取开启时间
+    // Get open times from config or defaults
     const openTimes = configOpenTimes || ['02:00', '05:00', '08:00', '11:00', '14:00', '17:00', '20:00', '23:00'];
     const now = new Date();
     const currentHour = now.getHours();
@@ -75,18 +75,18 @@ const RiftCountdown = () => {
 
   const [riftInfo, setRiftInfo] = useState<RiftInfo>(calculateLocalNextRift());
   const [expanded, setExpanded] = useState(true);
-  const [, setTick] = useState(0); // 用于强制每秒重新渲染
+  const [, setTick] = useState(0); // Force re-render every second
 
   useEffect(() => {
     loadRiftInfo();
 
-    // 每秒更新一次倒计时 - 强制重新渲染
+    // Update countdown every second - force re-render
     const timer = setInterval(() => {
-      setTick(t => t + 1); // 触发重新渲染
+      setTick(t => t + 1); // Trigger re-render
       updateCountdown();
     }, 1000);
 
-    // 每分钟重新获取一次数据,确保时间准确
+    // Refresh data every minute to ensure accuracy
     const refreshTimer = setInterval(() => {
       loadRiftInfo();
     }, 60000);
@@ -106,8 +106,8 @@ const RiftCountdown = () => {
         setRiftInfo(data.data);
       }
     } catch (error) {
-      console.error('加载裂缝倒计时失败,使用本地计算:', error);
-      // API失败时,尝试从配置文件获取时间
+      console.error('Failed to load rift countdown, using local calculation:', error);
+      // If API fails, try to get times from config file
       try {
         const configResponse = await fetch('/data/tools_config.json');
         const configData = await configResponse.json();
@@ -117,7 +117,7 @@ const RiftCountdown = () => {
           setRiftInfo(calculateLocalNextRift());
         }
       } catch {
-        // 配置文件也失败,使用默认值
+        // Config file also failed, use defaults
         setRiftInfo(calculateLocalNextRift());
       }
     }
@@ -134,12 +134,12 @@ const RiftCountdown = () => {
     const diff = Math.floor((nextOpen.getTime() - now.getTime()) / 1000);
 
     if (diff <= 0) {
-      // 倒计时结束,重新计算
+      // Countdown ended, recalculate
       setRiftInfo(calculateLocalNextRift());
     }
   };
 
-  // 计算接下来4次裂缝时间
+  // Calculate next 4 rift times
   const getNextFourRifts = () => {
     if (!riftInfo || !riftInfo.allOpenTimes) return [];
 
@@ -171,19 +171,19 @@ const RiftCountdown = () => {
           const remainingSeconds = diffSeconds % 60;
           const isToday = riftDate.getDate() === now.getDate();
 
-          // 格式化倒计时 - 精确到秒
+          // Format countdown - accurate to seconds
           let countdown = '';
           if (diffHours > 0) {
-            countdown = `${diffHours}小时${diffMinutes}分${remainingSeconds}秒`;
+            countdown = `${diffHours}h ${diffMinutes}m ${remainingSeconds}s`;
           } else if (diffMinutes > 0) {
-            countdown = `${diffMinutes}分${remainingSeconds}秒`;
+            countdown = `${diffMinutes}m ${remainingSeconds}s`;
           } else {
-            countdown = `${remainingSeconds}秒`;
+            countdown = `${remainingSeconds}s`;
           }
 
           nextRifts.push({
             time: rift.time,
-            date: isToday ? '今天' : '明天',
+            date: isToday ? 'Today' : 'Tomorrow',
             countdown
           });
         }
@@ -205,7 +205,7 @@ const RiftCountdown = () => {
   return (
     <div className="rift-countdown">
       <div className="rift-countdown__header">
-        <h3 className="rift-countdown__title">⏳ 时空裂隙</h3>
+        <h3 className="rift-countdown__title">⏳ Rift Countdown</h3>
       </div>
 
       <div className="rift-countdown__list">
@@ -225,7 +225,7 @@ const RiftCountdown = () => {
           className="rift-countdown__expand-btn"
           onClick={() => setExpanded(!expanded)}
         >
-          {expanded ? '收起 ▲' : `展开查看更多 (${nextFourRifts.length - 1}) ▼`}
+          {expanded ? 'Collapse ▲' : `Show more (${nextFourRifts.length - 1}) ▼`}
         </button>
       )}
     </div>

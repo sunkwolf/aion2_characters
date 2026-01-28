@@ -1,18 +1,18 @@
-// 突破等级显示组件
+// Exceed level display component
 
 import React from 'react';
 import './ExceedLevel.css';
 
 interface ExceedLevelProps {
   level: number;
-  variant?: 'compact' | 'full';  // compact: 单个菱形+数字, full: 5个菱形进度
+  variant?: 'compact' | 'full';  // compact: single diamond+number, full: 5 diamond progress
 }
 
 const ExceedLevel: React.FC<ExceedLevelProps> = ({ level, variant = 'compact' }) => {
   const maxLevel = 5;
 
   if (variant === 'compact') {
-    // 单个菱形，里面显示数字
+    // Single diamond with number inside
     if (level === 0) return null;
 
     return (
@@ -29,7 +29,7 @@ const ExceedLevel: React.FC<ExceedLevelProps> = ({ level, variant = 'compact' })
     );
   }
 
-  // 完整版：5个菱形进度条
+  // Full version: 5 diamond progress bar
   return (
     <div className="exceed-full">
       {Array.from({ length: maxLevel }, (_, index) => (

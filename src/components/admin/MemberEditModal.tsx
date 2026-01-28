@@ -1,4 +1,4 @@
-// 成员编辑弹窗组件
+// Member Edit Modal component
 
 import React, { useState, useEffect } from 'react';
 import type { MemberConfig } from '../../types/admin';
@@ -30,7 +30,7 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
     setFormData(member);
   }, [member]);
 
-  // 加载服务器列表
+  // Load server list
   useEffect(() => {
     const loadServers = async () => {
       try {
@@ -38,7 +38,7 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
         const data = await response.json();
         setServerList(data.serverList || []);
       } catch (error) {
-        console.error('加载服务器列表失败:', error);
+        console.error('Failed to load server list:', error);
       }
     };
     loadServers();
@@ -47,7 +47,7 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
   const handleChange = (field: keyof MemberConfig, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // 清除该字段的错误
+    // Clear error for this field
     if (errors[field]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -60,23 +60,23 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // 必填字段验证
+    // Required field validation
     if (!formData.id.trim()) {
-      newErrors.id = 'ID 不能为空';
+      newErrors.id = 'ID cannot be empty';
     }
 
     if (!formData.name.trim()) {
-      newErrors.name = '名称不能为空';
+      newErrors.name = 'Name cannot be empty';
     }
 
-    // Character ID 验证（必填）
+    // Character ID validation (required)
     if (!formData.characterId || !formData.characterId.trim()) {
-      newErrors.characterId = 'Character ID 不能为空';
+      newErrors.characterId = 'Character ID cannot be empty';
     }
 
-    // serverId 验证（必填）
+    // serverId validation (required)
     if (!formData.serverId) {
-      newErrors.serverId = '请选择服务器';
+      newErrors.serverId = 'Please select a server';
     }
 
     setErrors(newErrors);
@@ -90,7 +90,7 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
       return;
     }
 
-    // 清理数据
+    // Clean data
     const cleanedData: MemberConfig = {
       ...formData,
       id: formData.id.trim(),
@@ -107,8 +107,8 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
       <div className="modal-content modal-content--member" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="modal-header__content">
-            <h2>{isCreating ? '添加新成员' : '编辑成员信息'}</h2>
-            <p className="modal-subtitle">{isCreating ? '填写成员基本信息' : `编辑 ${formData.name} 的信息`}</p>
+            <h2>{isCreating ? 'Add New Member' : 'Edit Member Info'}</h2>
+            <p className="modal-subtitle">{isCreating ? 'Fill in member basic info' : `Edit ${formData.name}'s info`}</p>
           </div>
           <button className="modal-close" onClick={onCancel}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -118,9 +118,9 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="modal-form">
-          {/* 左右两列布局 */}
+          {/* Two column layout */}
           <div className="member-form-grid">
-            {/* 左列 - 基本信息 */}
+            {/* Left column - Basic info */}
             <div className="form-column">
               <div className="form-column__header">
                 <div className="form-column__icon">
@@ -129,13 +129,13 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
                     <circle cx="12" cy="7" r="4" />
                   </svg>
                 </div>
-                <h3>基本信息</h3>
+                <h3>Basic Info</h3>
               </div>
 
               {isCreating ? (
                 <>
                   <div className="form-field">
-                    <label htmlFor="member-id">成员ID</label>
+                    <label htmlFor="member-id">Member ID</label>
                     <input
                       id="member-id"
                       type="text"
@@ -147,13 +147,13 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
                   </div>
 
                   <div className="form-field">
-                    <label htmlFor="member-name">角色名称</label>
+                    <label htmlFor="member-name">Character Name</label>
                     <input
                       id="member-name"
                       type="text"
                       value={formData.name}
                       onChange={(e) => handleChange('name', e.target.value)}
-                      placeholder="请输入角色名称"
+                      placeholder="Enter character name"
                     />
                     {errors.name && <span className="form-error">{errors.name}</span>}
                   </div>
@@ -161,27 +161,27 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
               ) : (
                 <div className="readonly-card">
                   <div className="readonly-item">
-                    <span className="readonly-label">成员ID</span>
+                    <span className="readonly-label">Member ID</span>
                     <span className="readonly-value">{formData.id}</span>
                   </div>
                   <div className="readonly-item">
-                    <span className="readonly-label">角色名称</span>
+                    <span className="readonly-label">Character Name</span>
                     <span className="readonly-value">{formData.name}</span>
                   </div>
                 </div>
               )}
 
               <div className="form-field">
-                <label htmlFor="member-role">职位</label>
+                <label htmlFor="member-role">Role</label>
                 <div className="select-wrapper">
                   <select
                     id="member-role"
                     value={formData.role}
                     onChange={(e) => handleChange('role', e.target.value as MemberConfig['role'])}
                   >
-                    <option value="member">成员</option>
-                    <option value="elite">精英</option>
-                    <option value="leader">团长</option>
+                    <option value="member">Member</option>
+                    <option value="elite">Elite</option>
+                    <option value="leader">Legion Leader</option>
                   </select>
                   <svg className="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polyline points="6 9 12 15 18 9" />
@@ -190,18 +190,18 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
               </div>
 
               <div className="form-field">
-                <label htmlFor="member-title">称号</label>
+                <label htmlFor="member-title">Title</label>
                 <input
                   id="member-title"
                   type="text"
                   value={formData.title || ''}
                   onChange={(e) => handleChange('title', e.target.value)}
-                  placeholder="请输入称号 (选填)"
+                  placeholder="Enter title (optional)"
                 />
               </div>
             </div>
 
-            {/* 右列 - API配置 */}
+            {/* Right column - API config */}
             <div className="form-column">
               <div className="form-column__header">
                 <div className="form-column__icon">
@@ -209,7 +209,7 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   </svg>
                 </div>
-                <h3>API配置</h3>
+                <h3>API Config</h3>
               </div>
 
               {isCreating ? (
@@ -227,12 +227,12 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
                   </div>
 
                   <div className="form-field">
-                    <label htmlFor="member-server">服务器</label>
+                    <label htmlFor="member-server">Server</label>
                     <ServerSelect
                       value={formData.serverId?.toString() || ''}
                       onChange={(serverId) => handleChange('serverId', serverId)}
                       serverList={serverList}
-                      placeholder="请选择服务器"
+                      placeholder="Select server"
                     />
                     {errors.serverId && <span className="form-error">{errors.serverId}</span>}
                   </div>
@@ -244,7 +244,7 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
                     <span className="readonly-value readonly-value--mono">{formData.characterId}</span>
                   </div>
                   <div className="readonly-item">
-                    <span className="readonly-label">服务器</span>
+                    <span className="readonly-label">Server</span>
                     <span className="readonly-value">
                       {serverList.find(s => s.serverId === formData.serverId)?.serverName || formData.serverId}
                     </span>
@@ -255,16 +255,16 @@ const MemberEditModal: React.FC<MemberEditModalProps> = ({
           </div>
         </form>
 
-        {/* 操作按钮 */}
+        {/* Action buttons */}
         <div className="modal-footer">
           <button type="button" onClick={onCancel} className="btn btn--ghost">
-            取消
+            Cancel
           </button>
           <button type="submit" onClick={handleSubmit} className="btn btn--primary">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            {isCreating ? '创建成员' : '保存修改'}
+            {isCreating ? 'Create Member' : 'Save Changes'}
           </button>
         </div>
       </div>

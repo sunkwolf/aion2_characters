@@ -142,7 +142,7 @@ async function getCharacterInfo(member) {
     console.log(`  使用完整 URL: ${url.substring(0, 100)}...`);
   } else if (member.characterId && member.serverId !== undefined) {
     // 兼容旧格式
-    url = `${API_BASE_URL}/character/info?lang=zh&characterId=${member.characterId}&serverId=${member.serverId}`;
+    url = `${API_BASE_URL}/character/info?lang=en&characterId=${member.characterId}&serverId=${member.serverId}`;
     console.log(`  使用旧格式参数构建 URL`);
   } else {
     throw new Error('未配置角色信息 URL');
@@ -163,7 +163,7 @@ async function getCharacterEquipment(member) {
     url = member.characterEquipmentUrl;
   } else if (member.characterId && member.serverId !== undefined) {
     // 兼容旧格式
-    url = `${API_BASE_URL}/character/equipment?lang=zh&characterId=${member.characterId}&serverId=${member.serverId}`;
+    url = `${API_BASE_URL}/character/equipment?lang=en&characterId=${member.characterId}&serverId=${member.serverId}`;
   } else {
     throw new Error('未配置角色装备 URL');
   }
@@ -195,7 +195,7 @@ async function getEquipmentDetail(itemId, enchantLevel, slotPos, member) {
     throw new Error('无法获取 characterId 和 serverId');
   }
 
-  const url = `${API_BASE_URL}/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${characterId}&serverId=${serverId}&slotPos=${slotPos}&lang=zh`;
+  const url = `${API_BASE_URL}/character/equipment/item?id=${itemId}&enchantLevel=${enchantLevel}&characterId=${characterId}&serverId=${serverId}&slotPos=${slotPos}&lang=en`;
   console.log(`    请求装备详情: itemId=${itemId}, slotPos=${slotPos}`);
   return await httpsGet(url);
 }
@@ -215,7 +215,7 @@ async function getDaevanionBoard(boardId, member) {
     return null;
   }
 
-  const url = `${API_BASE_URL}/character/daevanion/detail?lang=zh&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&boardId=${boardId}`;
+  const url = `${API_BASE_URL}/character/daevanion/detail?lang=en&characterId=${encodeURIComponent(characterId)}&serverId=${serverId}&boardId=${boardId}`;
   return await httpsGet(url);
 }
 

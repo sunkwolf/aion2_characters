@@ -31,7 +31,7 @@ const ItemsPage = () => {
         const data = await fetchFilters();
         setFilterOptions(data);
       } catch (error) {
-        console.error('加载筛选选项失败:', error);
+        console.error('Failed to load filter options:', error);
       }
     };
     loadFilters();
@@ -45,7 +45,7 @@ const ItemsPage = () => {
       setItems(data.contents);
       setPagination(data.pagination);
     } catch (error) {
-      console.error('加载物品列表失败:', error);
+      console.error('Failed to load items list:', error);
     } finally {
       setLoading(false);
     }
@@ -87,9 +87,9 @@ const ItemsPage = () => {
         {/* 页面标题 */}
         <div className="items-page__header">
           <div className="items-page__title-group">
-            <h1 className="items-page__title">物品数据库</h1>
+            <h1 className="items-page__title">Item Database</h1>
             <p className="items-page__subtitle">
-              共 {pagination.total.toLocaleString()} 件物品
+              Total {pagination.total.toLocaleString()} items
             </p>
           </div>
         </div>

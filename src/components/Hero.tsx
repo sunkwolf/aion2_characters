@@ -10,23 +10,23 @@ const Hero = () => {
 
       <div className="hero__content">
         <h1 className="hero__title">
-          <span className="hero__title-char">椿</span>
-          <span className="hero__title-char">夏</span>
+          <span className="hero__title-char">Chun</span>
+          <span className="hero__title-char">Xia</span>
         </h1>
         <div className="hero__badge">
           <img
             src="https://assets.playnccdn.com/static-about-game/aion2/img/elyos/emblem.webp"
-            alt="天族"
+            alt="Elyos"
             className="hero__badge-icon"
           />
-          <span>天族 · 希埃尔</span>
+          <span>Elyos · Siel</span>
         </div>
         <p className="hero__subtitle">
-          愿如椿树常青，共度盛夏时光
+          Evergreen as the Tun tree, sharing the warmth of summer.
         </p>
         <p className="hero__desc">
-          一个温暖的 PVE 休闲军团<br />
-          副本开荒、日常陪伴、团结互助
+          A warm PVE casual legion<br />
+          Dungeons, daily companionship, and mutual support.
         </p>
         <div className="hero__actions">
           <button
@@ -36,7 +36,7 @@ const Hero = () => {
             }}
             className="hero__btn hero__btn--primary"
           >
-            了解更多
+            Learn More
           </button>
           <button
             onClick={() => {
@@ -45,7 +45,7 @@ const Hero = () => {
             }}
             className="hero__btn hero__btn--secondary"
           >
-            加入我们
+            Join Us
           </button>
           <a
             href="https://tw.ncsoft.com/aion2/about/index"
@@ -53,13 +53,13 @@ const Hero = () => {
             rel="noopener noreferrer"
             className="hero__btn hero__btn--outline"
           >
-            AION2官网
+            AION2 Official
           </a>
         </div>
       </div>
 
       <div className="hero__scroll-hint">
-        <span>向下滚动</span>
+        <span>Scroll Down</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>

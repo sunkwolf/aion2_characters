@@ -1,44 +1,44 @@
-// Service Worker 注册和管理工具
+// Service Worker registration and management utility
 
 /**
- * 注册 Service Worker
+ * Register Service Worker
  */
 export function registerServiceWorker(): void {
-  // 检查浏览器是否支持 Service Worker
+  // Check if browser supports Service Worker
   if (!('serviceWorker' in navigator)) {
-    console.warn('[SW] 浏览器不支持 Service Worker');
+    console.warn('[SW] Browser does not support Service Worker');
     return;
   }
 
-  // 等待页面加载完成后再注册
+  // Wait for page load before registering
   window.addEventListener('load', async () => {
     try {
       const registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/'
       });
 
-      console.log('[SW] Service Worker 注册成功:', registration.scope);
+      console.log('[SW] Service Worker registered successfully:', registration.scope);
 
-      // 监听更新
+      // Listen for updates
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;
         if (!newWorker) return;
 
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('[SW] 新版本可用,建议刷新页面');
-            // 可选:提示用户刷新页面
+            console.log('[SW] New version available, recommend refreshing page');
+            // Optional: prompt user to refresh page
           }
         });
       });
     } catch (error) {
-      console.error('[SW] Service Worker 注册失败:', error);
+      console.error('[SW] Service Worker registration failed:', error);
     }
   });
 }
 
 /**
- * 注销 Service Worker
+ * Unregister Service Worker
  */
 export async function unregisterServiceWorker(): Promise<boolean> {
   if (!('serviceWorker' in navigator)) {
@@ -49,35 +49,35 @@ export async function unregisterServiceWorker(): Promise<boolean> {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       const success = await registration.unregister();
-      console.log('[SW] Service Worker 注销:', success ? '成功' : '失败');
+      console.log('[SW] Service Worker unregister:', success ? 'success' : 'failed');
       return success;
     }
     return false;
   } catch (error) {
-    console.error('[SW] Service Worker 注销失败:', error);
+    console.error('[SW] Service Worker unregister failed:', error);
     return false;
   }
 }
 
 /**
- * 清除图片缓存
+ * Clear image cache
  */
 export async function clearImageCache(): Promise<boolean> {
   if (!('serviceWorker' in navigator)) {
-    console.warn('[SW] 浏览器不支持 Service Worker');
+    console.warn('[SW] Browser does not support Service Worker');
     return false;
   }
 
   try {
     const registration = await navigator.serviceWorker.getRegistration();
     if (!registration || !registration.active) {
-      console.warn('[SW] Service Worker 未激活');
+      console.warn('[SW] Service Worker not active');
       return false;
     }
 
     const activeWorker = registration.active;
 
-    // 发送清除缓存消息
+    // Send clear cache message
     return new Promise((resolve) => {
       const messageChannel = new MessageChannel();
 
@@ -90,17 +90,17 @@ export async function clearImageCache(): Promise<boolean> {
         [messageChannel.port2]
       );
 
-      // 超时处理
+      // Timeout handling
       setTimeout(() => resolve(false), 5000);
     });
   } catch (error) {
-    console.error('[SW] 清除缓存失败:', error);
+    console.error('[SW] Clear cache failed:', error);
     return false;
   }
 }
 
 /**
- * 检查 Service Worker 状态
+ * Check Service Worker status
  */
 export async function checkServiceWorkerStatus(): Promise<{
   supported: boolean;
@@ -120,7 +120,7 @@ export async function checkServiceWorkerStatus(): Promise<{
 
     return { supported, registered, active };
   } catch (error) {
-    console.error('[SW] 检查状态失败:', error);
+    console.error('[SW] Check status failed:', error);
     return { supported, registered: false, active: false };
   }
 }

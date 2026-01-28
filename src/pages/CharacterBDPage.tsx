@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ServerSelector from '../components/ServerSelector';
+import { translateServerName } from '../data/statTranslations';
 import './CharacterBDPage.css';
 
 // 服务器类型(从 API 获取)
@@ -79,21 +80,21 @@ const HistoryItem = ({ history, onClick, onDelete }: HistoryItemProps) => {
           <span className="history-item__name">{history.characterName}</span>
           {cachedRating !== null && (
             <div className="history-item__rating">
-              <span className="history-item__rating-label">PVE评分:</span>
+              <span className="history-item__rating-label">PVE Rating:</span>
               <span className="history-item__rating-value">{cachedRating}</span>
             </div>
           )}
         </div>
         <span className="history-item__meta">
-          {history.serverLabel}
+          {translateServerName(history.serverLabel)}
           {history.level && ` · Lv.${history.level}`}
-          {history.race && ` · ${history.race === 1 ? '天族' : '魔族'}`}
+          {history.race && ` · ${history.race === 1 ? 'Elyos' : 'Asmodian'}`}
         </span>
       </div>
       <button
         className="history-item__delete"
         onClick={onDelete}
-        title="删除此记录"
+        title="Delete record"
       >
         ✕
       </button>
@@ -118,17 +119,17 @@ const SearchResultCard = ({ result, onClick }: SearchResultCardProps) => {
       <div className="result-card__info">
         <div className="result-card__name">{result.characterName}</div>
         <div className="result-card__details">
-          <span className="result-card__server">{result.serverLabel}</span>
+          <span className="result-card__server">{translateServerName(result.serverLabel)}</span>
           <span className="result-card__divider">·</span>
           <span className="result-card__level">Lv.{result.level}</span>
           <span className="result-card__divider">·</span>
           <span className="result-card__race">
-            {result.race === 1 ? '天族' : '魔族'}
+            {result.race === 1 ? 'Elyos' : 'Asmodian'}
           </span>
         </div>
       </div>
       <div className="result-card__action">
-        <span>查看详情</span>
+        <span>View Details</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <polyline points="9 18 15 12 9 6" />
         </svg>
@@ -160,7 +161,7 @@ const CharacterBDPage = () => {
         }
         const localData = await localResponse.json();
         if (!localData.serverList || !Array.isArray(localData.serverList)) {
-          throw new Error('服务器数据格式错误');
+          throw new Error('Server data format error');
         }
         const localServers = localData.serverList.map((server: any) => ({
           id: server.serverId,
@@ -169,11 +170,11 @@ const CharacterBDPage = () => {
         }));
         setServers(localServers);
       } catch (error) {
-        console.error('加载服务器列表失败:', error);
+        console.error('Failed to load server list:', error);
         // 设置默认服务器作为后备
         setServers([
-          { id: 1001, name: '希埃尔', label: '希埃尔' },
-          { id: 1002, name: '伊斯哈拉', label: '伊斯哈拉' }
+          { id: 1001, name: 'Siel', label: 'Siel' },
+          { id: 1002, name: 'Isahal', label: 'Isahal' }
         ]);
       }
     };
@@ -289,7 +290,7 @@ const CharacterBDPage = () => {
       const validResults = results.filter((r): r is CharacterBasicInfo => r !== null);
 
       if (validResults.length === 0) {
-        setError('未找到该角色,请检查角色名称是否正确');
+        setError('Character not found, please check name');
         setSearching(false);
         return;
       }
@@ -297,8 +298,8 @@ const CharacterBDPage = () => {
       setSearchResults(validResults);
       setSearching(false);
     } catch (error) {
-      console.error('搜索失败:', error);
-      setError('搜索失败,请稍后重试');
+      console.error('Search failed:', error);
+      setError('Search failed, please try again');
       setSearching(false);
     }
   };
@@ -308,12 +309,12 @@ const CharacterBDPage = () => {
     e.preventDefault();
 
     if (!characterName.trim()) {
-      setError('请输入角色名称');
+      setError('Please enter character name');
       return;
     }
 
     if (servers.length === 0) {
-      setError('服务器列表加载中，请稍候...');
+      setError('Loading server list, please wait...');
       return;
     }
 
@@ -355,10 +356,10 @@ const CharacterBDPage = () => {
 
       <div className="character-bd-page__container">
         <div className="character-bd-page__header">
-          <h1 className="character-bd-page__title">角色BD查询</h1>
+          <h1 className="character-bd-page__title">Character Lookup</h1>
           <img
             src="https://download.plaync.com.tw/AION2/teaser/4th/e-text-animated.webp"
-            alt="查询任意角色的完整信息"
+            alt="Search for any character info"
             className="character-bd-page__subtitle-img"
           />
         </div>
@@ -376,7 +377,7 @@ const CharacterBDPage = () => {
           <button
             className="region-selector__btn locked"
             disabled
-            title="韩国服务器暂未开放"
+            title="Korean servers not available"
           >
             <span className="region-selector__flag">🇰🇷</span>
             <span className="region-selector__label">Korea</span>
@@ -397,7 +398,7 @@ const CharacterBDPage = () => {
             <input
               type="text"
               className="search-box__input"
-              placeholder="请输入角色名称..."
+              placeholder="Enter character name..."
               value={characterName}
               onChange={e => setCharacterName(e.target.value)}
               disabled={searching}
@@ -416,7 +417,7 @@ const CharacterBDPage = () => {
               className="search-box__submit"
               disabled={searching}
             >
-              {searching ? '搜索中...' : '搜索'}
+              {searching ? 'Searching...' : 'Search'}
             </button>
           </div>
         </form>
@@ -427,7 +428,7 @@ const CharacterBDPage = () => {
             <circle cx="12" cy="12" r="10" />
             <path d="M12 16v-4M12 8h.01" />
           </svg>
-          <span>建议选择服务器,查询速度更快更精准</span>
+          <span>Select server for faster search</span>
         </div>
 
         {/* 错误提示 */}
@@ -446,7 +447,7 @@ const CharacterBDPage = () => {
         {searchResults.length > 0 && (
           <div className="search-results">
             <h2 className="search-results__title">
-              找到 {searchResults.length} 个角色
+              Found {searchResults.length} characters
             </h2>
             <div className="search-results__list">
               {searchResults.map((result, index) => (
@@ -464,13 +465,13 @@ const CharacterBDPage = () => {
         <div className="favorites-section">
           <div className="favorites-section__header">
             <div className="favorites-section__title">
-              查询记录 <span className="favorites-section__count">{searchHistory.length}条</span>
+              History <span className="favorites-section__count">{searchHistory.length} items</span>
             </div>
             {searchHistory.length > 0 && (
               <button
                 className="favorites-section__clear"
                 onClick={clearHistory}
-                title="一键清空"
+                title="Clear all"
               >
                 ✕
               </button>
@@ -505,13 +506,13 @@ const CharacterBDPage = () => {
                   className="favorites-section__view-all"
                   onClick={() => setShowHistoryModal(true)}
                 >
-                  查看全部 ▼
+                  View All ▼
                 </button>
               )}
             </>
           ) : (
             <div className="favorites-section__empty">
-              <p>暂无查询记录</p>
+              <p>No history found</p>
             </div>
           )}
         </div>
@@ -522,8 +523,8 @@ const CharacterBDPage = () => {
             <div className="history-modal" onClick={e => e.stopPropagation()}>
               <div className="history-modal__header">
                 <div className="history-modal__title">
-                  <span>所有查询记录</span>
-                  <span className="history-modal__count">{searchHistory.length}条</span>
+                  <span>Search History</span>
+                  <span className="history-modal__count">{searchHistory.length} items</span>
                 </div>
                 <button
                   className="history-modal__close"
@@ -561,7 +562,7 @@ const CharacterBDPage = () => {
                   className="history-modal__back"
                   onClick={() => setShowHistoryModal(false)}
                 >
-                  ← 返回
+                  ← Back
                 </button>
               </div>
             </div>

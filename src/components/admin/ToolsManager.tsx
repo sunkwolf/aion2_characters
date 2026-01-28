@@ -1,4 +1,4 @@
-// 工具管理组件 - 管理 tools_config.json
+// Tools Manager component - Manages tools_config.json
 
 import React, { useState, useEffect } from 'react';
 import './ToolsManager.css';
@@ -30,11 +30,11 @@ const ToolsManager: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  // 编辑状态
+  // Edit state
   const [editingTool, setEditingTool] = useState<Tool | null>(null);
   const [isAdding, setIsAdding] = useState(false);
 
-  // 加载配置
+  // Load config
   useEffect(() => {
     loadConfig();
   }, []);
@@ -47,11 +47,11 @@ const ToolsManager: React.FC = () => {
       if (data.success) {
         setConfig(data.config);
       } else {
-        showMessage('error', '加载配置失败');
+        showMessage('error', 'Failed to load config');
       }
     } catch (error) {
-      console.error('加载配置失败:', error);
-      showMessage('error', '加载配置失败');
+      console.error('Failed to load config:', error);
+      showMessage('error', 'Failed to load config');
     } finally {
       setLoading(false);
     }
@@ -68,15 +68,15 @@ const ToolsManager: React.FC = () => {
       const data = await response.json();
       if (data.success) {
         setConfig(newConfig);
-        showMessage('success', '保存成功');
+        showMessage('success', 'Saved successfully');
         return true;
       } else {
-        showMessage('error', data.error || '保存失败');
+        showMessage('error', data.error || 'Save failed');
         return false;
       }
     } catch (error) {
-      console.error('保存配置失败:', error);
-      showMessage('error', '保存配置失败');
+      console.error('Failed to save config:', error);
+      showMessage('error', 'Failed to save config');
       return false;
     } finally {
       setSaving(false);
@@ -88,7 +88,7 @@ const ToolsManager: React.FC = () => {
     setTimeout(() => setMessage(null), 3000);
   };
 
-  // 工具操作
+  // Tool operations
   const handleAddTool = () => {
     setEditingTool({ id: '', name: '', description: '', url: '' });
     setIsAdding(true);
@@ -102,27 +102,27 @@ const ToolsManager: React.FC = () => {
   const handleSaveTool = async () => {
     if (!editingTool || !config) return;
 
-    // 验证
+    // Validation
     if (!editingTool.name.trim()) {
-      showMessage('error', '请输入工具名称');
+      showMessage('error', 'Please enter tool name');
       return;
     }
     if (!editingTool.description.trim()) {
-      showMessage('error', '请输入工具描述');
+      showMessage('error', 'Please enter tool description');
       return;
     }
     if (!editingTool.url.trim()) {
-      showMessage('error', '请输入工具URL');
+      showMessage('error', 'Please enter tool URL');
       return;
     }
 
     let newTools: Tool[];
     if (isAdding) {
-      // 新增工具 - 生成ID
+      // Add new tool - generate ID
       const newId = editingTool.name.toLowerCase().replace(/\s+/g, '-');
       newTools = [...config.tools, { ...editingTool, id: newId }];
     } else {
-      // 编辑工具
+      // Edit tool
       newTools = config.tools.map(t => t.id === editingTool.id ? editingTool : t);
     }
 
@@ -135,7 +135,7 @@ const ToolsManager: React.FC = () => {
 
   const handleDeleteTool = async (id: string) => {
     if (!config) return;
-    if (!confirm('确定要删除这个工具吗?')) return;
+    if (!confirm('Are you sure you want to delete this tool?')) return;
 
     const newTools = config.tools.filter(t => t.id !== id);
     await saveConfig({ ...config, tools: newTools });
@@ -146,7 +146,7 @@ const ToolsManager: React.FC = () => {
     setIsAdding(false);
   };
 
-  // 裂缝配置操作
+  // Rift config operations
   const handleRiftToggle = async () => {
     if (!config) return;
     await saveConfig({
@@ -188,18 +188,18 @@ const ToolsManager: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="tools-manager__loading">加载中...</div>;
+    return <div className="tools-manager__loading">Loading...</div>;
   }
 
   if (!config) {
-    return <div className="tools-manager__error">加载配置失败</div>;
+    return <div className="tools-manager__error">Failed to load config</div>;
   }
 
   return (
     <div className="tools-manager">
       <div className="tools-manager__header">
-        <h2>工具管理</h2>
-        <p className="tools-manager__desc">管理工具列表和裂缝倒计时配置</p>
+        <h2>Tools Management</h2>
+        <p className="tools-manager__desc">Manage tools list and rift countdown config</p>
       </div>
 
       {message && (
@@ -208,10 +208,10 @@ const ToolsManager: React.FC = () => {
         </div>
       )}
 
-      {/* 裂缝配置 */}
+      {/* Rift Config */}
       <section className="tools-manager__section">
         <div className="tools-manager__section-header">
-          <h3>裂缝倒计时配置</h3>
+          <h3>Rift Countdown Config</h3>
           <label className="tools-manager__toggle">
             <input
               type="checkbox"
@@ -219,12 +219,12 @@ const ToolsManager: React.FC = () => {
               onChange={handleRiftToggle}
               disabled={saving}
             />
-            <span>启用裂缝倒计时</span>
+            <span>Enable Rift Countdown</span>
           </label>
         </div>
 
         <div className="tools-manager__rift-times">
-          <label>开启时间 (每日):</label>
+          <label>Open Times (Daily):</label>
           <div className="tools-manager__time-grid">
             {config.rift.openTimes.map((time, index) => (
               <div className="tools-manager__time-item" key={`${time}-${index}`}>
@@ -241,7 +241,7 @@ const ToolsManager: React.FC = () => {
                   disabled={saving || config.rift.openTimes.length <= 1}
                   className="tools-manager__btn tools-manager__time-remove"
                 >
-                  删除
+                  Delete
                 </button>
               </div>
             ))}
@@ -253,29 +253,29 @@ const ToolsManager: React.FC = () => {
               disabled={saving}
               className="tools-manager__btn tools-manager__btn--add"
             >
-              + 新增时间
+              + Add Time
             </button>
             <button
               onClick={handleSaveRiftConfig}
               disabled={saving}
               className="tools-manager__btn tools-manager__btn--save"
             >
-              {saving ? '保存中...' : '保存裂缝配置'}
+              {saving ? 'Saving...' : 'Save Rift Config'}
             </button>
           </div>
         </div>
       </section>
 
-      {/* 工具列表 */}
+      {/* Tools List */}
       <section className="tools-manager__section">
         <div className="tools-manager__section-header">
-          <h3>工具列表</h3>
+          <h3>Tools List</h3>
           <button
             onClick={handleAddTool}
             disabled={saving || !!editingTool}
             className="tools-manager__btn tools-manager__btn--add"
           >
-            + 添加工具
+            + Add Tool
           </button>
         </div>
 
@@ -288,21 +288,21 @@ const ToolsManager: React.FC = () => {
                     type="text"
                     value={editingTool.name}
                     onChange={(e) => setEditingTool({ ...editingTool, name: e.target.value })}
-                    placeholder="工具名称"
+                    placeholder="Tool Name"
                     className="tools-manager__input"
                   />
                   <input
                     type="text"
                     value={editingTool.description}
                     onChange={(e) => setEditingTool({ ...editingTool, description: e.target.value })}
-                    placeholder="工具描述"
+                    placeholder="Tool Description"
                     className="tools-manager__input"
                   />
                   <input
                     type="url"
                     value={editingTool.url}
                     onChange={(e) => setEditingTool({ ...editingTool, url: e.target.value })}
-                    placeholder="工具URL"
+                    placeholder="Tool URL"
                     className="tools-manager__input"
                   />
                   <div className="tools-manager__tool-actions">
@@ -311,14 +311,14 @@ const ToolsManager: React.FC = () => {
                       disabled={saving}
                       className="tools-manager__btn tools-manager__btn--save"
                     >
-                      保存
+                      Save
                     </button>
                     <button
                       onClick={handleCancelEdit}
                       disabled={saving}
                       className="tools-manager__btn tools-manager__btn--cancel"
                     >
-                      取消
+                      Cancel
                     </button>
                   </div>
                 </div>
@@ -337,14 +337,14 @@ const ToolsManager: React.FC = () => {
                       disabled={saving || !!editingTool}
                       className="tools-manager__btn tools-manager__btn--edit"
                     >
-                      编辑
+                      Edit
                     </button>
                     <button
                       onClick={() => handleDeleteTool(tool.id)}
                       disabled={saving || !!editingTool}
                       className="tools-manager__btn tools-manager__btn--delete"
                     >
-                      删除
+                      Delete
                     </button>
                   </div>
                 </div>
@@ -352,7 +352,7 @@ const ToolsManager: React.FC = () => {
             </div>
           ))}
 
-          {/* 新增工具表单 */}
+          {/* Add tool form */}
           {isAdding && editingTool && (
             <div className="tools-manager__tool-item tools-manager__tool-item--adding">
               <div className="tools-manager__tool-edit">
@@ -360,21 +360,21 @@ const ToolsManager: React.FC = () => {
                   type="text"
                   value={editingTool.name}
                   onChange={(e) => setEditingTool({ ...editingTool, name: e.target.value })}
-                  placeholder="工具名称"
+                  placeholder="Tool Name"
                   className="tools-manager__input"
                 />
                 <input
                   type="text"
                   value={editingTool.description}
                   onChange={(e) => setEditingTool({ ...editingTool, description: e.target.value })}
-                  placeholder="工具描述"
+                  placeholder="Tool Description"
                   className="tools-manager__input"
                 />
                 <input
                   type="url"
                   value={editingTool.url}
                   onChange={(e) => setEditingTool({ ...editingTool, url: e.target.value })}
-                  placeholder="工具URL"
+                  placeholder="Tool URL"
                   className="tools-manager__input"
                 />
                 <div className="tools-manager__tool-actions">
@@ -383,14 +383,14 @@ const ToolsManager: React.FC = () => {
                     disabled={saving}
                     className="tools-manager__btn tools-manager__btn--save"
                   >
-                    保存
+                    Save
                   </button>
                   <button
                     onClick={handleCancelEdit}
                     disabled={saving}
                     className="tools-manager__btn tools-manager__btn--cancel"
                   >
-                    取消
+                    Cancel
                   </button>
                 </div>
               </div>
